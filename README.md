@@ -7,25 +7,27 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 ## Installation
 1. Install signald or build from source
-```bash
-$ git clone https://gitlab.com/thefinn93/signald.git
-$ cd signald
-$ make installDist
-$ make setup
-```
+    ```bash
+    $ git clone https://gitlab.com/thefinn93/signald.git
+    $ cd signald
+    $ make installDist
+    $ make setup
+    ```
 
 2. Install Semaphore
-With pip:
-```bash
-$ pip install semaphore
-```
-From source:
-```bash
-$ git clone https://github.com/lwesterhof/semaphore.git
-$ cd semaphore
-$ python setup.py sdist bdist_wheel
-$ python -m pip install dist/semaphore-*.tar.gz
-```
+
+    With pip:
+    ```bash
+    $ pip install semaphore
+    ```
+
+    From source:
+    ```bash
+    $ git clone https://github.com/lwesterhof/semaphore.git
+    $ cd semaphore
+    $ python setup.py sdist bdist_wheel
+    $ python -m pip install dist/semaphore-*.tar.gz
+    ```
 
 ## Quick start
 
@@ -103,10 +105,14 @@ The following example bots can be found in [examples](examples):
 - [bbcbot](examples/bbcbot.py), replies with latest BBC headlines
 - [echobot](examples/echobot.py), repeats received messages
 - [spongebot](examples/spongebot.py), repeats received messages in sPOngEbOb sqUArepAnTs text
+- [quotebot](examples/quotebot.py), quotes and repeats received messages
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## History
-### 0.1.0
+### v0.2.0
+* Support for quoting messages.
+
+### v0.1.0
 * First release on Github.
 
 ## License

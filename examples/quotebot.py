@@ -16,15 +16,27 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-"""Semaphore: A simple (rule-based) bot library for Signal Private Messenger."""
-__author__ = 'Lazlo Westerhof'
-__email__ = 'semaphore@lazlo.me'
-__license__ = 'GPLv3'
-__version__ = '0.2.0'
+"""
+Signal Bot example, quotes and repeats the received messages.
+"""
+from semaphore import Bot, Message, Reply
 
-from .attachment import Attachment
-from .bot import Bot
-from .group_info import GroupInfo
-from .message import Message
-from .reply import Reply
-from .socket import Socket
+
+def quote(message: Message, match) -> Reply:
+    return Reply(message=message.get_text(), quote=True)
+
+
+def main():
+    """Start the bot."""
+    # Connect the bot to number.
+    bot = Bot("+xxxxxxxxxxx")
+
+    # Add handler to bot.
+    bot.register_handler("", quote)
+
+    # Run the bot until you press Ctrl-C.
+    bot.start()
+
+
+if __name__ == '__main__':
+    main()

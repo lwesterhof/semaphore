@@ -47,7 +47,7 @@ class Bot:
                           "recipientNumber": message.source,
                           "timestamps": [message.timestamp]})
 
-    def __send_message(self, recipient: str, reply: Reply, recipient_group_id=None):
+    def __send_message(self, message: Message, reply: Reply):
         """
         Send the bot message.
 
@@ -58,16 +58,23 @@ class Bot:
         # Construct reply message.
         bot_message = {"type": "send",
                        "username": self.username,
-                       "recipientNumber": recipient,
+                       "recipientNumber": message.source,
                        "messageBody": reply.message}
 
         # Add group id for group messages.
-        if recipient_group_id:
-            bot_message["recipientGroupId"] = recipient_group_id
+        if message.get_group_id():
+            bot_message["recipientGroupId"] = message.get_group_id()
 
         # Add attachments to message.
         if reply.attachments:
             bot_message["attachments"] = reply.attachments
+
+        # Add quote to message.
+        if reply.quote:
+            quote = {"id": message.timestamp,
+                     "author": message.source,
+                     "text": message.get_text()}
+            bot_message["quote"] = quote
 
         self.socket.send(bot_message)
 
@@ -133,9 +140,7 @@ class Bot:
 
                 # Send bot message.
                 try:
-                    self.__send_message(recipient=message.source,
-                                        reply=reply,
-                                        recipient_group_id=message.get_group_id())
+                    self.__send_message(message, reply)
                     self.log("Reply send", True)
                 except Exception:
                     self.log("Sending reply failed", True)

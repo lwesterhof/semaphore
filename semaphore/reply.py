@@ -24,4 +24,5 @@ class Reply:
     """This object represents a Bot reply."""
     message: str
     attachments: list = attr.ib(default=[])
+    quote: bool = attr.ib(default=False)
     stop: bool = attr.ib(default=True)
