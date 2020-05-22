@@ -1,0 +1,36 @@
+name: Python
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.6, 3.7, 3.8]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install flake8 setuptools wheel
+
+      - name: Rune flake8
+        run: |
+          flake8 --statistics
+
+      - name: Build package
+        run: |
+          python -m pip install -r requirements.txt
+          python setup.py sdist bdist_wheel
+
+      - name: Install package
+        run: |
+          python -m pip install dist/semaphore-*.tar.gz
