@@ -1,5 +1,15 @@
-# Semaphore
+# Semaphore ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore) ![GitHub](https://img.shields.io/github/license/lwesterhof/semaphore)
+
 A simple (rule-based) bot library for [Signal](https://signal.org/) Private Messenger in Python.
+
+## Table of contents
+   * [Requirements](#requirements)
+   * [Installation](#installation)
+   * [Quick start](#quick-start)
+   * [Code example](#code-example)
+   * [Example bots](#example-bots)
+   * [History](#history)
+   * [License](#license)
 
 ## Requirements
 - Python 3.6+
