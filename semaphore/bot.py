@@ -18,9 +18,14 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 import re
 from datetime import datetime
+from threading import Thread
+from time import time
 
+from .job import Job
+from .job_queue import JobQueue
 from .message import Message
 from .message_receiver import MessageReceiver
+from .message_sender import MessageSender
 from .reply import Reply
 from .socket import Socket
 
@@ -31,52 +36,13 @@ class Bot:
                  username,
                  debug=False,
                  socket_path="/var/run/signald/signald.sock"):
-        self.username = username
-        self.debug = debug
-        self.socket = Socket(username, socket_path)
-        self.handlers = []
-
-    def __mark_read(self, message: Message):
-        """
-        Mark a Signal message you received as read.
-
-        message: The Signal message you received.
-        """
-        self.socket.send({"type": "mark_read",
-                          "username": self.username,
-                          "recipientNumber": message.source,
-                          "timestamps": [message.timestamp]})
-
-    def __send_message(self, message: Message, reply: Reply):
-        """
-        Send the bot message.
-
-        recipient:          The recipient's phone number.
-        reply:              The reply to send.
-        recipient_group_id: Group id if recicpient is a group.
-        """
-        # Construct reply message.
-        bot_message = {"type": "send",
-                       "username": self.username,
-                       "recipientNumber": message.source,
-                       "messageBody": reply.message}
-
-        # Add group id for group messages.
-        if message.get_group_id():
-            bot_message["recipientGroupId"] = message.get_group_id()
-
-        # Add attachments to message.
-        if reply.attachments:
-            bot_message["attachments"] = reply.attachments
-
-        # Add quote to message.
-        if reply.quote:
-            quote = {"id": message.timestamp,
-                     "author": message.source,
-                     "text": message.get_text()}
-            bot_message["quote"] = quote
-
-        self.socket.send(bot_message)
+        self._username = username
+        self._debug = debug
+        self._socket = Socket(username, socket_path)
+        self._receiver = None
+        self._sender = None
+        self._job_queue = None
+        self._handlers = []
 
     def log(self, message: str, timestamp=False):
         """
@@ -84,7 +50,7 @@ class Bot:
 
         message: Message to log.
         """
-        if self.debug:
+        if self._debug:
             if timestamp:
                 now = datetime.now()
                 timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -92,22 +58,30 @@ class Bot:
             else:
                 print(f"{message}")
 
-    def register_handler(self, regex, func):
+    def register_handler(self, regex, func, job=False):
         """
         Register a chat handler with a regex.
         """
         if not isinstance(regex, type(re.compile(""))):
             regex = re.compile(regex, re.UNICODE)
 
-        self.handlers.append((regex, func))
+        self._handlers.append((regex, func, job))
 
     def start(self):
         """
-        Start the chat event loop.
+        Start the bot event loop.
         """
-        receiver = MessageReceiver(self.socket)
+        # Initialize sender and receiver.
+        self._sender = MessageSender(self._username, self._socket)
+        self._receiver = MessageReceiver(self._socket)
 
-        for message in receiver.receive():
+        # Initialize job queue.
+        self._job_queue = JobQueue(self._sender)
+        job_queue = Thread(name='job_queue',
+                           target=self._job_queue.start)
+        job_queue.start()
+
+        for message in self._receiver.receive():
             # Ignore empty messages.
             if message.empty():
                 continue
@@ -117,22 +91,26 @@ class Bot:
             self.log(message)
 
             # Loop over all registered handlers.
-            for regex, func in self.handlers:
+            for regex, func, job in self._handlers:
                 # Match message text against handlers.
                 match = re.search(regex, message.get_text())
                 if not match:
                     continue
 
                 # Mark received message read before processing.
+                self._sender.mark_read(message)
                 try:
-                    self.__mark_read(message)
+                    self._sender.mark_read(message)
                     self.log("Message marked as read", True)
                 except Exception:
                     self.log("Marking message as read failed", True)
 
                 # Process received message.
                 try:
-                    reply = func(message, match)
+                    if job:
+                        reply = func(message, match, self._job_queue)
+                    else:
+                        reply = func(message, match)
                     self.log(reply)
                 except Exception:
                     self.log("Reply failed", True)
@@ -140,7 +118,7 @@ class Bot:
 
                 # Send bot message.
                 try:
-                    self.__send_message(message, reply)
+                    self._sender.send_message(message, reply)
                     self.log("Reply send", True)
                 except Exception:
                     self.log("Sending reply failed", True)

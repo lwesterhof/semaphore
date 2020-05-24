@@ -29,13 +29,12 @@ from .socket import Socket
 
 class MessageReceiver:
     def __init__(self, socket: Socket):
-        self.socket: Socket = socket
+        self._socket: Socket = socket
 
     def receive(self) -> Iterator[Message]:
         """Receive messages and return as Iterator."""
-        self.socket.connect()
 
-        for line in self.socket.read():
+        for line in self._socket.read():
             # Load Signal message wrapper
             try:
                 message_wrapper = json.loads(line.decode())

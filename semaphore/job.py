@@ -16,13 +16,22 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-"""Semaphore: A simple (rule-based) bot library for Signal Private Messenger."""
-__author__ = 'Lazlo Westerhof'
-__email__ = 'semaphore@lazlo.me'
-__license__ = 'GPLv3'
-__version__ = '0.3.0'
-
-from .attachment import Attachment
-from .bot import Bot
 from .message import Message
 from .reply import Reply
+
+
+class Job(object):
+    def __init__(self, handler, message):
+        self._handler = handler
+        self._message = message
+
+    def get_message(self):
+        return self._message
+
+    def run(self):
+        # Process received message.
+        try:
+            reply = self._handler(self._message)
+            return reply
+        except Exception:
+            return None

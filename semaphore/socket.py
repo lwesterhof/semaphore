@@ -24,23 +24,25 @@ from typing import Iterator
 class Socket:
     """This object represents a signald socket."""
     def __init__(self, username, socket_path="/var/run/signald/signald.sock"):
-        self.username: str = username
-        self.socket_path: str = socket_path
-        self.socket: socket.socket = None
+        self._username: str = username
+        self._socket_path: str = socket_path
+        self._socket: socket.socket = None
+
+        self.connect()
 
     def connect(self):
         """Create a socket and connect to it."""
         signald = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        signald.connect(self.socket_path)
+        signald.connect(self._socket_path)
         signald.send(json.dumps({"type": "subscribe",
-                                 "username": self.username}).encode("utf8") + b"\n")
-        self.socket = signald
+                                 "username": self._username}).encode("utf8") + b"\n")
+        self._socket = signald
 
     def read(self) -> Iterator[bytes]:
         """Read a socket, line by line."""
         buffer = []
         while True:
-            char = self.socket.recv(1)
+            char = self._socket.recv(1)
             if not char:
                 raise ConnectionResetError("Connection was reset")
             if char == b"\n":
@@ -51,5 +53,5 @@ class Socket:
 
     def send(self, message: dict):
         """Send message to socket."""
-        self.socket.send(json.dumps(message).encode("utf8") + b"\n")
-        self.socket.recv(1024)
+        self._socket.send(json.dumps(message).encode("utf8") + b"\n")
+        self._socket.recv(1024)
