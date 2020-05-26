@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+import logging
 import re
 from datetime import datetime
 from threading import Thread
@@ -43,19 +44,11 @@ class Bot:
         self._handlers = []
         self._chat_context: Dict[str, ChatContext] = {}
 
-    def log(self, message: str, timestamp=False) -> None:
-        """
-        Log messages, only when debug is enabled.
-
-        message: Message to log.
-        """
-        if self._debug:
-            if timestamp:
-                now = datetime.now()
-                timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
-                print(f"{timestamp}: {message}")
-            else:
-                print(f"{message}")
+        logging.basicConfig(
+            format='%(asctime)s %(process)d %(threadName)s: [%(levelname)s] %(message)s',
+            level=logging.DEBUG
+        )
+        self.log = logging.getLogger(__name__)
 
     def register_handler(self, regex, func, job=False) -> None:
         """
@@ -85,9 +78,8 @@ class Bot:
             if message.empty():
                 continue
 
-            self.log("-" * 50)
-            self.log("Message received", True)
-            self.log(str(message))
+            self.log.info("Message received")
+            self.log.debug(str(message))
 
             # Loop over all registered handlers.
             for regex, func, job in self._handlers:
@@ -101,34 +93,34 @@ class Bot:
                     context = self._chat_context[message.source]
                     context.message = message
                     context.match = match
-                    self.log("Chat context exists", True)
+                    self.log.info("Chat context exists")
                 else:
                     context = ChatContext(message, match, self._job_queue)
-                    self.log("No chat context found, created one", True)
+                    self.log.info("No chat context found, created one")
 
                 # Mark received message read before processing.
                 self._sender.mark_read(message)
                 try:
                     self._sender.mark_read(message)
-                    self.log("Message marked as read", True)
+                    self.log.info("Message marked as read")
                 except Exception:
-                    self.log("Marking message as read failed", True)
+                    self.log.warning("Marking message as read failed")
 
                 # Process received message.
                 try:
                     reply = func(context)
-                    self.log(reply)
+                    self.log.debug(reply)
                     self._chat_context[message.source] = context
                 except Exception:
-                    self.log("Reply failed", True)
+                    self.log.warning("Reply failed")
                     continue
 
                 # Send bot message.
                 try:
                     self._sender.send_message(message, reply)
-                    self.log("Reply send", True)
+                    self.log.info("Reply send")
                 except Exception:
-                    self.log("Sending reply failed", True)
+                    self.log.warning("Sending reply failed")
                     continue
 
                 # Stop matching.
