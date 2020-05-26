@@ -22,13 +22,13 @@ Signal Bot example, replies with Astronomy Picture of the Day.
 import urllib.request
 from pathlib import Path
 
-import feedparser
-from bs4 import BeautifulSoup
+import feedparser  # type: ignore
+from bs4 import BeautifulSoup  # type: ignore
 
-from semaphore import Bot, Message, Reply
+from semaphore import Bot, ChatContext, Reply
 
 
-def apod(message: Message, match) -> Reply:
+def apod(context: ChatContext) -> Reply:
     path = Path(__file__).parent.absolute()
     Feed = feedparser.parse('https://apod.nasa.gov/apod.rss')
     pointer = Feed.entries[0]

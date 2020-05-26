@@ -16,8 +16,10 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+from threading import Thread
 from queue import Empty, PriorityQueue
 from time import sleep, time
+from typing import Callable
 
 from .job import Job
 
@@ -27,11 +29,41 @@ class JobQueue:
         self._queue = PriorityQueue()
         self._sender = sender
 
-    def put(self, timestamp, callback, message):
-        job = Job(callback, message)
+    def run_once(self,
+                 timestamp: float,
+                 callback: Callable,
+                 context) -> Job:
+        job = Job(callback, context)
         self._queue.put((timestamp, job))
+        return job
 
-    def start(self):
+    def run_repeating(self,
+                      timestamp: float,
+                      callback: Callable,
+                      context,
+                      interval: int) -> Job:
+        job = Job(callback, context, repeat=True, interval=interval)
+        self._queue.put((timestamp, job))
+        return job
+
+    def run_daily(self,
+                  timestamp: float,
+                  callback: Callable,
+                  context) -> Job:
+        interval = 60 * 60 * 24  # Day
+        job = Job(callback, context, repeat=True, interval=interval)
+        self._queue.put((timestamp, job))
+        return job
+
+    def run_monthly(self,
+                    timestamp: float,
+                    callback: Callable,
+                    context) -> Job:
+        job = Job(callback, context, repeat=True, monthly=True)
+        self._queue.put((timestamp, job))
+        return job
+
+    def start(self) -> None:
         """Run all the jobs in the queue that are due."""
 
         while True:
@@ -48,5 +80,16 @@ class JobQueue:
                 sleep(1)
                 continue
 
-            reply = job.run()
-            self._sender.send_message(job.get_message(), reply)
+            if job.remove():
+                continue
+
+            try:
+                reply = job.run()
+                if reply:
+                    self._sender.send_message(job.get_message(), reply)
+            except Exception:
+                continue
+
+            if job.is_repeating():
+                interval = job.get_interval()
+                self._queue.put((now + interval, job))

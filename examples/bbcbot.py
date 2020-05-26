@@ -21,12 +21,12 @@ Signal Bot example, replies with latest BBC headlines.
 """
 import re
 
-import feedparser
+import feedparser  # type: ignore
 
-from semaphore import Bot, Message, Reply
+from semaphore import Bot, ChatContext, Reply
 
 
-def bbc_info(message: Message, match) -> Reply:
+def bbc_info(context: ChatContext) -> Reply:
     info = """BBC News Bot
 
 !bbc world    - BBC World news
@@ -37,10 +37,10 @@ def bbc_info(message: Message, match) -> Reply:
     return Reply(message=info)
 
 
-def bbc_feed(message: Message, match) -> Reply:
+def bbc_feed(context: ChatContext) -> Reply:
     # Find out which news feed to parse.
     try:
-        news = match.group(1)
+        news = context.match.group(1)
         if news == "world":
             feed = "http://feeds.bbci.co.uk/news/world/rss.xml"
         elif news == "politics":

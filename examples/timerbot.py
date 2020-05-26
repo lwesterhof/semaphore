@@ -17,35 +17,51 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """
-Signal Bot example, includes several example bots.
+Signal Bot example, sends an alert after a specified time.
 """
 import re
 from time import time
 
-from semaphore import Bot, Message, Reply
+from semaphore import Bot, ChatContext, Job, Reply
 
 
-def alarm(message: Message) -> Reply:
+def alarm(context: ChatContext) -> Reply:
     return Reply(message="Beep! Beep! Beep!")
 
 
-def set_timer(message: Message, match, jobqueue) -> Reply:
+def set_timer(context: ChatContext) -> Reply:
     try:
-        delta = int(match.group(1))
+        delta = int(context.match.group(1))
         alarm_time = time() + delta
-        jobqueue.put(alarm_time, alarm, message)
+
+        if 'job' in context.data:
+            old_job = context.data["job"]
+            old_job.schedule_removal()
+
+        job = context.job_queue.run_once(alarm_time, alarm, context)
+        context.data["job"] = job
+
         return Reply(message="Timer set!")
     except Exception:
-        return Reply(message="Setting timer failed.")
+        return Reply(message="'Usage: !timer <seconds>'")
+
+
+def unset_timer(context: ChatContext) -> Reply:
+    if 'job' in context.data:
+        old_job = context.data["job"]
+        old_job.schedule_removal()
+
+    return Reply(message="Timer unset!")
 
 
 def main():
     """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx", debug=True)
+    bot = Bot("+xxxxxxxxxxx")
 
     # Add timer handler.
-    bot.register_handler(re.compile("!timer (.*)"), set_timer, job=True)
+    bot.register_handler(re.compile("!timer unset"), unset_timer)
+    bot.register_handler(re.compile("!timer (.*)"), set_timer)
 
     # Run the bot until you press Ctrl-C.
     bot.start()

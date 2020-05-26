@@ -19,14 +19,12 @@
 import re
 from datetime import datetime
 from threading import Thread
-from time import time
+from typing import Dict
 
-from .job import Job
+from .chat_context import ChatContext
 from .job_queue import JobQueue
-from .message import Message
 from .message_receiver import MessageReceiver
 from .message_sender import MessageSender
-from .reply import Reply
 from .socket import Socket
 
 
@@ -36,15 +34,16 @@ class Bot:
                  username,
                  debug=False,
                  socket_path="/var/run/signald/signald.sock"):
-        self._username = username
+        self._username: str = username
         self._debug = debug
         self._socket = Socket(username, socket_path)
         self._receiver = None
         self._sender = None
         self._job_queue = None
         self._handlers = []
+        self._chat_context: Dict[str, ChatContext] = {}
 
-    def log(self, message: str, timestamp=False):
+    def log(self, message: str, timestamp=False) -> None:
         """
         Log messages, only when debug is enabled.
 
@@ -58,7 +57,7 @@ class Bot:
             else:
                 print(f"{message}")
 
-    def register_handler(self, regex, func, job=False):
+    def register_handler(self, regex, func, job=False) -> None:
         """
         Register a chat handler with a regex.
         """
@@ -67,7 +66,7 @@ class Bot:
 
         self._handlers.append((regex, func, job))
 
-    def start(self):
+    def start(self) -> None:
         """
         Start the bot event loop.
         """
@@ -88,7 +87,7 @@ class Bot:
 
             self.log("-" * 50)
             self.log("Message received", True)
-            self.log(message)
+            self.log(str(message))
 
             # Loop over all registered handlers.
             for regex, func, job in self._handlers:
@@ -96,6 +95,16 @@ class Bot:
                 match = re.search(regex, message.get_text())
                 if not match:
                     continue
+
+                # Retrieve or create chat context.
+                if self._chat_context.get(message.source, False):
+                    context = self._chat_context[message.source]
+                    context.message = message
+                    context.match = match
+                    self.log("Chat context exists", True)
+                else:
+                    context = ChatContext(message, match, self._job_queue)
+                    self.log("No chat context found, created one", True)
 
                 # Mark received message read before processing.
                 self._sender.mark_read(message)
@@ -107,11 +116,9 @@ class Bot:
 
                 # Process received message.
                 try:
-                    if job:
-                        reply = func(message, match, self._job_queue)
-                    else:
-                        reply = func(message, match)
+                    reply = func(context)
                     self.log(reply)
+                    self._chat_context[message.source] = context
                 except Exception:
                     self.log("Reply failed", True)
                     continue

@@ -10,6 +10,7 @@ with open("README.md", "r") as fh:
 requirements = [
     'attrs==18.2.0',
     'attr==0.3.1',
+    'python_dateutil==2.8.1',
 ]
 
 setup(

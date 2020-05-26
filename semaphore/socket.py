@@ -18,29 +18,27 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 import json
 import socket
-from typing import Iterator
+from typing import Iterator, List
 
 
 class Socket:
     """This object represents a signald socket."""
-    def __init__(self, username, socket_path="/var/run/signald/signald.sock"):
+    def __init__(self, username: str, socket_path: str = "/var/run/signald/signald.sock"):
         self._username: str = username
         self._socket_path: str = socket_path
-        self._socket: socket.socket = None
+        self._socket: socket.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
         self.connect()
 
-    def connect(self):
+    def connect(self) -> None:
         """Create a socket and connect to it."""
-        signald = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        signald.connect(self._socket_path)
-        signald.send(json.dumps({"type": "subscribe",
-                                 "username": self._username}).encode("utf8") + b"\n")
-        self._socket = signald
+        self._socket.connect(self._socket_path)
+        self._socket.send(json.dumps({"type": "subscribe",
+                                      "username": self._username}).encode("utf8") + b"\n")
 
     def read(self) -> Iterator[bytes]:
         """Read a socket, line by line."""
-        buffer = []
+        buffer: List[bytes] = []
         while True:
             char = self._socket.recv(1)
             if not char:
@@ -51,7 +49,7 @@ class Socket:
             else:
                 buffer.append(char)
 
-    def send(self, message: dict):
+    def send(self, message: dict) -> None:
         """Send message to socket."""
         self._socket.send(json.dumps(message).encode("utf8") + b"\n")
         self._socket.recv(1024)

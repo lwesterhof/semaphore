@@ -17,9 +17,8 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This class handles sending bot messages."""
-from .attachment import Attachment
-from .data_message import DataMessage
-from .group_info import GroupInfo
+from typing import Any, Dict
+
 from .message import Message
 from .reply import Reply
 from .socket import Socket
@@ -30,10 +29,10 @@ class MessageSender:
         self._username: str = username
         self._socket: Socket = socket
 
-    def _send(self, message: str):
+    def _send(self, message: Dict) -> None:
         self._socket.send(message)
 
-    def send_message(self, message: Message, reply: Reply):
+    def send_message(self, message: Message, reply: Reply) -> None:
         """
         Send the bot message.
 
@@ -42,10 +41,10 @@ class MessageSender:
         recipient_group_id: Group id if recicpient is a group.
         """
         # Construct reply message.
-        bot_message = {"type": "send",
-                       "username": self._username,
-                       "recipientNumber": message.source,
-                       "messageBody": reply.message}
+        bot_message: Dict[str, Any] = {"type": "send",
+                                       "username": self._username,
+                                       "recipientNumber": message.source,
+                                       "messageBody": reply.message}
 
         # Add group id for group messages.
         if message.get_group_id():
@@ -64,7 +63,7 @@ class MessageSender:
 
         self._send(bot_message)
 
-    def mark_read(self, message: Message):
+    def mark_read(self, message: Message) -> None:
         """
         Mark a Signal message you received as read.
 

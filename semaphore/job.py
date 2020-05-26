@@ -16,22 +16,52 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+from datetime import datetime
+from typing import Optional
+
+from dateutil.relativedelta import relativedelta
+
 from .message import Message
 from .reply import Reply
 
 
 class Job(object):
-    def __init__(self, handler, message):
+    def __init__(self, handler, context, repeat=False, monthly=False, interval=None):
         self._handler = handler
-        self._message = message
+        self._context = context
+        self._repeat: bool = repeat
+        self._interval: int = interval
+        self._monthly: bool = monthly
+        self._remove: bool = False
 
-    def get_message(self):
-        return self._message
+    def get_message(self) -> Message:
+        return self._context.message
 
-    def run(self):
+    def get_interval(self) -> float:
+        if self._repeat:
+            if self._monthly:
+                now = datetime.now()
+                next_month = now + relativedelta(months=+1)
+                interval = next_month.timestamp() - now.timestamp()
+                return interval
+            else:
+                return self._interval
+        else:
+            return 0.0
+
+    def is_repeating(self) -> bool:
+        return self._repeat
+
+    def schedule_removal(self) -> None:
+        self._remove = True
+
+    def remove(self) -> bool:
+        return self._remove
+
+    def run(self) -> Optional[Reply]:
         # Process received message.
         try:
-            reply = self._handler(self._message)
+            reply = self._handler(self._context)
             return reply
         except Exception:
             return None

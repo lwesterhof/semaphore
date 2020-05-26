@@ -19,11 +19,11 @@
 """
 Signal Bot example, repeats received messages.
 """
-from semaphore import Bot, Message, Reply
+from semaphore import Bot, ChatContext, Reply
 
 
-def echo(message: Message, match) -> Reply:
-    return Reply(message=message.get_text())
+def echo(context: ChatContext) -> Reply:
+    return Reply(message=context.message.get_text())
 
 
 def main():

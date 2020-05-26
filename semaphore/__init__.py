@@ -24,5 +24,7 @@ __version__ = '0.3.0'
 
 from .attachment import Attachment
 from .bot import Bot
+from .chat_context import ChatContext
+from .job import Job
 from .message import Message
 from .reply import Reply

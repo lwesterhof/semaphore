@@ -16,19 +16,19 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-from typing import List, Optional
+import re
+from typing import Any, Dict, Optional
 
 import attr
 
-from .attachment import Attachment
-from .group_info import GroupInfo
+from .job_queue import JobQueue
+from .message import Message
 
 
-@attr.s(auto_attribs=True, frozen=True)
-class DataMessage:
-    """This object represents a Signal data message."""
-    timestamp: int
-    message: str
-    expires_in_seconds: int = attr.ib(default=0)
-    attachments: List[Attachment] = attr.ib(default=[])
-    group_info: Optional[GroupInfo] = attr.ib(default=None)
+@attr.s(auto_attribs=True)
+class ChatContext():
+    """This object represents the context of a chat."""
+    message: Message
+    match: re.Match
+    job_queue: JobQueue
+    data: Dict[str, Any] = {}

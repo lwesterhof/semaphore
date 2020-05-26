@@ -18,7 +18,7 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This object represents a Signal message queue."""
 import json
-from typing import Iterator
+from typing import Iterator, Optional
 
 from .attachment import Attachment
 from .data_message import DataMessage
@@ -47,11 +47,11 @@ class MessageReceiver:
 
             message = message_wrapper["data"]
 
-            data_message = {}
+            data_message: Optional[DataMessage] = None
             if message.get("dataMessage"):
                 data = message.get("dataMessage")
 
-                group_info = None
+                group_info: Optional[GroupInfo] = None
                 if data.get("groupInfo"):
                     group_info = GroupInfo(
                         group_id=data["groupInfo"].get("groupId"),

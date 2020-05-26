@@ -16,6 +16,8 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+from typing import Optional
+
 import attr
 
 from .data_message import DataMessage
@@ -36,10 +38,10 @@ class Message:
     has_legacy_message: bool = attr.ib(default=False)
     has_content: bool = attr.ib(default=False)
     is_receipt: bool = attr.ib(default=False)
-    data_message: DataMessage = attr.ib(default=None)
+    data_message: Optional[DataMessage] = attr.ib(default=None)
     is_unidentified_sender: bool = attr.ib(default=False)
 
-    def empty(self):
+    def empty(self) -> bool:
         """Check if the message is not empty."""
         if self.data_message:
             if self.data_message.message != "":
@@ -53,7 +55,7 @@ class Message:
         else:
             return self.data_message.message
 
-    def get_group_id(self):
+    def get_group_id(self) -> Optional[str]:
         """Get group id if message is a group message."""
         if self.data_message and self.data_message.group_info:
             return self.data_message.group_info.group_id

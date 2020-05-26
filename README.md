@@ -89,10 +89,10 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 ## Code example
 ```python
-from semaphore import Bot, Message, Reply
+from semaphore import Bot, ChatContext, Reply
 
-def echo(message: Message, match) -> Reply:
-    return Reply(message=message.get_text())
+def echo(context: ChatContext) -> Reply:
+    return Reply(message=context.message.get_text())
 
 def main():
     """Start the bot."""
@@ -113,6 +113,7 @@ if __name__ == '__main__':
 The following example bots can be found in [examples](examples):
 - [apodbot](examples/apodbot.py), replies with Astronomy Picture of the Day
 - [bbcbot](examples/bbcbot.py), replies with latest BBC headlines
+- [btcbot](examples/btcbot.py), sends notification when BTC price drops below a set price
 - [echobot](examples/echobot.py), repeats received messages
 - [spongebot](examples/spongebot.py), repeats received messages in sPOngEbOb sqUArepAnTs text
 - [timerbot](examples/timerbot.py), sends an alert after a predefined time
@@ -120,6 +121,10 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## History
+### v0.4.0
+* Support for recurring jobs
+* Example BTC price notification bot
+
 ### v0.3.0
 * Support for scheduled jobs
 * Example timer bot

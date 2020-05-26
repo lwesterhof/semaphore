@@ -19,11 +19,11 @@
 """
 Signal Bot example, quotes and repeats the received messages.
 """
-from semaphore import Bot, Message, Reply
+from semaphore import Bot, ChatContext, Reply
 
 
-def quote(message: Message, match) -> Reply:
-    return Reply(message=message.get_text(), quote=True)
+def quote(context: ChatContext) -> Reply:
+    return Reply(message=context.message.get_text(), quote=True)
 
 
 def main():
