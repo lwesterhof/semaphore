@@ -16,8 +16,9 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-from threading import Thread
+import logging
 from queue import Empty, PriorityQueue
+from threading import Thread
 from time import sleep, time
 from typing import Callable
 
@@ -29,12 +30,15 @@ class JobQueue:
         self._queue = PriorityQueue()
         self._sender = sender
 
+        self.log = logging.getLogger(__name__)
+
     def run_once(self,
                  timestamp: float,
                  callback: Callable,
                  context) -> Job:
         job = Job(callback, context)
         self._queue.put((timestamp, job))
+        self.log.info(f"Put job ({id(job)}) in the queue")
         return job
 
     def run_repeating(self,
@@ -44,6 +48,7 @@ class JobQueue:
                       interval: int) -> Job:
         job = Job(callback, context, repeat=True, interval=interval)
         self._queue.put((timestamp, job))
+        self.log.info(f"Put repeating job ({id(job)}) in the queue")
         return job
 
     def run_daily(self,
@@ -53,6 +58,7 @@ class JobQueue:
         interval = 60 * 60 * 24  # Day
         job = Job(callback, context, repeat=True, interval=interval)
         self._queue.put((timestamp, job))
+        self.log.info(f"Put daily job ({id(job)}) in the queue")
         return job
 
     def run_monthly(self,
@@ -61,10 +67,12 @@ class JobQueue:
                     context) -> Job:
         job = Job(callback, context, repeat=True, monthly=True)
         self._queue.put((timestamp, job))
+        self.log.info(f"Put monthly job ({id(job)}) in the queue")
         return job
 
     def start(self) -> None:
         """Run all the jobs in the queue that are due."""
+        self.log.info("Job queue started")
 
         while True:
             now = time()
@@ -81,9 +89,11 @@ class JobQueue:
                 continue
 
             if job.remove():
+                self.log.info(f"Removed job ({id(job)}) from queue")
                 continue
 
             try:
+                self.log.info(f"Running job ({id(job)})")
                 reply = job.run()
                 if reply:
                     self._sender.send_message(job.get_message(), reply)

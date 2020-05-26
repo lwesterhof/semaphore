@@ -33,10 +33,9 @@ class Bot:
     """A simple (rule-based) Signal Private Messenger bot."""
     def __init__(self,
                  username,
-                 debug=False,
+                 logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         self._username: str = username
-        self._debug = debug
         self._socket = Socket(username, socket_path)
         self._receiver = None
         self._sender = None
@@ -45,8 +44,8 @@ class Bot:
         self._chat_context: Dict[str, ChatContext] = {}
 
         logging.basicConfig(
-            format='%(asctime)s %(process)d %(threadName)s: [%(levelname)s] %(message)s',
-            level=logging.DEBUG
+            format='%(asctime)s %(threadName)s: [%(levelname)s] %(message)s',
+            level=logging_level
         )
         self.log = logging.getLogger(__name__)
 
@@ -58,14 +57,17 @@ class Bot:
             regex = re.compile(regex, re.UNICODE)
 
         self._handlers.append((regex, func, job))
+        self.log.info(f"Handler registered ('{regex.pattern}')")
 
     def start(self) -> None:
         """
         Start the bot event loop.
         """
+        self.log.info("Bot started")
+
         # Initialize sender and receiver.
-        self._sender = MessageSender(self._username, self._socket)
         self._receiver = MessageReceiver(self._socket)
+        self._sender = MessageSender(self._username, self._socket)
 
         # Initialize job queue.
         self._job_queue = JobQueue(self._sender)
@@ -109,6 +111,7 @@ class Bot:
                 # Process received message.
                 try:
                     reply = func(context)
+                    self.log.info("Message processed by handler")
                     self.log.debug(reply)
                     self._chat_context[message.source] = context
                 except Exception:
