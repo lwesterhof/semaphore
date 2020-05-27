@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a Signal data message."""
 from typing import List, Optional
 
 import attr
@@ -27,6 +28,7 @@ from .group_info import GroupInfo
 @attr.s(auto_attribs=True, frozen=True)
 class DataMessage:
     """This object represents a Signal data message."""
+
     timestamp: int
     message: str
     expires_in_seconds: int = attr.ib(default=0)

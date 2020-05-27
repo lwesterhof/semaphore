@@ -16,12 +16,14 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a Signal message attachment."""
 import attr
 
 
 @attr.s(auto_attribs=True, frozen=True)
 class Attachment:
     """This object represents a Signal message attachment."""
+
     content_type: str
     id: str
     size: int

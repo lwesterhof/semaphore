@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a bot job."""
 from datetime import datetime
 from typing import Optional
 
@@ -26,7 +27,10 @@ from .reply import Reply
 
 
 class Job(object):
+    """This object represents a bot job."""
+
     def __init__(self, handler, context, repeat=False, monthly=False, interval=None):
+        """Initialize job."""
         self._handler = handler
         self._context = context
         self._repeat: bool = repeat
@@ -35,9 +39,11 @@ class Job(object):
         self._remove: bool = False
 
     def get_message(self) -> Message:
+        """Get the message of this job."""
         return self._context.message
 
     def get_interval(self) -> float:
+        """Get the interval of the (repeating) job."""
         if self._repeat:
             if self._monthly:
                 now = datetime.now()
@@ -50,16 +56,19 @@ class Job(object):
             return 0.0
 
     def is_repeating(self) -> bool:
+        """Check if the job is repeating."""
         return self._repeat
 
     def schedule_removal(self) -> None:
+        """Schedule the job for removal from the job queue."""
         self._remove = True
 
     def remove(self) -> bool:
+        """Check if job should be removed."""
         return self._remove
 
     def run(self) -> Optional[Reply]:
-        # Process received message.
+        """Run the job by calling the handler."""
         try:
             reply = self._handler(self._context)
             return reply

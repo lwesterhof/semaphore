@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-"""This class handles sending bot messages."""
+"""This module contains a class that handles sending bot messages."""
 from typing import Any, Dict
 
 from .message import Message
@@ -25,7 +25,10 @@ from .socket import Socket
 
 
 class MessageSender:
+    """This class handles sending bot messages."""
+
     def __init__(self, username: str, socket: Socket):
+        """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
 

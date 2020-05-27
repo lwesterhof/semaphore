@@ -16,12 +16,14 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents Signal group info."""
 import attr
 
 
 @attr.s(auto_attribs=True, frozen=True)
 class GroupInfo:
     """This object represents Signal group info."""
+
     group_id: str
     name: str
     group_type: str

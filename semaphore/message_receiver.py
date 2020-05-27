@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-"""This object represents a Signal message queue."""
+"""This module contains an object that represents a Signal message queue."""
 import json
 from typing import Iterator, Optional
 
@@ -28,12 +28,14 @@ from .socket import Socket
 
 
 class MessageReceiver:
+    """This object represents a Signal message queue."""
+
     def __init__(self, socket: Socket):
+        """Initialize message receiver."""
         self._socket: Socket = socket
 
     def receive(self) -> Iterator[Message]:
         """Receive messages and return as Iterator."""
-
         for line in self._socket.read():
             # Load Signal message wrapper
             try:

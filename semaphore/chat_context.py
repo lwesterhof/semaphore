@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents the context of a chat."""
 from typing import Any, Dict, Match, Optional
 
 import attr
@@ -27,6 +28,7 @@ from .message import Message
 @attr.s(auto_attribs=True)
 class ChatContext():
     """This object represents the context of a chat."""
+
     message: Message
     match: Match
     job_queue: JobQueue

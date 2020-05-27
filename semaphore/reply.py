@@ -16,12 +16,14 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a bot reply."""
 import attr
 
 
 @attr.s(auto_attribs=True, frozen=True)
 class Reply:
     """This object represents a Bot reply."""
+
     message: str
     attachments: list = attr.ib(default=[])
     quote: bool = attr.ib(default=False)

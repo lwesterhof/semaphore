@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a bot job queue."""
 import logging
 from queue import Empty, PriorityQueue
 from threading import Thread
@@ -26,7 +27,10 @@ from .job import Job
 
 
 class JobQueue:
+    """"This object represents a bot job queue."""
+
     def __init__(self, sender):
+        """Initialize job queue."""
         self._queue = PriorityQueue()
         self._sender = sender
 
@@ -36,6 +40,7 @@ class JobQueue:
                  timestamp: float,
                  callback: Callable,
                  context) -> Job:
+        """Add a job to the queue that runs once."""
         job = Job(callback, context)
         self._queue.put((timestamp, job))
         self.log.info(f"Put job ({id(job)}) in the queue")
@@ -46,6 +51,7 @@ class JobQueue:
                       callback: Callable,
                       context,
                       interval: int) -> Job:
+        """Add a job to the queue that runs repeating."""
         job = Job(callback, context, repeat=True, interval=interval)
         self._queue.put((timestamp, job))
         self.log.info(f"Put repeating job ({id(job)}) in the queue")
@@ -55,6 +61,7 @@ class JobQueue:
                   timestamp: float,
                   callback: Callable,
                   context) -> Job:
+        """Add a job to the queue that runs daily."""
         interval = 60 * 60 * 24  # Day
         job = Job(callback, context, repeat=True, interval=interval)
         self._queue.put((timestamp, job))
@@ -65,6 +72,7 @@ class JobQueue:
                     timestamp: float,
                     callback: Callable,
                     context) -> Job:
+        """Add a job to the queue that runs monthly."""
         job = Job(callback, context, repeat=True, monthly=True)
         self._queue.put((timestamp, job))
         self.log.info(f"Put monthly job ({id(job)}) in the queue")

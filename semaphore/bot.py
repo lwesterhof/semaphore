@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a Signal Private Messenger bot."""
 import logging
 import re
 import threading
@@ -31,11 +32,13 @@ from .socket import Socket
 
 
 class Bot:
-    """A simple (rule-based) Signal Private Messenger bot."""
+    """This object represents a simple (rule-based) Signal Private Messenger bot."""
+
     def __init__(self,
                  username,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
+        """Initialize bot."""
         self._username: str = username
         self._receiver = None
         self._sender = None
@@ -54,9 +57,7 @@ class Bot:
         self._socket = Socket(username, socket_path)
 
     def register_handler(self, regex, func, job=False) -> None:
-        """
-        Register a chat handler with a regex.
-        """
+        """Register a chat handler with a regex."""
         if not isinstance(regex, type(re.compile(""))):
             regex = re.compile(regex, re.UNICODE)
 
@@ -64,7 +65,7 @@ class Bot:
         self.log.info(f"Handler registered ('{regex.pattern}')")
 
     def handle_message(self, message: Message) -> None:
-        # Handle message.
+        """Handle an incoming message."""
         message_id = id(message)
         message_source = message.get_redacted_source()
         self.log.info(f"Message ({message_id}) received from {message_source}")
@@ -110,9 +111,7 @@ class Bot:
                 break
 
     def start(self) -> None:
-        """
-        Start the bot event loop.
-        """
+        """Start the bot event loop."""
         self.log.info("Bot started")
 
         # Initialize sender and receiver.

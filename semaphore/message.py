@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a Signal message."""
 from typing import Optional
 
 import attr
@@ -26,6 +27,7 @@ from .data_message import DataMessage
 @attr.s(auto_attribs=True, frozen=True)
 class Message:
     """This object represents a Signal message."""
+
     username: str
     source: str
     envelope_type: int
@@ -49,6 +51,7 @@ class Message:
         return True
 
     def get_redacted_source(self) -> str:
+        """Return the message source redacted."""
         return f"+********{self.source[-3:]}"
 
     def get_text(self):

@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
+"""This module contains an object that represents a signald socket."""
 import json
 import logging
 import socket
@@ -24,7 +25,9 @@ from typing import Iterator, List
 
 class Socket:
     """This object represents a signald socket."""
+
     def __init__(self, username: str, socket_path: str = "/var/run/signald/signald.sock"):
+        """Initialize socket."""
         self._username: str = username
         self._socket_path: str = socket_path
         self._socket: socket.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -33,7 +36,7 @@ class Socket:
         self.connect()
 
     def connect(self) -> None:
-        """Create a socket and connect to it."""
+        """Connect to the socket."""
         self._socket.connect(self._socket_path)
         self.log.info(f"Connected to socket ({self._socket_path})")
         self.send({"type": "subscribe", "username": self._username})
