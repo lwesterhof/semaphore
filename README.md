@@ -8,7 +8,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
    * [Quick start](#quick-start)
    * [Code example](#code-example)
    * [Example bots](#example-bots)
-   * [History](#history)
+   * [Changelog](#changelog)
    * [License](#license)
 
 ## Requirements
@@ -120,20 +120,25 @@ The following example bots can be found in [examples](examples):
 - [quotebot](examples/quotebot.py), quotes and repeats received messages
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
-## History
-### v0.4.0
+## Changelog
+**v0.5.0**
+* Improve the logging system
+* Add logging to job queue
+* Strict typing
+
+**v0.4.0**
 * Support for recurring jobs
 * Example BTC price notification bot
 
-### v0.3.0
+**v0.3.0**
 * Support for scheduled jobs
 * Example timer bot
 
-### v0.2.0
+**v0.2.0**
 * Support for quoting messages
 * Example quote bot
 
-### v0.1.0
+**v0.1.0**
 * First release on Github
 
 ## License

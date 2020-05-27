@@ -20,7 +20,7 @@
 __author__ = 'Lazlo Westerhof'
 __email__ = 'semaphore@lazlo.me'
 __license__ = 'GPLv3'
-__version__ = '0.3.0'
+__version__ = '0.5.0'
 
 from .attachment import Attachment
 from .bot import Bot
