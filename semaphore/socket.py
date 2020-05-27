@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 import json
+import logging
 import socket
 from typing import Iterator, List
 
@@ -28,13 +29,15 @@ class Socket:
         self._socket_path: str = socket_path
         self._socket: socket.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
+        self.log = logging.getLogger(__name__)
         self.connect()
 
     def connect(self) -> None:
         """Create a socket and connect to it."""
         self._socket.connect(self._socket_path)
-        self._socket.send(json.dumps({"type": "subscribe",
-                                      "username": self._username}).encode("utf8") + b"\n")
+        self.log.info(f"Connected to socket ({self._socket_path})")
+        self.send({"type": "subscribe", "username": self._username})
+        self.log.info(f"Bot subscribed (+********{self._username[-3:]})")
 
     def read(self) -> Iterator[bytes]:
         """Read a socket, line by line."""
@@ -51,5 +54,6 @@ class Socket:
 
     def send(self, message: dict) -> None:
         """Send message to socket."""
+        self.log.debug(f"Socket send: {json.dumps(message)}")
         self._socket.send(json.dumps(message).encode("utf8") + b"\n")
         self._socket.recv(1024)

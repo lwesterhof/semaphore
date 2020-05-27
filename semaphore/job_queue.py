@@ -92,14 +92,20 @@ class JobQueue:
                 self.log.info(f"Removed job ({id(job)}) from queue")
                 continue
 
+            self.log.info(f"Running job ({id(job)})")
+            message = job.get_message()
             try:
-                self.log.info(f"Running job ({id(job)})")
                 reply = job.run()
                 if reply:
-                    self._sender.send_message(job.get_message(), reply)
+                    self._sender.send_message(message, reply)
+                    self.log.info(f"Reply for job ({id(job)}) sent "
+                                  f"to {message.get_redacted_source()}")
             except Exception:
+                self.log.warning(f"Sending reply for message ({id(message)}) "
+                                 f"to {message.get_redacted_source()} failed")
                 continue
 
             if job.is_repeating():
                 interval = job.get_interval()
                 self._queue.put((now + interval, job))
+                self.log.info(f"Added repeating job ({id(job)}) to the queue")

@@ -18,8 +18,8 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 import logging
 import re
+import threading
 from datetime import datetime
-from threading import Thread
 from typing import Dict
 
 from .chat_context import ChatContext
@@ -36,18 +36,21 @@ class Bot:
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         self._username: str = username
-        self._socket = Socket(username, socket_path)
         self._receiver = None
         self._sender = None
         self._job_queue = None
         self._handlers = []
         self._chat_context: Dict[str, ChatContext] = {}
 
+        threading.current_thread().name = 'bot'
         logging.basicConfig(
             format='%(asctime)s %(threadName)s: [%(levelname)s] %(message)s',
             level=logging_level
         )
         self.log = logging.getLogger(__name__)
+        self.log.info("Bot initialized")
+
+        self._socket = Socket(username, socket_path)
 
     def register_handler(self, regex, func, job=False) -> None:
         """
@@ -71,8 +74,8 @@ class Bot:
 
         # Initialize job queue.
         self._job_queue = JobQueue(self._sender)
-        job_queue = Thread(name='job_queue',
-                           target=self._job_queue.start)
+        job_queue = threading.Thread(name='job_queue',
+                                     target=self._job_queue.start)
         job_queue.start()
 
         for message in self._receiver.receive():
@@ -80,7 +83,10 @@ class Bot:
             if message.empty():
                 continue
 
-            self.log.info("Message received")
+            # Handle message.
+            message_id = id(message)
+            message_source = message.get_redacted_source()
+            self.log.info(f"Message ({message_id}) received from {message_source}")
             self.log.debug(str(message))
 
             # Loop over all registered handlers.
@@ -95,35 +101,38 @@ class Bot:
                     context = self._chat_context[message.source]
                     context.message = message
                     context.match = match
-                    self.log.info("Chat context exists")
+                    self.log.info(f"Chat context exists for {message_source}")
                 else:
                     context = ChatContext(message, match, self._job_queue)
-                    self.log.info("No chat context found, created one")
+                    self.log.info(f"No chat context found for {message_source}")
+                    self.log.info(f"Chat context created for {message_source}")
 
                 # Mark received message read before processing.
                 self._sender.mark_read(message)
                 try:
                     self._sender.mark_read(message)
-                    self.log.info("Message marked as read")
+                    self.log.info(f"Message ({message_id}) marked as read")
                 except Exception:
-                    self.log.warning("Marking message as read failed")
+                    self.log.warning(f"Marking message ({message_id}) as read failed")
 
                 # Process received message.
                 try:
                     reply = func(context)
-                    self.log.info("Message processed by handler")
+                    self.log.info(f"Message ({message_id}) processed by handler")
                     self.log.debug(reply)
                     self._chat_context[message.source] = context
                 except Exception:
-                    self.log.warning("Reply failed")
+                    self.log.warning(f"Processing message ({message_id}) failed")
                     continue
 
                 # Send bot message.
                 try:
                     self._sender.send_message(message, reply)
-                    self.log.info("Reply send")
+                    self.log.info(f"Reply for message ({message_id}) "
+                                  f"sent to {message_source}")
                 except Exception:
-                    self.log.warning("Sending reply failed")
+                    self.log.warning(f"Sending reply for message ({message_id})"
+                                     f"to {message_source} failed")
                     continue
 
                 # Stop matching.

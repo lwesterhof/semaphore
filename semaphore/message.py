@@ -48,6 +48,9 @@ class Message:
                 return False
         return True
 
+    def get_redacted_source(self) -> str:
+        return f"+********{self.source[-3:]}"
+
     def get_text(self):
         """Check if the message is not empty."""
         if self.empty():
