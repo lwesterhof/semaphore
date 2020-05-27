@@ -24,6 +24,7 @@ from typing import Dict
 
 from .chat_context import ChatContext
 from .job_queue import JobQueue
+from .message import Message
 from .message_receiver import MessageReceiver
 from .message_sender import MessageSender
 from .socket import Socket
@@ -62,6 +63,52 @@ class Bot:
         self._handlers.append((regex, func, job))
         self.log.info(f"Handler registered ('{regex.pattern}')")
 
+    def handle_message(self, message: Message) -> None:
+        # Handle message.
+        message_id = id(message)
+        message_source = message.get_redacted_source()
+        self.log.info(f"Message ({message_id}) received from {message_source}")
+        self.log.debug(str(message))
+
+        # Loop over all registered handlers.
+        for regex, func, job in self._handlers:
+            # Match message text against handlers.
+            match = re.search(regex, message.get_text())
+            if not match:
+                continue
+
+            # Retrieve or create chat context.
+            if self._chat_context.get(message.source, False):
+                context = self._chat_context[message.source]
+                context.message = message
+                context.match = match
+                self.log.info(f"Chat context exists for {message_source}")
+            else:
+                context = ChatContext(message, match, self._job_queue)
+                self.log.info(f"No chat context found for {message_source}")
+                self.log.info(f"Chat context created for {message_source}")
+
+            # Process received message and send reply.
+            try:
+                self._sender.mark_read(message)
+                self.log.info(f"Message ({message_id}) marked as read")
+
+                reply = func(context)
+                self._chat_context[message.source] = context
+                self.log.info(f"Message ({message_id}) processed by handler")
+
+                self._sender.send_message(message, reply)
+                self.log.info(f"Reply for message ({message_id}) "
+                              f"sent to {message_source}")
+                self.log.debug(reply)
+            except Exception:
+                self.log.warning(f"Processing message ({message_id}) failed")
+                continue
+
+            # Stop matching.
+            if reply.stop:
+                break
+
     def start(self) -> None:
         """
         Start the bot event loop.
@@ -79,62 +126,6 @@ class Bot:
         job_queue.start()
 
         for message in self._receiver.receive():
-            # Ignore empty messages.
-            if message.empty():
-                continue
-
-            # Handle message.
-            message_id = id(message)
-            message_source = message.get_redacted_source()
-            self.log.info(f"Message ({message_id}) received from {message_source}")
-            self.log.debug(str(message))
-
-            # Loop over all registered handlers.
-            for regex, func, job in self._handlers:
-                # Match message text against handlers.
-                match = re.search(regex, message.get_text())
-                if not match:
-                    continue
-
-                # Retrieve or create chat context.
-                if self._chat_context.get(message.source, False):
-                    context = self._chat_context[message.source]
-                    context.message = message
-                    context.match = match
-                    self.log.info(f"Chat context exists for {message_source}")
-                else:
-                    context = ChatContext(message, match, self._job_queue)
-                    self.log.info(f"No chat context found for {message_source}")
-                    self.log.info(f"Chat context created for {message_source}")
-
-                # Mark received message read before processing.
-                self._sender.mark_read(message)
-                try:
-                    self._sender.mark_read(message)
-                    self.log.info(f"Message ({message_id}) marked as read")
-                except Exception:
-                    self.log.warning(f"Marking message ({message_id}) as read failed")
-
-                # Process received message.
-                try:
-                    reply = func(context)
-                    self.log.info(f"Message ({message_id}) processed by handler")
-                    self.log.debug(reply)
-                    self._chat_context[message.source] = context
-                except Exception:
-                    self.log.warning(f"Processing message ({message_id}) failed")
-                    continue
-
-                # Send bot message.
-                try:
-                    self._sender.send_message(message, reply)
-                    self.log.info(f"Reply for message ({message_id}) "
-                                  f"sent to {message_source}")
-                except Exception:
-                    self.log.warning(f"Sending reply for message ({message_id})"
-                                     f"to {message_source} failed")
-                    continue
-
-                # Stop matching.
-                if reply.stop:
-                    break
+            # Only handle non empty messages.
+            if not message.empty():
+                self.handle_message(message)
