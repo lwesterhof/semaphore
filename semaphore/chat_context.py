@@ -16,8 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Match, Optional
 
 import attr
 
@@ -29,6 +28,6 @@ from .message import Message
 class ChatContext():
     """This object represents the context of a chat."""
     message: Message
-    match: re.Match
+    match: Match
     job_queue: JobQueue
     data: Dict[str, Any] = {}
