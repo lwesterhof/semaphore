@@ -25,6 +25,12 @@ __version__ = '0.5.0'
 from .attachment import Attachment
 from .bot import Bot
 from .chat_context import ChatContext
+from .data_message import DataMessage
+from .group_info import GroupInfo
 from .job import Job
+from .job_queue import JobQueue
 from .message import Message
+from .message_receiver import MessageReceiver
+from .message_sender import MessageSender
 from .reply import Reply
+from .socket import Socket

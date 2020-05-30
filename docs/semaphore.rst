@@ -1,0 +1,22 @@
+semaphore package
+=================
+
+.. automodule:: semaphore
+    :members:
+    :show-inheritance:
+
+
+.. toctree::
+
+    semaphore.attachment
+    semaphore.bot
+    semaphore.chat_context
+    semaphore.data_message
+    semaphore.group_info
+    semaphore.job_queue
+    semaphore.job
+    semaphore.message_receiver
+    semaphore.message_sender
+    semaphore.message
+    semaphore.reply
+    semaphore.socket
