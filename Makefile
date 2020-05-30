@@ -38,7 +38,7 @@ help:
 	@echo "- clean       Clean up the source directory"
 	@echo "- pep257      Check docstring style with pep257"
 	@echo "- pep8        Check code style with flake8"
-	@echo "- mypy        Check type hinting with Mypy"
+	@echo "- mypy        Check static typing with Mypy"
 	@echo "- build       Build package"
 	@echo "- install     Install package"
 	@echo

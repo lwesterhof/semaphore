@@ -20,13 +20,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install flake8 mypy setuptools wheel
+          python -m pip install flake8 pep257 mypy setuptools wheel sphinx sphinx_rtd_theme
 
-      - name: Run flake8
+      - name: Check pep8
         run: |
           flake8 --statistics
 
-      - name: Run Mypy
+      - name: Check pep257
+        run: |
+          pep257 semaphore
+
+      - name: Check static typing
         run: |
           mypy semaphore examples
 
@@ -38,3 +42,8 @@ jobs:
       - name: Install package
         run: |
           python -m pip install dist/semaphore-*.tar.gz
+
+      - name: Build documentation
+        run: |
+          cd docs
+          make html
