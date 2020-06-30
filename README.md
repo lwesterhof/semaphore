@@ -116,6 +116,7 @@ The following example bots can be found in [examples](examples):
 - [bbcbot](examples/bbcbot.py), replies with latest BBC headlines
 - [btcbot](examples/btcbot.py), sends notification when BTC price drops below a set price
 - [echobot](examples/echobot.py), repeats received messages
+- [lovebot](examples/lovebot.py), loves everything you say!
 - [spongebot](examples/spongebot.py), repeats received messages in sPOngEbOb sqUArepAnTs text
 - [timerbot](examples/timerbot.py), sends an alert after a predefined time
 - [quotebot](examples/quotebot.py), quotes and repeats received messages

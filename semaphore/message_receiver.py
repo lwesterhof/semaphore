@@ -48,7 +48,6 @@ class MessageReceiver:
                 continue
 
             message = message_wrapper["data"]
-            print(message)
             data_message: Optional[DataMessage] = None
             if message.get("dataMessage"):
                 data = message.get("dataMessage")

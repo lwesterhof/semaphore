@@ -16,16 +16,27 @@
 #
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
-"""This module contains an object that represents a bot reply."""
-import attr
+"""
+Signal Bot example, loves everything you say!
+"""
+from semaphore import Bot, ChatContext, Reply
 
 
-@attr.s(auto_attribs=True, frozen=True)
-class Reply:
-    """This object represents a Bot reply."""
+def love(context: ChatContext) -> Reply:
+    return Reply(body="❤", reaction=True, stop=False)
 
-    body: str
-    attachments: list = attr.ib(default=[])
-    quote: bool = attr.ib(default=False)
-    reaction: bool = attr.ib(default=False)
-    stop: bool = attr.ib(default=True)
+
+def main():
+    """Start the bot."""
+    # Connect the bot to number.
+    bot = Bot("+xxxxxxxxxxx")
+
+    # Add handler to bot.
+    bot.register_handler("", love)
+
+    # Run the bot until you press Ctrl-C.
+    bot.start()
+
+
+if __name__ == '__main__':
+    main()
