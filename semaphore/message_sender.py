@@ -44,20 +44,18 @@ class MessageSender:
         recipient_group_id: Group id if recicpient is a group.
         """
         # Construct reply message.
+        bot_message: Dict[str, Any] = {"type": "react",
+                                       "username": self._username,
+                                       "recipientAddress": {"number": message.source}}
+
         if reply.reaction:
-            bot_message: Dict[str, Any] = {"type": "react",
-                                           "username": self._username,
-                                           "recipientAddress": {"number": message.source},
-                                           "reaction": {
-                                               "emoji": reply.body,
-                                               "targetAuthor": {"number": message.source},
-                                               "targetSentTimestamp": message.timestamp}
-                                           }
+            bot_message["type"] = "react"
+            bot_message["reaction"] = {"emoji": reply.body,
+                                       "targetAuthor": {"number": message.source},
+                                       "targetSentTimestamp": message.timestamp}
         else:
-            bot_message: Dict[str, Any] = {"type": "send",
-                                           "username": self._username,
-                                           "recipientAddress": {"number": message.source},
-                                           "messageBody": reply.body}
+            bot_message["type"] = "send"
+            bot_message["messageBody"] = reply.body
 
         # Add group id for group messages.
         if message.get_group_id():
