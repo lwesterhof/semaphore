@@ -45,7 +45,7 @@ def xkcd(context: ChatContext) -> Reply:
                   "width": "100",
                   "height": "100"}
 
-    return Reply(message=message, attachments=[attachment])
+    return Reply(body=message, attachments=[attachment])
 
 
 def main():

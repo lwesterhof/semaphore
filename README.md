@@ -65,7 +65,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 5. Verify Signal is working by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number and `+yyyyyyyyyyy` with your Signal number)
     ```json
-    {"type": "send", "username": "+xxxxxxxxxxx", "recipientNumber": "+yyyyyyyyyyy", "messageBody": "Hello world"}
+    {"type": "send", "username": "+xxxxxxxxxxx", "recipientAddress": {"number": "+yyyyyyyyyyy"}, "messageBody": "Hello world"}
     ```
 
 6. Subscribe to receive messages for the bot by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number)
@@ -93,7 +93,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 from semaphore import Bot, ChatContext, Reply
 
 def echo(context: ChatContext) -> Reply:
-    return Reply(message=context.message.get_text())
+    return Reply(body=context.message.get_body())
 
 def main():
     """Start the bot."""

@@ -30,7 +30,7 @@ class DataMessage:
     """This object represents a Signal data message."""
 
     timestamp: int
-    message: str
+    body: str
     expires_in_seconds: int = attr.ib(default=0)
     attachments: List[Attachment] = attr.ib(default=[])
     group_info: Optional[GroupInfo] = attr.ib(default=None)

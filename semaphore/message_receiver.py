@@ -48,7 +48,7 @@ class MessageReceiver:
                 continue
 
             message = message_wrapper["data"]
-
+            print(message)
             data_message: Optional[DataMessage] = None
             if message.get("dataMessage"):
                 data = message.get("dataMessage")
@@ -63,7 +63,7 @@ class MessageReceiver:
 
                 data_message = DataMessage(
                     timestamp=data["timestamp"],
-                    message=data["message"],
+                    body=data["body"],
                     expires_in_seconds=data["expiresInSeconds"],
                     attachments=[
                         Attachment(
@@ -81,7 +81,7 @@ class MessageReceiver:
 
             yield Message(
                 username=message["username"],
-                source=message["source"],
+                source=message["source"].get("number"),
                 envelope_type=message["type"],
                 timestamp=message["timestamp"],
                 timestamp_iso=message["timestampISO"],

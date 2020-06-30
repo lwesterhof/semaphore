@@ -46,7 +46,7 @@ class Message:
     def empty(self) -> bool:
         """Check if the message is not empty."""
         if self.data_message:
-            if self.data_message.message != "":
+            if self.data_message.body != "":
                 return False
         return True
 
@@ -54,12 +54,12 @@ class Message:
         """Return the message source redacted."""
         return f"+********{self.source[-3:]}"
 
-    def get_text(self):
+    def get_body(self):
         """Check if the message is not empty."""
         if self.empty():
             return ""
         else:
-            return self.data_message.message
+            return self.data_message.body
 
     def get_group_id(self) -> Optional[str]:
         """Get group id if message is a group message."""

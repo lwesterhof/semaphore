@@ -74,7 +74,7 @@ class Bot:
         # Loop over all registered handlers.
         for regex, func, job in self._handlers:
             # Match message text against handlers.
-            match = re.search(regex, message.get_text())
+            match = re.search(regex, message.get_body())
             if not match:
                 continue
 

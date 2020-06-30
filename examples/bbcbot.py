@@ -34,7 +34,7 @@ def bbc_info(context: ChatContext) -> Reply:
 !bbc politics - BBC Politics news
 !bbc tech     - BBC Technology news"""
 
-    return Reply(message=info)
+    return Reply(body=info)
 
 
 def bbc_feed(context: ChatContext) -> Reply:
@@ -65,7 +65,7 @@ def bbc_feed(context: ChatContext) -> Reply:
         if x < 2:
             reply += "\n\n"
 
-    return Reply(message=reply)
+    return Reply(body=reply)
 
 
 def main():

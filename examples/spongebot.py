@@ -26,7 +26,7 @@ def spongebob(context: ChatContext) -> Reply:
     from random import random
     from random import seed
 
-    orig = context.message.get_text()
+    orig = context.message.get_body()
     seed(orig)
     spongecase = []
     for ch in orig:
@@ -34,7 +34,7 @@ def spongebob(context: ChatContext) -> Reply:
         spongecase.append(ch.upper() if (case_choice) else ch.lower())
 
     return Reply(
-        message=''.join(spongecase)
+        body=''.join(spongecase)
     )
 
 

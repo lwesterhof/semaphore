@@ -23,7 +23,7 @@ from semaphore import Bot, ChatContext, Reply
 
 
 def quote(context: ChatContext) -> Reply:
-    return Reply(message=context.message.get_text(), quote=True)
+    return Reply(body=context.message.get_body(), quote=True)
 
 
 def main():

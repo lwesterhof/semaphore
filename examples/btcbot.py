@@ -45,7 +45,7 @@ def check_price(context: ChatContext) -> Optional[Reply]:
             old_job.schedule_removal()
 
         notification = f"BTC price dropped below ${price}!\nCurrent price: ${last_price}"
-        return Reply(message=notification)
+        return Reply(body=notification)
     return None
 
 
@@ -60,9 +60,9 @@ def set_notification(context: ChatContext) -> Reply:
         job = context.job_queue.run_repeating(now, check_price, context, 5 * 60)
         context.data["job"] = job
 
-        return Reply(message="BTC price check set!")
+        return Reply(body="BTC price check set!")
     except Exception:
-        return Reply(message="Usage: !btc <dollars>.")
+        return Reply(body="Usage: !btc <dollars>.")
 
 
 def unset_notification(context: ChatContext) -> Reply:
@@ -70,7 +70,7 @@ def unset_notification(context: ChatContext) -> Reply:
         old_job = context.data["job"]
         old_job.schedule_removal()
 
-    return Reply(message="BTC price check unset!")
+    return Reply(body="BTC price check unset!")
 
 
 def main():

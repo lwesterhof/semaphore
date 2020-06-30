@@ -46,8 +46,8 @@ class MessageSender:
         # Construct reply message.
         bot_message: Dict[str, Any] = {"type": "send",
                                        "username": self._username,
-                                       "recipientNumber": message.source,
-                                       "messageBody": reply.message}
+                                       "recipientAddress": {"number": message.source},
+                                       "messageBody": reply.body}
 
         # Add group id for group messages.
         if message.get_group_id():
@@ -61,7 +61,7 @@ class MessageSender:
         if reply.quote:
             quote = {"id": message.timestamp,
                      "author": message.source,
-                     "text": message.get_text()}
+                     "text": message.get_body()}
             bot_message["quote"] = quote
 
         self._send(bot_message)
@@ -74,5 +74,5 @@ class MessageSender:
         """
         self._send({"type": "mark_read",
                     "username": self._username,
-                    "recipientNumber": message.source,
+                    "recipientAddress": {"number": message.source},
                     "timestamps": [message.timestamp]})
