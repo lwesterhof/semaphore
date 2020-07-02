@@ -123,6 +123,10 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.6.0**
+* Support for message reactions
+* Example message reaction bot
+
 **v0.5.0**
 * Improve the logging system
 * Add logging to job queue
