@@ -18,6 +18,7 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Signal message queue."""
 import json
+import logging
 from typing import Iterator, Optional
 
 from .attachment import Attachment
@@ -33,6 +34,7 @@ class MessageReceiver:
     def __init__(self, socket: Socket):
         """Initialize message receiver."""
         self._socket: Socket = socket
+        self.log = logging.getLogger(__name__)
 
     def receive(self) -> Iterator[Message]:
         """Receive messages and return as Iterator."""
@@ -47,49 +49,52 @@ class MessageReceiver:
             if message_wrapper["type"] != "message":
                 continue
 
-            message = message_wrapper["data"]
-            data_message: Optional[DataMessage] = None
-            if message.get("dataMessage"):
-                data = message.get("dataMessage")
+            try:
+                message = message_wrapper["data"]
+                data_message: Optional[DataMessage] = None
+                if message.get("dataMessage"):
+                    data = message.get("dataMessage")
 
-                group_info: Optional[GroupInfo] = None
-                if data.get("groupInfo"):
-                    group_info = GroupInfo(
-                        group_id=data["groupInfo"].get("groupId"),
-                        name=data["groupInfo"].get("name"),
-                        group_type=data["groupInfo"].get("type"),
+                    group_info: Optional[GroupInfo] = None
+                    if data.get("groupInfo"):
+                        group_info = GroupInfo(
+                            group_id=data["groupInfo"].get("groupId"),
+                            name=data["groupInfo"].get("name"),
+                            group_type=data["groupInfo"].get("type"),
+                        )
+
+                    data_message = DataMessage(
+                        timestamp=data["timestamp"],
+                        body=data["body"],
+                        expires_in_seconds=data["expiresInSeconds"],
+                        attachments=[
+                            Attachment(
+                                content_type=attachment["contentType"],
+                                id=attachment["id"],
+                                size=attachment["size"],
+                                stored_filename=attachment["storedFilename"],
+                                width=attachment["width"],
+                                height=attachment["height"],
+                            )
+                            for attachment in data.get("attachments", [])
+                        ],
+                        group_info=group_info,
                     )
 
-                data_message = DataMessage(
-                    timestamp=data["timestamp"],
-                    body=data["body"],
-                    expires_in_seconds=data["expiresInSeconds"],
-                    attachments=[
-                        Attachment(
-                            content_type=attachment["contentType"],
-                            id=attachment["id"],
-                            size=attachment["size"],
-                            stored_filename=attachment["storedFilename"],
-                            width=attachment["width"],
-                            height=attachment["height"],
-                        )
-                        for attachment in data.get("attachments", [])
-                    ],
-                    group_info=group_info,
+                yield Message(
+                    username=message["username"],
+                    source=message["source"].get("number"),
+                    envelope_type=message["type"],
+                    timestamp=message["timestamp"],
+                    timestamp_iso=message["timestampISO"],
+                    server_timestamp=message["serverTimestamp"],
+                    source_device=message.get("sourceDevice"),
+                    uuid=message.get("uuid"),
+                    relay=message.get("relay"),
+                    has_legacy_message=message.get("hasLegacyMessage"),
+                    is_receipt=message.get("isReceipt"),
+                    is_unidentified_sender=message.get("isUnidentifiedSender"),
+                    data_message=data_message,
                 )
-
-            yield Message(
-                username=message["username"],
-                source=message["source"].get("number"),
-                envelope_type=message["type"],
-                timestamp=message["timestamp"],
-                timestamp_iso=message["timestampISO"],
-                server_timestamp=message["serverTimestamp"],
-                source_device=message.get("sourceDevice"),
-                uuid=message.get("uuid"),
-                relay=message.get("relay"),
-                has_legacy_message=message.get("hasLegacyMessage"),
-                is_receipt=message.get("isReceipt"),
-                is_unidentified_sender=message.get("isUnidentifiedSender"),
-                data_message=data_message,
-            )
+            except Exception:
+                self.log.debug(f"Could not receive message: {json.dumps(message)}")
