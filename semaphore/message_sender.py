@@ -39,9 +39,8 @@ class MessageSender:
         """
         Send the bot message.
 
-        recipient:          The recipient's phone number.
-        reply:              The reply to send.
-        recipient_group_id: Group id if recicpient is a group.
+        message: The original message replying to.
+        reply:   The reply to send.
         """
         # Construct reply message.
         bot_message: Dict[str, Any] = {"type": "react",
