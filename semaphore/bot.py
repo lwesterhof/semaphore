@@ -62,10 +62,47 @@ class Bot:
             regex = re.compile(regex, re.UNICODE)
 
         self._handlers.append((regex, func, job))
-        self.log.info(f"Handler registered ('{regex.pattern}')")
+        self.log.info(f"Handler <{func.__name__}> registered ('{regex.pattern}')")
 
-    def handle_message(self, message: Message) -> None:
-        """Handle an incoming message."""
+    def _handle_message(self, message: Message, func, match) -> bool:
+        """Handle a matched message."""
+        message_id = id(message)
+        message_source = message.get_redacted_source()
+
+        # Retrieve or create chat context.
+        if self._chat_context.get(message.source, False):
+            context = self._chat_context[message.source]
+            context.message = message
+            context.match = match
+            self.log.info(f"Chat context exists for {message_source}")
+        else:
+            context = ChatContext(message, match, self._job_queue)
+            self.log.info(f"No chat context found for {message_source}")
+            self.log.info(f"Chat context created for {message_source}")
+
+        # Process received message and send reply.
+        try:
+            self._sender.mark_read(message)
+            self.log.info(f"Message ({message_id}) marked as read")
+
+            reply = func(context)
+            self._chat_context[message.source] = context
+            self.log.info(f"Message ({message_id}) processed by handler")
+
+            self._sender.send_message(message, reply)
+            self.log.info(f"Reply for message ({message_id}) sent to {message_source}")
+            self.log.debug(reply)
+
+            # Stop matching.
+            if reply.stop:
+                return True
+        except Exception:
+            self.log.warning(f"Processing message ({message_id}) failed")
+
+        return False
+
+    def _match_message(self, message: Message) -> None:
+        """Match an incoming message against a handler."""
         message_id = id(message)
         message_source = message.get_redacted_source()
         self.log.info(f"Message ({message_id}) received from {message_source}")
@@ -78,36 +115,11 @@ class Bot:
             if not match:
                 continue
 
-            # Retrieve or create chat context.
-            if self._chat_context.get(message.source, False):
-                context = self._chat_context[message.source]
-                context.message = message
-                context.match = match
-                self.log.info(f"Chat context exists for {message_source}")
-            else:
-                context = ChatContext(message, match, self._job_queue)
-                self.log.info(f"No chat context found for {message_source}")
-                self.log.info(f"Chat context created for {message_source}")
+            self.log.debug(
+                f"Message matched against handler <{func.__name__}> ('{regex.pattern}')"
+            )
 
-            # Process received message and send reply.
-            try:
-                self._sender.mark_read(message)
-                self.log.info(f"Message ({message_id}) marked as read")
-
-                reply = func(context)
-                self._chat_context[message.source] = context
-                self.log.info(f"Message ({message_id}) processed by handler")
-
-                self._sender.send_message(message, reply)
-                self.log.info(f"Reply for message ({message_id}) "
-                              f"sent to {message_source}")
-                self.log.debug(reply)
-            except Exception:
-                self.log.warning(f"Processing message ({message_id}) failed")
-                continue
-
-            # Stop matching.
-            if reply.stop:
+            if self._handle_message(message, func, match):
                 break
 
     def start(self) -> None:
@@ -127,4 +139,4 @@ class Bot:
         for message in self._receiver.receive():
             # Only handle non empty messages.
             if not message.empty():
-                self.handle_message(message)
+                self._match_message(message)
