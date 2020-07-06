@@ -56,12 +56,12 @@ class Bot:
 
         self._socket = Socket(username, socket_path)
 
-    def register_handler(self, regex, func, job=False) -> None:
+    def register_handler(self, regex, func) -> None:
         """Register a chat handler with a regex."""
         if not isinstance(regex, type(re.compile(""))):
             regex = re.compile(regex, re.UNICODE)
 
-        self._handlers.append((regex, func, job))
+        self._handlers.append((regex, func))
         self.log.info(f"Handler <{func.__name__}> registered ('{regex.pattern}')")
 
     def _handle_message(self, message: Message, func, match) -> bool:
@@ -109,7 +109,7 @@ class Bot:
         self.log.debug(str(message))
 
         # Loop over all registered handlers.
-        for regex, func, job in self._handlers:
+        for regex, func in self._handlers:
             # Match message text against handlers.
             match = re.search(regex, message.get_body())
             if not match:
