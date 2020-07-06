@@ -44,8 +44,13 @@ class MessageSender:
         """
         # Construct reply message.
         bot_message: Dict[str, Any] = {"type": "react",
-                                       "username": self._username,
-                                       "recipientAddress": {"number": message.source}}
+                                       "username": self._username}
+
+        # Add message recipient.
+        if message.get_group_id():
+            bot_message["recipientGroupId"] = message.get_group_id()
+        else:
+            bot_message["recipientAddress"] = {"number": message.source}
 
         if reply.reaction:
             bot_message["type"] = "react"
@@ -55,10 +60,6 @@ class MessageSender:
         else:
             bot_message["type"] = "send"
             bot_message["messageBody"] = reply.body
-
-        # Add group id for group messages.
-        if message.get_group_id():
-            bot_message["recipientGroupId"] = message.get_group_id()
 
         # Add attachments to message.
         if reply.attachments:

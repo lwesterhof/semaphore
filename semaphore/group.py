@@ -21,7 +21,7 @@ import attr
 
 
 @attr.s(auto_attribs=True, frozen=True)
-class GroupInfo:
+class Group:
     """This object represents Signal group info."""
 
     group_id: str

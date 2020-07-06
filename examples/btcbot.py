@@ -62,7 +62,7 @@ def set_notification(context: ChatContext) -> Reply:
 
         return Reply(body="BTC price check set!")
     except Exception:
-        return Reply(body="Usage: !btc <dollars>.")
+        return Reply(body="Usage: !btc <dollars>")
 
 
 def unset_notification(context: ChatContext) -> Reply:

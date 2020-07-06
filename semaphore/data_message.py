@@ -22,7 +22,7 @@ from typing import List, Optional
 import attr
 
 from .attachment import Attachment
-from .group_info import GroupInfo
+from .group import Group
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -33,4 +33,4 @@ class DataMessage:
     body: str
     expires_in_seconds: int = attr.ib(default=0)
     attachments: List[Attachment] = attr.ib(default=[])
-    group_info: Optional[GroupInfo] = attr.ib(default=None)
+    group: Optional[Group] = attr.ib(default=None)

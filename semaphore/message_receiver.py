@@ -23,7 +23,7 @@ from typing import Iterator, Optional
 
 from .attachment import Attachment
 from .data_message import DataMessage
-from .group_info import GroupInfo
+from .group import Group
 from .message import Message
 from .socket import Socket
 
@@ -55,12 +55,12 @@ class MessageReceiver:
                 if message.get("dataMessage"):
                     data = message.get("dataMessage")
 
-                    group_info: Optional[GroupInfo] = None
-                    if data.get("groupInfo"):
-                        group_info = GroupInfo(
-                            group_id=data["groupInfo"].get("groupId"),
-                            name=data["groupInfo"].get("name"),
-                            group_type=data["groupInfo"].get("type"),
+                    group: Optional[Group] = None
+                    if data.get("group"):
+                        group = Group(
+                            group_id=data["group"].get("groupId"),
+                            name=data["group"].get("name"),
+                            group_type=data["group"].get("type"),
                         )
 
                     data_message = DataMessage(
@@ -78,7 +78,7 @@ class MessageReceiver:
                             )
                             for attachment in data.get("attachments", [])
                         ],
-                        group_info=group_info,
+                        group=group,
                     )
 
                 yield Message(

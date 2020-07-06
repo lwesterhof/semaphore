@@ -26,7 +26,7 @@ from .attachment import Attachment
 from .bot import Bot
 from .chat_context import ChatContext
 from .data_message import DataMessage
-from .group_info import GroupInfo
+from .group import Group
 from .job import Job
 from .job_queue import JobQueue
 from .message import Message

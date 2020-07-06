@@ -1,6 +1,6 @@
-semaphore.GroupInfo
+semaphore.Group
 ===================
 
-.. autoclass:: semaphore.GroupInfo
+.. autoclass:: semaphore.Group
     :members:
     :show-inheritance:
