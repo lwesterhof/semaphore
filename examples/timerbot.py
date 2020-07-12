@@ -22,7 +22,7 @@ Signal Bot example, sends an alert after a specified time.
 import re
 from time import time
 
-from semaphore import Bot, ChatContext, Job, Reply
+from semaphore import Bot, ChatContext, Reply
 
 
 def alarm(context: ChatContext) -> Reply:

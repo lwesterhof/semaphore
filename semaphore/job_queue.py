@@ -19,7 +19,6 @@
 """This module contains an object that represents a bot job queue."""
 import logging
 from queue import Empty, PriorityQueue
-from threading import Thread
 from time import sleep, time
 from typing import Callable
 
