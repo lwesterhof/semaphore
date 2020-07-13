@@ -21,7 +21,7 @@ import logging
 import re
 import threading
 from datetime import datetime
-from typing import Dict
+from typing import Callable, Dict, List, Pattern
 
 from .chat_context import ChatContext
 from .job_queue import JobQueue
@@ -35,15 +35,15 @@ class Bot:
     """This object represents a simple (rule-based) Signal Private Messenger bot."""
 
     def __init__(self,
-                 username,
+                 username: str,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
         self._username: str = username
-        self._receiver = None
-        self._sender = None
-        self._job_queue = None
-        self._handlers = []
+        self._receiver: MessageReceiver
+        self._sender: MessageSender
+        self._job_queue: JobQueue
+        self._handlers: List = []
         self._chat_context: Dict[str, ChatContext] = {}
 
         threading.current_thread().name = 'bot'
@@ -54,9 +54,9 @@ class Bot:
         self.log = logging.getLogger(__name__)
         self.log.info("Bot initialized")
 
-        self._socket = Socket(username, socket_path)
+        self._socket: Socket = Socket(username, socket_path)
 
-    def register_handler(self, regex, func) -> None:
+    def register_handler(self, regex: Pattern, func: Callable) -> None:
         """Register a chat handler with a regex."""
         if not isinstance(regex, type(re.compile(""))):
             regex = re.compile(regex, re.UNICODE)
@@ -64,7 +64,7 @@ class Bot:
         self._handlers.append((regex, func))
         self.log.info(f"Handler <{func.__name__}> registered ('{regex.pattern}')")
 
-    def _handle_message(self, message: Message, func, match) -> bool:
+    def _handle_message(self, message: Message, func: Callable, match) -> bool:
         """Handle a matched message."""
         message_id = id(message)
         message_source = message.get_redacted_source()
