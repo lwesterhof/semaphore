@@ -88,6 +88,11 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 10. Now you can start writing your own bot for [Signal](https://signal.org/) Private Messenger!
 
+## Demo
+A demonstration bot is running on `+31686100384`.
+Do not send anything confidential, use at your own risk!
+![Conversation with demonstration bot](demo.jpg)
+
 ## Code example
 ```python
 from semaphore import Bot, ChatContext, Reply
