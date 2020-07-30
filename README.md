@@ -6,6 +6,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
    * [Requirements](#requirements)
    * [Installation](#installation)
    * [Quick start](#quick-start)
+   * [Demo](#demo)
    * [Code example](#code-example)
    * [Example bots](#example-bots)
    * [Changelog](#changelog)
@@ -41,7 +42,6 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
     ```
 
 ## Quick start
-
 1. Start signald
     ```bash
     $ cd signald
