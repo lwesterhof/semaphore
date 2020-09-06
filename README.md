@@ -14,7 +14,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 ## Requirements
 - Python 3.6+
-- [signald 0.9.0+](https://gitlab.com/thefinn93/signald), a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald 0.10.0+](https://gitlab.com/thefinn93/signald), a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
