@@ -25,10 +25,12 @@ from pathlib import Path
 import feedparser  # type: ignore
 from bs4 import BeautifulSoup  # type: ignore
 
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
-def xkcd(context: ChatContext) -> Reply:
+def xkcd(context: ChatContext) -> None:
+    context.message.mark_read()
+
     path = Path(__file__).parent.absolute()
     Feed = feedparser.parse('https://xkcd.com/rss.xml')
     pointer = Feed.entries[0]
@@ -45,7 +47,7 @@ def xkcd(context: ChatContext) -> Reply:
                   "width": "100",
                   "height": "100"}
 
-    return Reply(body=message, attachments=[attachment])
+    context.message.reply(body=message, attachments=[attachment])
 
 
 def main():

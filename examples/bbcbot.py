@@ -23,10 +23,11 @@ import re
 
 import feedparser  # type: ignore
 
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
-def bbc_info(context: ChatContext) -> Reply:
+def bbc_info(context: ChatContext) -> None:
+    context.message.mark_read()
     info = """BBC News Bot
 
 !bbc world    - BBC World news
@@ -34,10 +35,10 @@ def bbc_info(context: ChatContext) -> Reply:
 !bbc politics - BBC Politics news
 !bbc tech     - BBC Technology news"""
 
-    return Reply(body=info)
+    context.message.reply(body=info)
 
 
-def bbc_feed(context: ChatContext) -> Reply:
+def bbc_feed(context: ChatContext):
     # Find out which news feed to parse.
     try:
         news = context.match.group(1)
@@ -65,7 +66,7 @@ def bbc_feed(context: ChatContext) -> Reply:
         if x < 2:
             reply += "\n\n"
 
-    return Reply(body=reply)
+    context.message.reply(body=reply)
 
 
 def main():

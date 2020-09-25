@@ -19,11 +19,12 @@
 """
 Signal Bot example, loves everything you say!
 """
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
-def love(context: ChatContext) -> Reply:
-    return Reply(body="❤️", reaction=True, stop=False)
+def love(context: ChatContext) -> None:
+    context.message.mark_read()
+    context.message.reply(body="❤️", reaction=True, stop=False)
 
 
 def main():

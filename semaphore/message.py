@@ -17,11 +17,15 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a Signal message."""
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 import attr
 
 from .data_message import DataMessage
+from .reply import Reply
+if TYPE_CHECKING:
+    # resolve circular imports
+    from .message_sender import MessageSender
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -34,6 +38,7 @@ class Message:
     timestamp: int
     timestamp_iso: str
     server_timestamp: int
+    _sender: 'MessageSender'
     source_device: int = attr.ib(default=0)
     uuid: str = attr.ib(default=None)
     relay: str = attr.ib(default=None)
@@ -67,3 +72,14 @@ class Message:
             return self.data_message.group.group_id
         else:
             return None
+
+    def reply(self, *args, **kwargs) -> None:
+        """Send a reply to the message.
+
+        The args are the same as for the Reply constructor.
+        """
+        self._sender.send_message(self, Reply(*args, **kwargs))
+
+    def mark_read(self) -> None:
+        """Mark the message as read."""
+        self._sender.mark_read(self)

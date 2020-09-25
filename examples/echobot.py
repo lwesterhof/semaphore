@@ -22,8 +22,9 @@ Signal Bot example, repeats received messages.
 from semaphore import Bot, ChatContext, Reply
 
 
-def echo(context: ChatContext) -> Reply:
-    return Reply(body=context.message.get_body())
+def echo(context: ChatContext) -> None:
+    context.message.mark_read()
+    context.message.reply(body=context.message.get_body())
 
 
 def main():

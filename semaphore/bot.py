@@ -31,6 +31,10 @@ from .message_sender import MessageSender
 from .socket import Socket
 
 
+class StopPropagation(Exception):
+    """Raise this to prevent further handlers from running on this message."""
+
+
 class Bot:
     """This object represents a simple (rule-based) Signal Private Messenger bot."""
 
@@ -52,7 +56,6 @@ class Bot:
             level=logging_level
         )
         self.log = logging.getLogger(__name__)
-        self.log.info("Bot initialized")
 
         self._socket: Socket = Socket(username, socket_path)
 
@@ -64,7 +67,7 @@ class Bot:
         self._handlers.append((regex, func))
         self.log.info(f"Handler <{func.__name__}> registered ('{regex.pattern}')")
 
-    def _handle_message(self, message: Message, func: Callable, match) -> bool:
+    def _handle_message(self, message: Message, func: Callable, match) -> None:
         """Handle a matched message."""
         message_id = id(message)
         message_source = message.get_redacted_source()
@@ -74,38 +77,27 @@ class Bot:
             context = self._chat_context[message.source]
             context.message = message
             context.match = match
-            self.log.info(f"Chat context exists for {message_source}")
+            self.log.debug(f"Chat context exists for {message_source}")
         else:
             context = ChatContext(message, match, self._job_queue)
-            self.log.info(f"No chat context found for {message_source}")
-            self.log.info(f"Chat context created for {message_source}")
+            self.log.debug(f"Chat context created for {message_source}")
 
         # Process received message and send reply.
         try:
-            self._sender.mark_read(message)
-            self.log.info(f"Message ({message_id}) marked as read")
-
-            reply = func(context)
+            func(context)
             self._chat_context[message.source] = context
-            self.log.info(f"Message ({message_id}) processed by handler")
-
-            self._sender.send_message(message, reply)
-            self.log.info(f"Reply for message ({message_id}) sent to {message_source}")
-            self.log.debug(reply)
-
-            # Stop matching.
-            if reply.stop:
-                return True
-        except Exception:
-            self.log.warning(f"Processing message ({message_id}) failed")
-
-        return False
+            self.log.debug(f"Message ({message_id}) processed by handler {func.__name__}")
+        except Exception as exc:
+            self.log.error(
+                f"Processing message ({message_id}) by {func.__name__} failed",
+                exc_info=exc,
+            )
 
     def _match_message(self, message: Message) -> None:
         """Match an incoming message against a handler."""
         message_id = id(message)
         message_source = message.get_redacted_source()
-        self.log.info(f"Message ({message_id}) received from {message_source}")
+        self.log.debug(f"Message ({message_id}) received from {message_source}")
         self.log.debug(str(message))
 
         # Loop over all registered handlers.
@@ -113,13 +105,16 @@ class Bot:
             # Match message text against handlers.
             match = re.search(regex, message.get_body())
             if not match:
+                self.log.debug(f'skipping {func.__name__}')
                 continue
 
             self.log.debug(
                 f"Message matched against handler <{func.__name__}> ('{regex.pattern}')"
             )
 
-            if self._handle_message(message, func, match):
+            try:
+                self._handle_message(message, func, match)
+            except StopPropagation:
                 break
 
     def start(self) -> None:
@@ -127,8 +122,8 @@ class Bot:
         self.log.info("Bot started")
 
         # Initialize sender and receiver.
-        self._receiver = MessageReceiver(self._socket)
         self._sender = MessageSender(self._username, self._socket)
+        self._receiver = MessageReceiver(self._socket, self._sender)
 
         # Initialize job queue.
         self._job_queue = JobQueue(self._sender)
