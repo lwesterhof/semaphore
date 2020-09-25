@@ -29,7 +29,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
     With pip:
     ```bash
-    $ pip install semaphore
+    $ pip install git+https://github.com/lwesterhof/semaphore.git
     ```
 
     From source:
