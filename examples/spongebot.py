@@ -19,10 +19,10 @@
 """
 Signal Bot example, repeats received messages in sPOngEbOb sqUArepAnTs text.
 """
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
-def spongebob(context: ChatContext) -> Reply:
+def spongebob(context: ChatContext) -> None:
     from random import random
     from random import seed
 
@@ -33,9 +33,8 @@ def spongebob(context: ChatContext) -> Reply:
         case_choice = random() < 0.5
         spongecase.append(ch.upper() if (case_choice) else ch.lower())
 
-    return Reply(
-        body=''.join(spongecase)
-    )
+    context.message.mark_read()
+    context.message.reply(body=''.join(spongecase))
 
 
 def main():

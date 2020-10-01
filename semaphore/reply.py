@@ -28,4 +28,3 @@ class Reply:
     attachments: list = attr.ib(default=[])
     quote: bool = attr.ib(default=False)
     reaction: bool = attr.ib(default=False)
-    stop: bool = attr.ib(default=True)

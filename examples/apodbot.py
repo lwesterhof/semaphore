@@ -25,10 +25,12 @@ from pathlib import Path
 import feedparser  # type: ignore
 from bs4 import BeautifulSoup  # type: ignore
 
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
-def apod(context: ChatContext) -> Reply:
+def apod(context: ChatContext) -> None:
+    context.message.mark_read()
+
     path = Path(__file__).parent.absolute()
     Feed = feedparser.parse('https://apod.nasa.gov/apod.rss')
     pointer = Feed.entries[0]
@@ -45,7 +47,7 @@ def apod(context: ChatContext) -> Reply:
                   "width": "100",
                   "height": "100"}
 
-    return Reply(body=message, attachments=[attachment])
+    context.message.reply(body=message, attachments=[attachment])
 
 
 def main():

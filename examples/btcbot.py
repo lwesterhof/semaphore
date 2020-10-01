@@ -26,10 +26,10 @@ import urllib.request
 from time import time
 from typing import Optional
 
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
-def check_price(context: ChatContext) -> Optional[Reply]:
+def check_price(context: ChatContext) -> None:
     url = "https://blockchain.info/ticker"
     request = urllib.request.Request(url)
 
@@ -45,11 +45,10 @@ def check_price(context: ChatContext) -> Optional[Reply]:
             old_job.schedule_removal()
 
         notification = f"BTC price dropped below ${price}!\nCurrent price: ${last_price}"
-        return Reply(body=notification)
-    return None
+        context.message.reply(body=notification)
 
 
-def set_notification(context: ChatContext) -> Reply:
+def set_notification(context: ChatContext) -> None:
     try:
         now = time()
         price = int(context.match.group(1))
@@ -60,17 +59,20 @@ def set_notification(context: ChatContext) -> Reply:
         job = context.job_queue.run_repeating(now, check_price, context, 5 * 60)
         context.data["job"] = job
 
-        return Reply(body="BTC price check set!")
+        context.message.mark_read()
+        context.message.reply(body="BTC price check set!")
     except Exception:
-        return Reply(body="Usage: !btc <dollars>")
+        context.message.mark_read()
+        context.message.reply(body="Usage: !btc <dollars>")
 
 
-def unset_notification(context: ChatContext) -> Reply:
+def unset_notification(context: ChatContext) -> None:
     if 'job' in context.data:
         old_job = context.data["job"]
         old_job.schedule_removal()
 
-    return Reply(body="BTC price check unset!")
+    context.message.mark_read()
+    context.message.reply(body="BTC price check unset!")
 
 
 def main():
