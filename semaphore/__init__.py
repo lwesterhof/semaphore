@@ -17,10 +17,8 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """Semaphore: A simple (rule-based) bot library for Signal Private Messenger."""
-__author__ = 'Lazlo Westerhof'
-__email__ = 'semaphore@lazlo.me'
-__license__ = 'GPLv3'
-__version__ = '0.6.0'
+
+from .meta import *
 
 from .attachment import Attachment
 from .bot import Bot

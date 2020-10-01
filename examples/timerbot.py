@@ -22,14 +22,14 @@ Signal Bot example, sends an alert after a specified time.
 import re
 from time import time
 
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
-def alarm(context: ChatContext) -> Reply:
-    return Reply(body="Beep! Beep! Beep!")
+def alarm(context: ChatContext) -> None:
+    context.message.reply(body="Beep! Beep! Beep!")
 
 
-def set_timer(context: ChatContext) -> Reply:
+def set_timer(context: ChatContext) -> None:
     try:
         delta = int(context.match.group(1))
         alarm_time = time() + delta
@@ -41,17 +41,20 @@ def set_timer(context: ChatContext) -> Reply:
         job = context.job_queue.run_once(alarm_time, alarm, context)
         context.data["job"] = job
 
-        return Reply(body="Timer set!")
+        context.message.mark_read()
+        context.message.reply(body="Timer set!")
     except Exception:
-        return Reply(body="'Usage: !timer <seconds>'")
+        context.message.mark_read()
+        context.message.reply(body="'Usage: !timer <seconds>'")
 
 
-def unset_timer(context: ChatContext) -> Reply:
+def unset_timer(context: ChatContext) -> None:
     if 'job' in context.data:
         old_job = context.data["job"]
         old_job.schedule_removal()
 
-    return Reply(body="Timer unset!")
+    context.message.mark_read()
+    context.message.reply(body="Timer unset!")
 
 
 def main():

@@ -19,7 +19,7 @@
 """
 Signal Bot example, repeats received messages in sPOngEbOb sqUArepAnTs text.
 """
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
 def spongebob(context: ChatContext) -> None:

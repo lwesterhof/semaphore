@@ -40,7 +40,7 @@ class Socket:
         self._socket.connect(self._socket_path)
         self.log.info(f"Connected to socket ({self._socket_path})")
         self.send({"type": "subscribe", "username": self._username})
-        self.log.info(f"Bot subscribed (+********{self._username[-3:]})")
+        self.log.info(f"Bot attempted to subscribe to +********{self._username[-3:]}")
 
     def read(self) -> Iterator[bytes]:
         """Read a socket, line by line."""

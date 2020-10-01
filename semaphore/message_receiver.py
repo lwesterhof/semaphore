@@ -25,23 +25,27 @@ from .attachment import Attachment
 from .data_message import DataMessage
 from .group import Group
 from .message import Message
+from .message_sender import MessageSender
 from .socket import Socket
 
 
 class MessageReceiver:
     """This object represents a Signal message queue."""
 
-    def __init__(self, socket: Socket):
+    def __init__(self, socket: Socket, sender: MessageSender):
         """Initialize message receiver."""
         self._socket: Socket = socket
+        self._sender: MessageSender = sender
         self.log = logging.getLogger(__name__)
 
     def receive(self) -> Iterator[Message]:
         """Receive messages and return as Iterator."""
-        for line in self._socket.read():
+        for line in map(bytes.decode, self._socket.read()):
+            self.log.debug(f'Socket receive: {line}')
+
             # Load Signal message wrapper
             try:
-                message_wrapper = json.loads(line.decode())
+                message_wrapper = json.loads(line)
             except json.JSONDecodeError:
                 continue
 
@@ -52,9 +56,8 @@ class MessageReceiver:
             try:
                 message = message_wrapper["data"]
                 data_message: Optional[DataMessage] = None
-                if message.get("dataMessage"):
-                    data = message.get("dataMessage")
-
+                data = message.get("dataMessage")
+                if data:
                     group: Optional[Group] = None
                     if data.get("group"):
                         group = Group(
@@ -95,6 +98,10 @@ class MessageReceiver:
                     is_receipt=message.get("isReceipt"),
                     is_unidentified_sender=message.get("isUnidentifiedSender"),
                     data_message=data_message,
+                    sender=self._sender,
                 )
-            except Exception:
-                self.log.debug(f"Could not receive message: {json.dumps(message)}")
+            except Exception as exc:
+                self.log.debug(
+                    f"Could not receive message: {json.dumps(message)}",
+                    exc_info=exc,
+                )

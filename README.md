@@ -95,10 +95,10 @@ Do not send anything confidential, use at your own risk!
 
 ## Code example
 ```python
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
-def echo(context: ChatContext) -> Reply:
-    return Reply(body=context.message.get_body())
+def echo(context: ChatContext) -> None:
+    context.message.reply(body=context.message.get_body())
 
 def main():
     """Start the bot."""
