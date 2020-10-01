@@ -22,20 +22,14 @@ Signal Bot example, repeats received messages in sPOngEbOb sqUArepAnTs text.
 from semaphore import Bot, ChatContext, Reply
 
 
-def spongebob(context: ChatContext) -> Reply:
-    from random import random
+def spongebob(context: ChatContext) -> None:
+    from random import choice
     from random import seed
 
     orig = context.message.get_body()
     seed(orig)
-    spongecase = []
-    for ch in orig:
-        case_choice = random() < 0.5
-        spongecase.append(ch.upper() if (case_choice) else ch.lower())
-
-    return Reply(
-        body=''.join(spongecase)
-    )
+    context.message.mark_read()
+    context.message.reply(body=''.join(choice((ch.lower, ch.upper))() for ch in orig))
 
 
 def main():
