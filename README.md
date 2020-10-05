@@ -1,4 +1,4 @@
-# Semaphore ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore) ![GitHub](https://img.shields.io/github/license/lwesterhof/semaphore)
+# Semaphore ![PyPI](https://img.shields.io/pypi/v/semaphore-bot) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore) ![GitHub](https://img.shields.io/github/license/lwesterhof/semaphore)
 
 A simple (rule-based) bot library for [Signal](https://signal.org/) Private Messenger in Python.
 
@@ -13,7 +13,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
    * [License](#license)
 
 ## Requirements
-- Python 3.6+
+- ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
 - [signald 0.10.0+](https://gitlab.com/thefinn93/signald), a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
@@ -27,7 +27,12 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 2. Install Semaphore
 
-    With pip:
+    Latest release from PyPi:
+    ```bash
+    $ pip install semaphore-bot
+    ```
+
+    From source with pip:
     ```bash
     $ pip install git+https://github.com/lwesterhof/semaphore.git
     ```
@@ -128,6 +133,12 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.7.0**
+* Compatibility with signald 0.10.0+
+* Support for multiple replies/reactions by handler
+* Marking messages as read is optional
+* First release on PyPi
+
 **v0.6.0**
 * Support for message reactions
 * Example message reaction bot
