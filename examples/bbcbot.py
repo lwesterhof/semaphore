@@ -26,8 +26,8 @@ import feedparser  # type: ignore
 from semaphore import Bot, ChatContext
 
 
-def bbc_info(context: ChatContext) -> None:
-    context.message.mark_read()
+def bbc_info(ctx: ChatContext) -> None:
+    ctx.message.mark_read()
     info = """BBC News Bot
 
 !bbc world    - BBC World news
@@ -35,13 +35,13 @@ def bbc_info(context: ChatContext) -> None:
 !bbc politics - BBC Politics news
 !bbc tech     - BBC Technology news"""
 
-    context.message.reply(body=info)
+    ctx.message.reply(body=info)
 
 
-def bbc_feed(context: ChatContext):
+def bbc_feed(ctx: ChatContext):
     # Find out which news feed to parse.
     try:
-        news = context.match.group(1)
+        news = ctx.match.group(1)
         if news == "world":
             feed = "http://feeds.bbci.co.uk/news/world/rss.xml"
         elif news == "politics":
@@ -66,7 +66,7 @@ def bbc_feed(context: ChatContext):
         if x < 2:
             reply += "\n\n"
 
-    context.message.reply(body=reply)
+    ctx.message.reply(body=reply)
 
 
 def main():

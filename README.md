@@ -97,8 +97,8 @@ Do not send anything confidential, use at your own risk!
 ```python
 from semaphore import Bot, ChatContext
 
-def echo(context: ChatContext) -> None:
-    context.message.reply(body=context.message.get_body())
+def echo(ctx: ChatContext) -> None:
+    ctx.message.reply(body=ctx.message.get_body())
 
 def main():
     """Start the bot."""

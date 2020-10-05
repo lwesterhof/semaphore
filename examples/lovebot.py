@@ -22,9 +22,9 @@ Signal Bot example, loves everything you say!
 from semaphore import Bot, ChatContext
 
 
-def love(context: ChatContext) -> None:
-    context.message.mark_read()
-    context.message.reply(body="❤️", reaction=True, stop=False)
+def love(ctx: ChatContext) -> None:
+    ctx.message.mark_read()
+    ctx.message.reply(body="❤️", reaction=True, stop=False)
 
 
 def main():

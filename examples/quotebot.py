@@ -22,9 +22,9 @@ Signal Bot example, quotes and repeats the received messages.
 from semaphore import Bot, ChatContext
 
 
-def quote(context: ChatContext) -> None:
-    context.message.mark_read()
-    context.message.reply(body=context.message.get_body(), quote=True)
+def quote(ctx: ChatContext) -> None:
+    ctx.message.mark_read()
+    ctx.message.reply(body=ctx.message.get_body(), quote=True)
 
 
 def main():

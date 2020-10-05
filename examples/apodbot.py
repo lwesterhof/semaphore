@@ -28,8 +28,8 @@ from bs4 import BeautifulSoup  # type: ignore
 from semaphore import Bot, ChatContext
 
 
-def apod(context: ChatContext) -> None:
-    context.message.mark_read()
+def apod(ctx: ChatContext) -> None:
+    ctx.message.mark_read()
 
     path = Path(__file__).parent.absolute()
     Feed = feedparser.parse('https://apod.nasa.gov/apod.rss')
@@ -47,7 +47,7 @@ def apod(context: ChatContext) -> None:
                   "width": "100",
                   "height": "100"}
 
-    context.message.reply(body=message, attachments=[attachment])
+    ctx.message.reply(body=message, attachments=[attachment])
 
 
 def main():

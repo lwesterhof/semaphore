@@ -29,50 +29,50 @@ from typing import Optional
 from semaphore import Bot, ChatContext
 
 
-def check_price(context: ChatContext) -> None:
+def check_price(ctx: ChatContext) -> None:
     url = "https://blockchain.info/ticker"
     request = urllib.request.Request(url)
 
     response = urllib.request.urlopen(request).read()
     content = json.loads(response.decode('utf-8'))
 
-    price = int(context.match.group(1))
+    price = int(ctx.match.group(1))
     last_price = int(content['USD']['last'])
 
     if int(content['USD']['last']) < price:
-        if 'job' in context.data:
-            old_job = context.data["job"]
+        if 'job' in ctx.data:
+            old_job = ctx.data["job"]
             old_job.schedule_removal()
 
         notification = f"BTC price dropped below ${price}!\nCurrent price: ${last_price}"
-        context.message.reply(body=notification)
+        ctx.message.reply(body=notification)
 
 
-def set_notification(context: ChatContext) -> None:
+def set_notification(ctx: ChatContext) -> None:
     try:
         now = time()
-        price = int(context.match.group(1))
+        price = int(ctx.match.group(1))
 
         if price < 0:
             raise Exception
 
-        job = context.job_queue.run_repeating(now, check_price, context, 5 * 60)
-        context.data["job"] = job
+        job = ctx.job_queue.run_repeating(now, check_price, ctx, 5 * 60)
+        ctx.data["job"] = job
 
-        context.message.mark_read()
-        context.message.reply(body="BTC price check set!")
+        ctx.message.mark_read()
+        ctx.message.reply(body="BTC price check set!")
     except Exception:
-        context.message.mark_read()
-        context.message.reply(body="Usage: !btc <dollars>")
+        ctx.message.mark_read()
+        ctx.message.reply(body="Usage: !btc <dollars>")
 
 
-def unset_notification(context: ChatContext) -> None:
-    if 'job' in context.data:
-        old_job = context.data["job"]
+def unset_notification(ctx: ChatContext) -> None:
+    if 'job' in ctx.data:
+        old_job = ctx.data["job"]
         old_job.schedule_removal()
 
-    context.message.mark_read()
-    context.message.reply(body="BTC price check unset!")
+    ctx.message.mark_read()
+    ctx.message.reply(body="BTC price check unset!")
 
 
 def main():

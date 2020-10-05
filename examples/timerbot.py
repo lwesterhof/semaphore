@@ -25,36 +25,36 @@ from time import time
 from semaphore import Bot, ChatContext
 
 
-def alarm(context: ChatContext) -> None:
-    context.message.reply(body="Beep! Beep! Beep!")
+def alarm(ctx: ChatContext) -> None:
+    ctx.message.reply(body="Beep! Beep! Beep!")
 
 
-def set_timer(context: ChatContext) -> None:
+def set_timer(ctx: ChatContext) -> None:
     try:
-        delta = int(context.match.group(1))
+        delta = int(ctx.match.group(1))
         alarm_time = time() + delta
 
-        if 'job' in context.data:
-            old_job = context.data["job"]
+        if 'job' in ctx.data:
+            old_job = ctx.data["job"]
             old_job.schedule_removal()
 
-        job = context.job_queue.run_once(alarm_time, alarm, context)
-        context.data["job"] = job
+        job = ctx.job_queue.run_once(alarm_time, alarm, ctx)
+        ctx.data["job"] = job
 
-        context.message.mark_read()
-        context.message.reply(body="Timer set!")
+        ctx.message.mark_read()
+        ctx.message.reply(body="Timer set!")
     except Exception:
-        context.message.mark_read()
-        context.message.reply(body="'Usage: !timer <seconds>'")
+        ctx.message.mark_read()
+        ctx.message.reply(body="'Usage: !timer <seconds>'")
 
 
-def unset_timer(context: ChatContext) -> None:
-    if 'job' in context.data:
-        old_job = context.data["job"]
+def unset_timer(ctx: ChatContext) -> None:
+    if 'job' in ctx.data:
+        old_job = ctx.data["job"]
         old_job.schedule_removal()
 
-    context.message.mark_read()
-    context.message.reply(body="Timer unset!")
+    ctx.message.mark_read()
+    ctx.message.reply(body="Timer unset!")
 
 
 def main():
