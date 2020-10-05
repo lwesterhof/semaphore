@@ -28,7 +28,7 @@ requirements = [
 ]
 
 setup(
-    name="semaphore",
+    name="semaphore-bot",
     version=meta.__version__,
     author=meta.__author__,
     author_email=meta.__email__,
