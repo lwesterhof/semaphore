@@ -97,6 +97,9 @@ class Bot:
         """Match an incoming message against a handler."""
         message_id = id(message)
         message_source = message.get_redacted_source()
+
+        # Mark message as delivered.
+        message.mark_delivered()
         self.log.debug(f"Message ({message_id}) received from {message_source}")
         self.log.debug(str(message))
 

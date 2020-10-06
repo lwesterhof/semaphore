@@ -44,7 +44,7 @@ class MessageSender:
         """
         # Mark message as read before replying.
         if reply.mark_read:
-            self.mark_read(message)
+            message.mark_read()
 
         # Construct reply message.
         bot_message: Dict[str, Any] = {"type": "react",
