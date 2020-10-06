@@ -103,7 +103,7 @@ Do not send anything confidential, use at your own risk!
 from semaphore import Bot, ChatContext
 
 def echo(ctx: ChatContext) -> None:
-    ctx.message.reply(body=ctx.message.get_body())
+    ctx.message.reply(ctx.message.get_body())
 
 def main():
     """Start the bot."""

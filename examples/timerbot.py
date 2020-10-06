@@ -26,7 +26,7 @@ from semaphore import Bot, ChatContext
 
 
 def alarm(ctx: ChatContext) -> None:
-    ctx.message.reply(body="Beep! Beep! Beep!")
+    ctx.message.reply("Beep! Beep! Beep!")
 
 
 def set_timer(ctx: ChatContext) -> None:
@@ -41,9 +41,9 @@ def set_timer(ctx: ChatContext) -> None:
         job = ctx.job_queue.run_once(alarm_time, alarm, ctx)
         ctx.data["job"] = job
 
-        ctx.message.reply(body="Timer set!")
+        ctx.message.reply("Timer set!")
     except Exception:
-        ctx.message.reply(body="'Usage: !timer <seconds>'")
+        ctx.message.reply("'Usage: !timer <seconds>'")
 
 
 def unset_timer(ctx: ChatContext) -> None:
@@ -51,7 +51,7 @@ def unset_timer(ctx: ChatContext) -> None:
         old_job = ctx.data["job"]
         old_job.schedule_removal()
 
-    ctx.message.reply(body="Timer unset!")
+    ctx.message.reply("Timer unset!")
 
 
 def main():

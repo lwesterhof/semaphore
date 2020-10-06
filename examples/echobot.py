@@ -23,7 +23,7 @@ from semaphore import Bot, ChatContext, Reply
 
 
 def echo(ctx: ChatContext) -> None:
-    ctx.message.reply(body=ctx.message.get_body())
+    ctx.message.reply(ctx.message.get_body())
 
 
 def main():

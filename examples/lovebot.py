@@ -23,7 +23,7 @@ from semaphore import Bot, ChatContext
 
 
 def love(ctx: ChatContext) -> None:
-    ctx.message.reply(body="❤️", reaction=True, stop=False)
+    ctx.message.reply(body="❤️", reaction=True)
 
 
 def main():

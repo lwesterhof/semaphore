@@ -65,7 +65,7 @@ def bbc_feed(ctx: ChatContext):
         if x < 2:
             reply += "\n\n"
 
-    ctx.message.reply(body=reply)
+    ctx.message.reply(reply)
 
 
 def main():
