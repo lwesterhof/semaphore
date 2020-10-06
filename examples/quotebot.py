@@ -23,7 +23,6 @@ from semaphore import Bot, ChatContext
 
 
 def quote(ctx: ChatContext) -> None:
-    ctx.message.mark_read()
     ctx.message.reply(body=ctx.message.get_body(), quote=True)
 
 

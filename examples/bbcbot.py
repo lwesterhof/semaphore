@@ -27,7 +27,6 @@ from semaphore import Bot, ChatContext
 
 
 def bbc_info(ctx: ChatContext) -> None:
-    ctx.message.mark_read()
     info = """BBC News Bot
 
 !bbc world    - BBC World news

@@ -29,8 +29,6 @@ from semaphore import Bot, ChatContext
 
 
 def xkcd(ctx: ChatContext) -> None:
-    ctx.message.mark_read()
-
     path = Path(__file__).parent.absolute()
     Feed = feedparser.parse('https://xkcd.com/rss.xml')
     pointer = Feed.entries[0]

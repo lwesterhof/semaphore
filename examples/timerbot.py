@@ -41,10 +41,8 @@ def set_timer(ctx: ChatContext) -> None:
         job = ctx.job_queue.run_once(alarm_time, alarm, ctx)
         ctx.data["job"] = job
 
-        ctx.message.mark_read()
         ctx.message.reply(body="Timer set!")
     except Exception:
-        ctx.message.mark_read()
         ctx.message.reply(body="'Usage: !timer <seconds>'")
 
 
@@ -53,7 +51,6 @@ def unset_timer(ctx: ChatContext) -> None:
         old_job = ctx.data["job"]
         old_job.schedule_removal()
 
-    ctx.message.mark_read()
     ctx.message.reply(body="Timer unset!")
 
 

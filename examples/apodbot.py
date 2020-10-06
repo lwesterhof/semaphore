@@ -29,8 +29,6 @@ from semaphore import Bot, ChatContext
 
 
 def apod(ctx: ChatContext) -> None:
-    ctx.message.mark_read()
-
     path = Path(__file__).parent.absolute()
     Feed = feedparser.parse('https://apod.nasa.gov/apod.rss')
     pointer = Feed.entries[0]

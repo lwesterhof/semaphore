@@ -28,7 +28,6 @@ def spongebob(ctx: ChatContext) -> None:
 
     orig = ctx.message.get_body()
     seed(orig)
-    ctx.message.mark_read()
     ctx.message.reply(body=''.join(choice((ch.lower, ch.upper))() for ch in orig))
 
 

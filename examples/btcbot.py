@@ -59,10 +59,8 @@ def set_notification(ctx: ChatContext) -> None:
         job = ctx.job_queue.run_repeating(now, check_price, ctx, 5 * 60)
         ctx.data["job"] = job
 
-        ctx.message.mark_read()
         ctx.message.reply(body="BTC price check set!")
     except Exception:
-        ctx.message.mark_read()
         ctx.message.reply(body="Usage: !btc <dollars>")
 
 
@@ -71,7 +69,6 @@ def unset_notification(ctx: ChatContext) -> None:
         old_job = ctx.data["job"]
         old_job.schedule_removal()
 
-    ctx.message.mark_read()
     ctx.message.reply(body="BTC price check unset!")
 
 

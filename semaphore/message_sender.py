@@ -42,6 +42,10 @@ class MessageSender:
         message: The original message replying to.
         reply:   The reply to send.
         """
+        # Mark message as read before replying.
+        if reply.mark_read:
+            self.mark_read(message)
+
         # Construct reply message.
         bot_message: Dict[str, Any] = {"type": "react",
                                        "username": self._username}
