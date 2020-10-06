@@ -74,6 +74,17 @@ class MessageSender:
 
         self._send(bot_message)
 
+    def mark_delivered(self, message: Message) -> None:
+        """
+        Mark a Signal message you received as delivered.
+
+        message: The Signal message you received.
+        """
+        self._send({"type": "mark_delivered",
+                    "username": self._username,
+                    "recipientAddress": {"number": message.source},
+                    "timestamps": [message.timestamp]})
+
     def mark_read(self, message: Message) -> None:
         """
         Mark a Signal message you received as read.

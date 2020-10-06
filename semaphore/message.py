@@ -80,6 +80,10 @@ class Message:
         """
         self._sender.send_message(self, Reply(*args, **kwargs))
 
+    def mark_delivered(self) -> None:
+        """Mark the message as delivered."""
+        self._sender.mark_delivered(self)
+
     def mark_read(self) -> None:
         """Mark the message as read."""
         self._sender.mark_read(self)
