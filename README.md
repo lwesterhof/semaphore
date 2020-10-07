@@ -102,22 +102,15 @@ Do not send anything confidential, use at your own risk!
 ```python
 from semaphore import Bot, ChatContext
 
+# Connect the bot to number.
+bot = Bot("+xxxxxxxxxxx")
+
+@bot.handler('')
 def echo(ctx: ChatContext) -> None:
     ctx.message.reply(ctx.message.get_body())
 
-def main():
-    """Start the bot."""
-    # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
-
-    # Add handler to bot.
-    bot.register_handler("", echo)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
-
-if __name__ == '__main__':
-    main()
+# Run the bot until you press Ctrl-C.
+bot.start()
 ```
 
 ## Example bots

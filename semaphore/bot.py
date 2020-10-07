@@ -21,7 +21,7 @@ import logging
 import re
 import threading
 from datetime import datetime
-from typing import Callable, Dict, List, Pattern
+from typing import Any, Callable, Dict, List, Pattern
 
 from .chat_context import ChatContext
 from .job_queue import JobQueue
@@ -66,6 +66,13 @@ class Bot:
 
         self._handlers.append((regex, func))
         self.log.info(f"Handler <{func.__name__}> registered ('{regex.pattern}')")
+
+    def handler(self, regex: Pattern):
+        """Decorator to register handlers."""
+        def decorator(func: Callable):
+            self.register_handler(regex, func)
+            return func
+        return decorator
 
     def _handle_message(self, message: Message, func: Callable, match) -> None:
         """Handle a matched message."""
