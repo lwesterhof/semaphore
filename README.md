@@ -126,6 +126,11 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.7.1**
+* Support for decorators to register handlers
+* Support for sending delivery receipts
+* Mark messages as read by default
+
 **v0.7.0**
 * Compatibility with signald 0.10.0+
 * Support for multiple replies/reactions by handler
