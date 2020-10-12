@@ -18,18 +18,21 @@
 """
 Signal Bot example, replies with Astronomy Picture of the Day.
 """
-import urllib.request
+import os
 from pathlib import Path
 
+import anyio
+import asks  # type: ignore
 import feedparser  # type: ignore
 from bs4 import BeautifulSoup  # type: ignore
 
 from semaphore import Bot, ChatContext
 
 
-def apod(ctx: ChatContext) -> None:
-    path = Path(__file__).parent.absolute()
-    Feed = feedparser.parse('https://apod.nasa.gov/apod.rss')
+async def apod(ctx: ChatContext) -> None:
+    path = Path(__file__).parent.absolute() / "tmp" / "tmp_apod.jpg"
+    content = (await asks.get('https://apod.nasa.gov/apod.rss')).text
+    Feed = feedparser.parse(content)
     pointer = Feed.entries[0]
     soup = BeautifulSoup(pointer.description, "html.parser")
 
@@ -37,27 +40,28 @@ def apod(ctx: ChatContext) -> None:
         apod = img["src"]
         description = img["alt"]
 
-    urllib.request.urlretrieve(apod, f"{path}/tmp/tmp_apod.jpg")
+    r = await asks.get(apod, stream=True)
+    async with await anyio.open_file(path, "wb") as f:
+        async for chunk in r.body:
+            await f.write(chunk)
 
     message = f"{pointer.title} - {description} (https://apod.nasa.gov/apod/)"
-    attachment = {"filename": f"{path}/tmp/tmp_apod.jpg",
+    attachment = {"filename": str(path),
                   "width": "100",
                   "height": "100"}
 
-    ctx.message.reply(body=message, attachments=[attachment])
+    await ctx.message.reply(body=message, attachments=[attachment])
 
 
-def main():
+async def main():
     """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler("!apod", apod)
 
-    # Add handler to bot.
-    bot.register_handler("!apod", apod)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    anyio.run(main)

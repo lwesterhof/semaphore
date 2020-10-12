@@ -18,14 +18,16 @@
 """
 Signal Bot example, replies with latest BBC headlines.
 """
+import os
 import re
 
+import asks  # type: ignore
 import feedparser  # type: ignore
 
 from semaphore import Bot, ChatContext
 
 
-def bbc_info(ctx: ChatContext) -> None:
+async def bbc_info(ctx: ChatContext) -> None:
     info = """BBC News Bot
 
 !bbc world    - BBC World news
@@ -33,53 +35,50 @@ def bbc_info(ctx: ChatContext) -> None:
 !bbc politics - BBC Politics news
 !bbc tech     - BBC Technology news"""
 
-    ctx.message.reply(body=info)
+    await ctx.message.reply(body=info)
 
 
-def bbc_feed(ctx: ChatContext):
+FEEDS = {
+    "world": "http://feeds.bbci.co.uk/news/world/rss.xml",
+    "politics": "http://feeds.bbci.co.uk/news/politics/rss.xml",
+    "business": "http://feeds.bbci.co.uk/news/business/rss.xml",
+    "tech": "http://feeds.bbci.co.uk/news/technology/rss.xml",
+}
+
+DEFAULT_FEED = "http://feeds.bbci.co.uk/news/rss.xml"
+
+
+async def bbc_feed(ctx: ChatContext):
     # Find out which news feed to parse.
-    try:
-        news = ctx.match.group(1)
-        if news == "world":
-            feed = "http://feeds.bbci.co.uk/news/world/rss.xml"
-        elif news == "politics":
-            feed = "http://feeds.bbci.co.uk/news/politics/rss.xml"
-        elif news == "business":
-            feed = "http://feeds.bbci.co.uk/news/business/rss.xml"
-        elif news == "tech":
-            feed = "http://feeds.bbci.co.uk/news/technology/rss.xml"
-        else:
-            feed = "http://feeds.bbci.co.uk/news/rss.xml"
-    except Exception:
-        feed = "http://feeds.bbci.co.uk/news/rss.xml"
+    news = ctx.match.group(1)
+    feed = FEEDS.get(news, DEFAULT_FEED)
 
     # Parse news feed.
-    Feed = feedparser.parse(feed)
+    Feed = feedparser.parse((await asks.get(feed)).text)
 
     # Create message with 3 latest headlines.
-    reply = ""
-    for x in range(0, 3):
+    reply = []
+    for x in range(3):
         pointer = Feed.entries[x]
-        reply += f"{pointer.title} ({pointer.link})"
+        reply.append(f"{pointer.title} ({pointer.link})")
         if x < 2:
-            reply += "\n\n"
+            reply.append("\n")
 
-    ctx.message.reply(reply)
+    await ctx.message.reply("\n".join(reply))
 
 
-def main():
+async def main():
     """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler("!bbc info", bbc_info)
+        bot.register_handler(re.compile("!bbc (.*)"), bbc_feed)
+        bot.register_handler("!bbc", bbc_feed)
 
-    # Add handlers to bot.
-    bot.register_handler("!bbc info", bbc_info)
-    bot.register_handler(re.compile("!bbc (.*)"), bbc_feed)
-    bot.register_handler("!bbc", bbc_feed)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    import anyio
+    anyio.run(main)

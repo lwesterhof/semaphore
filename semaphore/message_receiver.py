@@ -18,7 +18,7 @@
 """This module contains an object that represents a Signal message queue."""
 import json
 import logging
-from typing import Iterator, Optional
+from typing import AsyncIterable, Optional
 
 from .attachment import Attachment
 from .data_message import DataMessage
@@ -37,9 +37,10 @@ class MessageReceiver:
         self._sender: MessageSender = sender
         self.log = logging.getLogger(__name__)
 
-    def receive(self) -> Iterator[Message]:
+    async def receive(self) -> AsyncIterable[Message]:
         """Receive messages and return as Iterator."""
-        for line in map(bytes.decode, self._socket.read()):
+        async for raw_line in self._socket.read():
+            line: str = raw_line.decode()
             self.log.debug(f'Socket receive: {line}')
 
             # Load Signal message wrapper

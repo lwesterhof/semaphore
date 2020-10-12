@@ -31,10 +31,10 @@ class MessageSender:
         self._username: str = username
         self._socket: Socket = socket
 
-    def _send(self, message: Dict) -> None:
-        self._socket.send(message)
+    async def _send(self, message: Dict) -> None:
+        await self._socket.send(message)
 
-    def send_message(self, message: Message, reply: Reply) -> None:
+    async def send_message(self, message: Message, reply: Reply) -> None:
         """
         Send the bot message.
 
@@ -43,7 +43,7 @@ class MessageSender:
         """
         # Mark message as read before replying.
         if reply.mark_read:
-            message.mark_read()
+            await message.mark_read()
 
         # Construct reply message.
         bot_message: Dict[str, Any] = {"type": "react",
@@ -75,26 +75,30 @@ class MessageSender:
                      "text": message.get_body()}
             bot_message["quote"] = quote
 
-        self._send(bot_message)
+        await self._send(bot_message)
 
-    def mark_delivered(self, message: Message) -> None:
+    async def mark_delivered(self, message: Message) -> None:
         """
         Mark a Signal message you received as delivered.
 
         message: The Signal message you received.
         """
-        self._send({"type": "mark_delivered",
-                    "username": self._username,
-                    "recipientAddress": {"number": message.source},
-                    "timestamps": [message.timestamp]})
+        await self._send({
+            "type": "mark_delivered",
+            "username": self._username,
+            "recipientAddress": {"number": message.source},
+            "timestamps": [message.timestamp],
+        })
 
-    def mark_read(self, message: Message) -> None:
+    async def mark_read(self, message: Message) -> None:
         """
         Mark a Signal message you received as read.
 
         message: The Signal message you received.
         """
-        self._send({"type": "mark_read",
-                    "username": self._username,
-                    "recipientAddress": {"number": message.source},
-                    "timestamps": [message.timestamp]})
+        await self._send({
+            "type": "mark_read",
+            "username": self._username,
+            "recipientAddress": {"number": message.source},
+            "timestamps": [message.timestamp],
+        })

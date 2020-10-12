@@ -78,10 +78,9 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
     {"type": "subscribe", "username": "+xxxxxxxxxxx"}
     ```
 
-7. Open a new terminal, edit the example echo bot and replace `+xxxxxxxxxxx` with the Signal bot number:
+7. Open a new terminal and set the `SIGNAL_PHONE_NUMBER` environment variable to your phone number:
     ```bash
-    $ cd semaphore/examples/
-    $ vim echobot.py
+    $ export SIGNAL_PHONE_NUMBER=+xxxxxxxxxxx
     ```
 
 8. Start the example echo bot
@@ -100,17 +99,22 @@ Do not send anything confidential, use at your own risk!
 
 ## Code example
 ```python
+import anyio
 from semaphore import Bot, ChatContext
 
 # Connect the bot to number.
 bot = Bot("+xxxxxxxxxxx")
 
 @bot.handler('')
-def echo(ctx: ChatContext) -> None:
+async def echo(ctx: ChatContext) -> None:
     ctx.message.reply(ctx.message.get_body())
 
-# Run the bot until you press Ctrl-C.
-bot.start()
+async def main():
+    async with bot:
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
+
+anyio.run(main)
 ```
 
 ## Example bots
