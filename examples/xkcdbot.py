@@ -19,18 +19,21 @@
 """
 Signal Bot example, replies with latest XKCD comic.
 """
-import urllib.request
+import os
 from pathlib import Path
 
+import anyio
+import asks  # type: ignore
 import feedparser  # type: ignore
 from bs4 import BeautifulSoup  # type: ignore
 
 from semaphore import Bot, ChatContext
 
 
-def xkcd(ctx: ChatContext) -> None:
-    path = Path(__file__).parent.absolute()
-    Feed = feedparser.parse('https://xkcd.com/rss.xml')
+async def xkcd(ctx: ChatContext) -> None:
+    path = Path(__file__).parent.absolute() / "tmp" / "tmp_xkcd.png"
+
+    Feed = feedparser.parse((await asks.get('https://xkcd.com/rss.xml')).text)
     pointer = Feed.entries[0]
     soup = BeautifulSoup(pointer.description, "html.parser")
 
@@ -38,27 +41,28 @@ def xkcd(ctx: ChatContext) -> None:
         comic = img["src"]
         description = img["title"]
 
-    urllib.request.urlretrieve(comic, f"{path}/tmp/tmp_xkcd.png")
+    r = await asks.get(comic, stream=True)
+    async with await anyio.open_file(path, "wb") as f:
+        async for chunk in r.body:
+            await f.write(chunk)
 
     message = f"{pointer.title} - {description} ({pointer.link})"
-    attachment = {"filename": f"{path}/tmp/tmp_xkcd.png",
+    attachment = {"filename": str(path),
                   "width": "100",
                   "height": "100"}
 
-    ctx.message.reply(body=message, attachments=[attachment])
+    await ctx.message.reply(body=message, attachments=[attachment])
 
 
-def main():
-    """Start thfee bot."""
+async def main():
+    """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler("!xkcd", xkcd)
 
-    # Add handler to bot.
-    bot.register_handler("!xkcd", xkcd)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    anyio.run(main)

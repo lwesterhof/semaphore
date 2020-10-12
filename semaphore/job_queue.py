@@ -18,10 +18,12 @@
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a bot job queue."""
 import logging
-from queue import Empty, PriorityQueue
-from time import sleep, time
+from time import time
 from typing import Callable
 
+from anyio import sleep, WouldBlock
+
+from .queue import PriorityQueue
 from .job import Job
 
 
@@ -35,49 +37,51 @@ class JobQueue:
 
         self.log = logging.getLogger(__name__)
 
-    def run_once(self,
-                 timestamp: float,
-                 callback: Callable,
-                 context) -> Job:
+    async def run_once(
+        self,
+        timestamp: float,
+        callback: Callable,
+        context,
+    ) -> Job:
         """Add a job to the queue that runs once."""
         job = Job(callback, context)
-        self._queue.put((timestamp, job))
+        await self._queue.put_nowait(timestamp, job)
         self.log.info(f"Put job ({id(job)}) in the queue")
         return job
 
-    def run_repeating(self,
-                      timestamp: float,
-                      callback: Callable,
-                      context,
-                      interval: int) -> Job:
+    async def run_repeating(self,
+                            timestamp: float,
+                            callback: Callable,
+                            context,
+                            interval: int) -> Job:
         """Add a job to the queue that runs repeating."""
         job = Job(callback, context, repeat=True, interval=interval)
-        self._queue.put((timestamp, job))
+        await self._queue.put_nowait(timestamp, job)
         self.log.info(f"Put repeating job ({id(job)}) in the queue")
         return job
 
-    def run_daily(self,
-                  timestamp: float,
-                  callback: Callable,
-                  context) -> Job:
+    async def run_daily(self,
+                        timestamp: float,
+                        callback: Callable,
+                        context) -> Job:
         """Add a job to the queue that runs daily."""
         interval = 60 * 60 * 24  # Day
         job = Job(callback, context, repeat=True, interval=interval)
-        self._queue.put((timestamp, job))
+        await self._queue.put_nowait(timestamp, job)
         self.log.info(f"Put daily job ({id(job)}) in the queue")
         return job
 
-    def run_monthly(self,
-                    timestamp: float,
-                    callback: Callable,
-                    context) -> Job:
+    async def run_monthly(self,
+                          timestamp: float,
+                          callback: Callable,
+                          context) -> Job:
         """Add a job to the queue that runs monthly."""
         job = Job(callback, context, repeat=True, monthly=True)
-        self._queue.put((timestamp, job))
+        await self._queue.put_nowait(timestamp, job)
         self.log.info(f"Put monthly job ({id(job)}) in the queue")
         return job
 
-    def start(self) -> None:
+    async def start(self) -> None:
         """Run all the jobs in the queue that are due."""
         self.log.info("Job queue started")
 
@@ -85,14 +89,14 @@ class JobQueue:
             now = time()
 
             try:
-                timestamp, job = self._queue.get(False)
-            except Empty:
-                sleep(1)
+                timestamp, job = self._queue.get_nowait()
+            except WouldBlock:
+                await sleep(1)
                 continue
 
             if timestamp > now:
-                self._queue.put((timestamp, job))
-                sleep(1)
+                await self._queue.put_nowait(timestamp, job)
+                await sleep(1)
                 continue
 
             if job.remove():
@@ -102,17 +106,18 @@ class JobQueue:
             self.log.info(f"Running job ({id(job)})")
             message = job.get_message()
             try:
-                reply = job.run()
+                reply = await job.run()
                 if reply:
-                    self._sender.send_message(message, reply)
+                    await self._sender.send_message(message, reply)
                     self.log.info(f"Reply for job ({id(job)}) sent "
                                   f"to {message.get_redacted_source()}")
-            except Exception:
+            except Exception as exc:
                 self.log.warning(f"Sending reply for message ({id(message)}) "
-                                 f"to {message.get_redacted_source()} failed")
+                                 f"to {message.get_redacted_source()} failed",
+                                 exc_info=exc)
                 continue
 
             if job.is_repeating():
                 interval = job.get_interval()
-                self._queue.put((now + interval, job))
+                await self._queue.put(now + interval, job)
                 self.log.info(f"Added repeating job ({id(job)}) to the queue")

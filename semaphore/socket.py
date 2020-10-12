@@ -19,8 +19,10 @@
 """This module contains an object that represents a signald socket."""
 import json
 import logging
-import socket
-from typing import Iterator, List
+from typing import AsyncIterable, List
+
+import anyio
+import anyio.abc
 
 
 class Socket:
@@ -30,24 +32,29 @@ class Socket:
         """Initialize socket."""
         self._username: str = username
         self._socket_path: str = socket_path
-        self._socket: socket.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self._socket: anyio.abc.SocketStream
 
         self.log = logging.getLogger(__name__)
-        self.connect()
 
-    def connect(self) -> None:
+    async def __aenter__(self) -> 'Socket':
         """Connect to the socket."""
-        self._socket.connect(self._socket_path)
+        self._socket = await (await anyio.connect_unix(self._socket_path)).__aenter__()
         self.log.info(f"Connected to socket ({self._socket_path})")
-        self.send({"type": "subscribe", "username": self._username})
+        await self.send({"type": "subscribe", "username": self._username})
         self.log.info(f"Bot attempted to subscribe to +********{self._username[-3:]}")
+        return self
 
-    def read(self) -> Iterator[bytes]:
+    async def __aexit__(self, *excinfo):
+        """Disconnect from the internal socket."""
+        return await self._socket.__aexit__(*excinfo)
+
+    async def read(self) -> AsyncIterable[bytes]:
         """Read a socket, line by line."""
         buffer: List[bytes] = []
         while True:
-            char = self._socket.recv(1)
-            if not char:
+            try:
+                char = await self._socket.receive(1)
+            except anyio.EndOfStream:
                 raise ConnectionResetError("Connection was reset")
             if char == b"\n":
                 yield b"".join(buffer)
@@ -55,8 +62,8 @@ class Socket:
             else:
                 buffer.append(char)
 
-    def send(self, message: dict) -> None:
+    async def send(self, message: dict) -> None:
         """Send message to socket."""
-        self.log.debug(f"Socket send: {json.dumps(message)}")
-        self._socket.send(json.dumps(message).encode("utf8") + b"\n")
-        self._socket.recv(1024)
+        serialized = json.dumps(message)
+        self.log.debug(f"Socket send: {serialized}")
+        await self._socket.send(serialized.encode("utf8") + b"\n")

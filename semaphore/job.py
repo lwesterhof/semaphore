@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 """This module contains an object that represents a bot job."""
+
 from datetime import datetime
 from typing import Optional
 
@@ -67,10 +68,6 @@ class Job(object):
         """Check if job should be removed."""
         return self._remove
 
-    def run(self) -> Optional[Reply]:
+    async def run(self) -> Optional[Reply]:
         """Run the job by calling the handler."""
-        try:
-            reply = self._handler(self._context)
-            return reply
-        except Exception:
-            return None
+        return await self._handler(self._context)

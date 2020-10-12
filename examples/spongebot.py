@@ -19,29 +19,30 @@
 """
 Signal Bot example, repeats received messages in sPOngEbOb sqUArepAnTs text.
 """
+import os
+
 from semaphore import Bot, ChatContext
 
 
-def spongebob(ctx: ChatContext) -> None:
+async def spongebob(ctx: ChatContext) -> None:
     from random import choice
     from random import seed
 
     orig = ctx.message.get_body()
     seed(orig)
-    ctx.message.reply(''.join(choice((ch.lower, ch.upper))() for ch in orig))
+    await ctx.message.reply(''.join(choice((ch.lower, ch.upper))() for ch in orig))
 
 
-def main():
+async def main():
     """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler("", spongebob)
 
-    # Add handler to bot.
-    bot.register_handler("", spongebob)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    import anyio
+    anyio.run(main)

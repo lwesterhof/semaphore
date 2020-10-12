@@ -21,7 +21,7 @@
 from .meta import *
 
 from .attachment import Attachment
-from .bot import Bot
+from .bot import Bot, StopPropagation
 from .chat_context import ChatContext
 from .data_message import DataMessage
 from .group import Group

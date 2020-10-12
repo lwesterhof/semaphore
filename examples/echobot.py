@@ -19,24 +19,25 @@
 """
 Signal Bot example, repeats received messages.
 """
+import os
+
 from semaphore import Bot, ChatContext, Reply
 
 
-def echo(ctx: ChatContext) -> None:
-    ctx.message.reply(ctx.message.get_body())
+async def echo(ctx: ChatContext) -> None:
+    await ctx.message.reply(ctx.message.get_body())
 
 
-def main():
+async def main():
     """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler("", echo)
 
-    # Add handler to bot.
-    bot.register_handler("", echo)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    import anyio
+    anyio.run(main)

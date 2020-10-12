@@ -73,17 +73,17 @@ class Message:
         else:
             return None
 
-    def reply(self, *args, **kwargs) -> None:
+    async def reply(self, *args, **kwargs) -> None:
         """Send a reply to the message.
 
         The args are the same as for the Reply constructor.
         """
-        self._sender.send_message(self, Reply(*args, **kwargs))
+        await self._sender.send_message(self, Reply(*args, **kwargs))
 
-    def mark_delivered(self) -> None:
+    async def mark_delivered(self) -> None:
         """Mark the message as delivered."""
-        self._sender.mark_delivered(self)
+        await self._sender.mark_delivered(self)
 
-    def mark_read(self) -> None:
+    async def mark_read(self) -> None:
         """Mark the message as read."""
-        self._sender.mark_read(self)
+        await self._sender.mark_read(self)

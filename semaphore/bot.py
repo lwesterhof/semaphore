@@ -23,6 +23,8 @@ import threading
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Pattern
 
+import anyio
+
 from .chat_context import ChatContext
 from .job_queue import JobQueue
 from .message import Message
@@ -44,6 +46,7 @@ class Bot:
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
         self._username: str = username
+        self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
         self._job_queue: JobQueue
@@ -57,7 +60,7 @@ class Bot:
         )
         self.log = logging.getLogger(__name__)
 
-        self._socket: Socket = Socket(username, socket_path)
+        self._socket: Socket
 
     def register_handler(self, regex: Pattern, func: Callable) -> None:
         """Register a chat handler with a regex."""
@@ -74,7 +77,7 @@ class Bot:
             return func
         return decorator
 
-    def _handle_message(self, message: Message, func: Callable, match) -> None:
+    async def _handle_message(self, message: Message, func: Callable, match) -> None:
         """Handle a matched message."""
         message_id = id(message)
         message_source = message.get_redacted_source()
@@ -91,22 +94,24 @@ class Bot:
 
         # Process received message and send reply.
         try:
-            func(context)
+            await func(context)
             self._chat_context[message.source] = context
             self.log.debug(f"Message ({message_id}) processed by handler {func.__name__}")
+        except StopPropagation:
+            raise
         except Exception as exc:
             self.log.error(
                 f"Processing message ({message_id}) by {func.__name__} failed",
                 exc_info=exc,
             )
 
-    def _match_message(self, message: Message) -> None:
+    async def _match_message(self, message: Message) -> None:
         """Match an incoming message against a handler."""
         message_id = id(message)
         message_source = message.get_redacted_source()
 
         # Mark message as delivered.
-        message.mark_delivered()
+        await message.mark_delivered()
         self.log.debug(f"Message ({message_id}) received from {message_source}")
         self.log.debug(str(message))
 
@@ -123,25 +128,31 @@ class Bot:
             )
 
             try:
-                self._handle_message(message, func, match)
+                await self._handle_message(message, func, match)
             except StopPropagation:
                 break
 
-    def start(self) -> None:
+    async def __aenter__(self) -> 'Bot':
+        """Connect to the bot's internal socket."""
+        self._socket = await Socket(self._username, self._socket_path).__aenter__()
+        return self
+
+    async def __aexit__(self, *excinfo):
+        """Disconnect from the bot's internal socket."""
+        return await self._socket.__aexit__(*excinfo)
+
+    async def start(self) -> None:
         """Start the bot event loop."""
         self.log.info("Bot started")
 
-        # Initialize sender and receiver.
         self._sender = MessageSender(self._username, self._socket)
         self._receiver = MessageReceiver(self._socket, self._sender)
 
-        # Initialize job queue.
-        self._job_queue = JobQueue(self._sender)
-        job_queue = threading.Thread(name='job_queue',
-                                     target=self._job_queue.start)
-        job_queue.start()
+        async with anyio.create_task_group() as tg:
+            self._job_queue = JobQueue(self._sender)
+            await tg.spawn(self._job_queue.start)
 
-        for message in self._receiver.receive():
-            # Only handle non empty messages.
-            if not message.empty():
-                self._match_message(message)
+            # handle incoming messages in parallel
+            async for message in self._receiver.receive():
+                if not message.empty():
+                    await tg.spawn(self._match_message, message)

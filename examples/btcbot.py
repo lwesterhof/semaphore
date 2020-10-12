@@ -21,20 +21,19 @@ Signal Bot example, checks the BTC price and sends a
 notification if it drops below a set price.
 """
 import json
+import os
 import re
 import urllib.request
 from time import time
 from typing import Optional
 
-from semaphore import Bot, ChatContext
+import asks  # type: ignore
+
+from semaphore import Bot, ChatContext, StopPropagation
 
 
-def check_price(ctx: ChatContext) -> None:
-    url = "https://blockchain.info/ticker"
-    request = urllib.request.Request(url)
-
-    response = urllib.request.urlopen(request).read()
-    content = json.loads(response.decode('utf-8'))
+async def check_price(ctx: ChatContext) -> None:
+    content = (await asks.get("https://blockchain.info/ticker")).json()
 
     price = int(ctx.match.group(1))
     last_price = int(content['USD']['last'])
@@ -45,45 +44,46 @@ def check_price(ctx: ChatContext) -> None:
             old_job.schedule_removal()
 
         notification = f"BTC price dropped below ${price}!\nCurrent price: ${last_price}"
-        ctx.message.reply(notification)
+        await ctx.message.reply(notification)
+
+    raise StopPropagation
 
 
-def set_notification(ctx: ChatContext) -> None:
+async def set_notification(ctx: ChatContext) -> None:
     try:
         now = time()
         price = int(ctx.match.group(1))
-
         if price < 0:
-            raise Exception
+            raise ValueError
+    except ValueError:
+        await ctx.message.reply("Usage: !btc <dollars>")
+        return
 
-        job = ctx.job_queue.run_repeating(now, check_price, ctx, 5 * 60)
-        ctx.data["job"] = job
+    job = await ctx.job_queue.run_repeating(now, check_price, ctx, 5 * 60)
+    ctx.data["job"] = job
 
-        ctx.message.reply("BTC price check set!")
-    except Exception:
-        ctx.message.reply("Usage: !btc <dollars>")
+    await ctx.message.reply("BTC price check set!")
 
 
-def unset_notification(ctx: ChatContext) -> None:
+async def unset_notification(ctx: ChatContext) -> None:
     if 'job' in ctx.data:
         old_job = ctx.data["job"]
         old_job.schedule_removal()
 
-    ctx.message.reply("BTC price check unset!")
+    await ctx.message.reply("BTC price check unset!")
 
 
-def main():
+async def main():
     """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler(re.compile("!btc unset"), unset_notification)
+        bot.register_handler(re.compile("!btc (.*)"), set_notification)
 
-    # Add btc handlers.
-    bot.register_handler(re.compile("!btc unset"), unset_notification)
-    bot.register_handler(re.compile("!btc (.*)"), set_notification)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    import anyio
+    anyio.run(main)

@@ -19,53 +19,88 @@
 """
 Signal Bot example, sends an alert after a specified time.
 """
+import contextlib
+import io
+import os
 import re
+from heapq import heappop, heappush
 from time import time
 
-from semaphore import Bot, ChatContext
+from semaphore import Bot, ChatContext, StopPropagation
 
 
-def alarm(ctx: ChatContext) -> None:
-    ctx.message.reply("Beep! Beep! Beep!")
+async def alarm(ctx: ChatContext) -> None:
+    with contextlib.suppress(IndexError):
+        del ctx.data['jobs'][0]
+    await ctx.message.reply("Beep! Beep! Beep!")
 
 
-def set_timer(ctx: ChatContext) -> None:
+async def set_timer(ctx: ChatContext) -> None:
     try:
         delta = int(ctx.match.group(1))
-        alarm_time = time() + delta
+    except ValueError:
+        await ctx.message.reply("Usage: !timer <seconds>")
+        return
 
-        if 'job' in ctx.data:
-            old_job = ctx.data["job"]
-            old_job.schedule_removal()
+    alarm_time = time() + delta
 
-        job = ctx.job_queue.run_once(alarm_time, alarm, ctx)
-        ctx.data["job"] = job
+    job = await ctx.job_queue.run_once(alarm_time, alarm, ctx)
+    heap = ctx.data.setdefault("jobs", [])
+    heappush(heap, (alarm_time, job))
 
-        ctx.message.reply("Timer set!")
-    except Exception:
-        ctx.message.reply("'Usage: !timer <seconds>'")
-
-
-def unset_timer(ctx: ChatContext) -> None:
-    if 'job' in ctx.data:
-        old_job = ctx.data["job"]
-        old_job.schedule_removal()
-
-    ctx.message.reply("Timer unset!")
+    await ctx.message.reply("Timer set!")
 
 
-def main():
+async def list_timers(ctx: ChatContext) -> None:
+    jobs = ctx.data.setdefault("jobs", [])
+    if not jobs:
+        await ctx.message.reply("No timers scheduled.")
+        raise StopPropagation
+
+    menu = io.StringIO()
+    now = time()
+    for job_id, (timestamp, job) in enumerate(jobs, 1):
+        menu.write(f"{job_id}: In {timestamp - now:.0f} seconds\n")
+
+    menu.write("\nUse !timer unset <id> to unset a specific timer.")
+
+    await ctx.message.reply(menu.getvalue())
+
+    raise StopPropagation
+
+
+async def unset_timer(ctx: ChatContext) -> None:
+    jobs = ctx.data.setdefault("jobs", [])
+
+    try:
+        job_id = int(ctx.match.group(1)) - 1
+        if job_id not in range(len(jobs)):
+            raise ValueError
+    except ValueError:
+        await ctx.message.reply(
+            "Usage: !timer unset <timer id>. "
+            "Get a list of them using !timer list."
+        )
+        raise StopPropagation
+
+    del jobs[job_id]
+    await ctx.message.reply("Timer unset!")
+
+    raise StopPropagation
+
+
+async def main():
     """Start the bot."""
     # Connect the bot to number.
-    bot = Bot("+xxxxxxxxxxx")
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler(re.compile("!timer unset (.*)"), unset_timer)
+        bot.register_handler(re.compile("!timer list"), list_timers)
+        bot.register_handler(re.compile("!timer (.*)"), set_timer)
 
-    # Add timer handler.
-    bot.register_handler(re.compile("!timer unset"), unset_timer)
-    bot.register_handler(re.compile("!timer (.*)"), set_timer)
-
-    # Run the bot until you press Ctrl-C.
-    bot.start()
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
 
 
 if __name__ == '__main__':
-    main()
+    import anyio
+    anyio.run(main)
