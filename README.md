@@ -162,5 +162,5 @@ The following example bots can be found in [examples](examples):
 * First release on Github
 
 ## License
-This project is licensed under the GPL-v3 license.
+This project is licensed under the AGPL-v3 license.
 The full license can be found in [LICENSE.txt](LICENSE.txt).
