@@ -22,7 +22,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 requirements = [
-    'anyio>=2.0.2.post7,<3.0.0',
+    'anyio>=2.0.2,<3.0.0',
     'attrs==18.2.0',
     'attr==0.3.1',
     'python_dateutil==2.8.1',
@@ -42,6 +42,13 @@ setup(
     license=meta.__license__,
     packages=find_packages(),
     install_requires=requirements,
+    extras_require={'dev': [
+        'flake8',
+        'pep257',
+        'mypy',
+        'sphinx',
+        'sphinx_rtd_theme',
+    ]},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
