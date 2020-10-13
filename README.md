@@ -107,7 +107,7 @@ bot = Bot("+xxxxxxxxxxx")
 
 @bot.handler('')
 async def echo(ctx: ChatContext) -> None:
-    ctx.message.reply(ctx.message.get_body())
+    await ctx.message.reply(ctx.message.get_body())
 
 async def main():
     async with bot:
