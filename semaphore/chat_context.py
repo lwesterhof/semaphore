@@ -16,12 +16,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents the context of a chat."""
-from typing import Any, Dict, Match
+from typing import Any, Dict, Match, TYPE_CHECKING
 
 import attr
 
 from .job_queue import JobQueue
 from .message import Message
+
+
+# Resolve circular import.
+if TYPE_CHECKING:
+    from .bot import Bot
 
 
 @attr.s(auto_attribs=True)
@@ -31,4 +36,5 @@ class ChatContext():
     message: Message
     match: Match
     job_queue: JobQueue
+    bot: Bot
     data: Dict[str, Any] = {}
