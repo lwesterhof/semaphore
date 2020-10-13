@@ -20,7 +20,7 @@ import logging
 import re
 import threading
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Pattern
+from typing import Any, Callable, Dict, List, Pattern, TYPE_CHECKING
 
 import anyio
 
@@ -88,7 +88,7 @@ class Bot:
             context.match = match
             self.log.debug(f"Chat context exists for {message_source}")
         else:
-            context = ChatContext(message, match, self._job_queue)
+            context = ChatContext(message, match, self._job_queue, self)
             self.log.debug(f"Chat context created for {message_source}")
 
         # Process received message and send reply.
