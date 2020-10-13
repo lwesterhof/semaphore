@@ -36,5 +36,5 @@ class ChatContext():
     message: Message
     match: Match
     job_queue: JobQueue
-    bot: Bot
+    bot: 'Bot'
     data: Dict[str, Any] = {}
