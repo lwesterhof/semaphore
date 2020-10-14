@@ -125,6 +125,7 @@ The following example bots can be found in [examples](examples):
 - [echobot](examples/echobot.py), repeats received messages
 - [lovebot](examples/lovebot.py), loves everything you say!
 - [spongebot](examples/spongebot.py), repeats received messages in sPOngEbOb sqUArepAnTs text
+- [stickerbot](examples/stickerbot.py), links to the sticker pack for received stickers
 - [timerbot](examples/timerbot.py), sends an alert after a predefined time
 - [quotebot](examples/quotebot.py), quotes and repeats received messages
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
