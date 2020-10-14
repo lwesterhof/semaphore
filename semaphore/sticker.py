@@ -15,23 +15,19 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""This module contains an object that represents a Signal data message."""
+"""This module contains an object that represents a Signal sticker."""
 from typing import List, Optional
 
 import attr
 
-from .attachment import Attachment
-from .sticker import Sticker
-from .group import Group
+from .sticker_pack import StickerPack
 
 
 @attr.s(auto_attribs=True, frozen=True)
-class DataMessage:
-    """This object represents a Signal data message."""
+class Sticker:
+    """This object represents a Signal sticker."""
 
-    timestamp: int
-    body: str
-    expires_in_seconds: int = attr.ib(default=0)
-    attachments: List[Attachment] = attr.ib(factory=list)
-    group: Optional[Group] = attr.ib(default=None)
-    sticker: Optional[Sticker] = attr.ib(default=None)
+    pack: StickerPack
+    sticker_id: int
+    # inbound Signal messages don't specify the emoji of a sticker
+    emoji: Optional[str] = None

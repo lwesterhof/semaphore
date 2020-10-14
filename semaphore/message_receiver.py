@@ -25,6 +25,8 @@ from .data_message import DataMessage
 from .group import Group
 from .message import Message
 from .message_sender import MessageSender
+from .sticker import Sticker
+from .sticker_pack import StickerPack
 from .socket import Socket
 
 
@@ -66,9 +68,21 @@ class MessageReceiver:
                             group_type=data["group"].get("type"),
                         )
 
+                    sticker_data = data.get("sticker")
+                    sticker: Optional[Sticker] = None
+                    if sticker_data:
+                        pack = StickerPack(
+                            pack_id=sticker_data["packID"],
+                            pack_key=sticker_data["packKey"],
+                        )
+                        sticker = Sticker(
+                            sticker_id=sticker_data["stickerID"],
+                            pack=pack,
+                        )
+
                     data_message = DataMessage(
                         timestamp=data["timestamp"],
-                        body=data["body"],
+                        body=data.get("body", ""),
                         expires_in_seconds=data["expiresInSeconds"],
                         attachments=[
                             Attachment(
@@ -82,6 +96,7 @@ class MessageReceiver:
                             for attachment in data.get("attachments", [])
                         ],
                         group=group,
+                        sticker=sticker,
                     )
 
                 yield Message(
@@ -101,7 +116,7 @@ class MessageReceiver:
                     sender=self._sender,
                 )
             except Exception as exc:
-                self.log.debug(
+                self.log.error(
                     f"Could not receive message: {json.dumps(message)}",
                     exc_info=exc,
                 )

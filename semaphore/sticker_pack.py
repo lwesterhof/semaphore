@@ -16,22 +16,26 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a Signal data message."""
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING
 
 import attr
 
-from .attachment import Attachment
-from .sticker import Sticker
-from .group import Group
+if TYPE_CHECKING:
+    from .sticker import Sticker
 
 
 @attr.s(auto_attribs=True, frozen=True)
-class DataMessage:
-    """This object represents a Signal data message."""
+class StickerPack:
+    """This object represents a Signal sticker pack."""
 
-    timestamp: int
-    body: str
-    expires_in_seconds: int = attr.ib(default=0)
-    attachments: List[Attachment] = attr.ib(factory=list)
-    group: Optional[Group] = attr.ib(default=None)
-    sticker: Optional[Sticker] = attr.ib(default=None)
+    pack_id: str
+    pack_key: str
+    stickers: List['Sticker'] = attr.ib(factory=list)
+    # inbound partial sticker packs do not have title and author set
+    title: Optional[str] = None
+    author: Optional[str] = None
+
+    @property
+    def url(self) -> str:
+        """Return the pack's URL."""
+        return f'https://signal.art/addstickers/#pack_id={self.pack_id}&pack_key={self.pack_key}'  # noqa: E501

@@ -65,6 +65,10 @@ class Message:
         else:
             return self.data_message.body
 
+    def get_sticker(self):
+        """Return the message's sticker if there is one."""
+        return self.data_message.sticker
+
     def get_group_id(self) -> Optional[str]:
         """Get group id if message is a group message."""
         if self.data_message and self.data_message.group:
