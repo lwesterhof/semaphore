@@ -15,26 +15,19 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""This module contains an object that represents the context of a chat."""
-from typing import Any, Dict, Match, TYPE_CHECKING
+"""This module contains an object that represents a Signal sticker."""
+from typing import List, Optional
 
 import attr
 
-from .job_queue import JobQueue
-from .message import Message
+from .sticker_pack import StickerPack
 
 
-# Resolve circular import.
-if TYPE_CHECKING:
-    from .bot import Bot
+@attr.s(auto_attribs=True, frozen=True)
+class Sticker:
+    """This object represents a Signal sticker."""
 
-
-@attr.s(auto_attribs=True)
-class ChatContext():
-    """This object represents the context of a chat."""
-
-    message: Message
-    match: Match
-    job_queue: JobQueue
-    bot: 'Bot'
-    data: Dict[str, Any] = {}
+    pack: StickerPack
+    sticker_id: int
+    # inbound Signal messages don't specify the emoji of a sticker
+    emoji: Optional[str] = None

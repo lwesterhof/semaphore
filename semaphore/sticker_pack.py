@@ -15,26 +15,27 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""This module contains an object that represents the context of a chat."""
-from typing import Any, Dict, Match, TYPE_CHECKING
+"""This module contains an object that represents a Signal data message."""
+from typing import List, Optional, TYPE_CHECKING
 
 import attr
 
-from .job_queue import JobQueue
-from .message import Message
-
-
-# Resolve circular import.
 if TYPE_CHECKING:
-    from .bot import Bot
+    from .sticker import Sticker
 
 
-@attr.s(auto_attribs=True)
-class ChatContext():
-    """This object represents the context of a chat."""
+@attr.s(auto_attribs=True, frozen=True)
+class StickerPack:
+    """This object represents a Signal sticker pack."""
 
-    message: Message
-    match: Match
-    job_queue: JobQueue
-    bot: 'Bot'
-    data: Dict[str, Any] = {}
+    pack_id: str
+    pack_key: str
+    stickers: List['Sticker'] = attr.ib(factory=list)
+    # inbound partial sticker packs do not have title and author set
+    title: Optional[str] = None
+    author: Optional[str] = None
+
+    @property
+    def url(self) -> str:
+        """Return the pack's URL."""
+        return f'https://signal.art/addstickers/#pack_id={self.pack_id}&pack_key={self.pack_key}'  # noqa: E501

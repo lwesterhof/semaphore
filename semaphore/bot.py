@@ -153,5 +153,5 @@ class Bot:
 
             # handle incoming messages in parallel
             async for message in self._receiver.receive():
-                if not message.empty():
+                if message.data_message is not None:
                     await tg.spawn(self._match_message, message)

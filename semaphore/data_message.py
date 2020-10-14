@@ -21,6 +21,7 @@ from typing import List, Optional
 import attr
 
 from .attachment import Attachment
+from .sticker import Sticker
 from .group import Group
 
 
@@ -31,5 +32,6 @@ class DataMessage:
     timestamp: int
     body: str
     expires_in_seconds: int = attr.ib(default=0)
-    attachments: List[Attachment] = attr.ib(default=[])
+    attachments: List[Attachment] = attr.ib(factory=list)
     group: Optional[Group] = attr.ib(default=None)
+    sticker: Optional[Sticker] = attr.ib(default=None)
