@@ -2,6 +2,7 @@
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
 # Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) io mintz <io@mintz.cc>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -16,23 +17,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-Signal Bot example, repeats received messages.
+Signal bot example that links to the sticker pack for received stickers.
 """
 import os
 
 from semaphore import Bot, ChatContext
 
 
-async def echo(ctx: ChatContext) -> None:
-    if not ctx.message.empty():
-        await ctx.message.reply(ctx.message.get_body())
+async def sticker_pack(ctx: ChatContext) -> None:
+    sticker = ctx.message.get_sticker()
+    if sticker:
+        await ctx.message.reply(sticker.pack.url)
 
 
 async def main():
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
-        bot.register_handler("", echo)
+        bot.register_handler("", sticker_pack)
 
         # Run the bot until you press Ctrl-C.
         await bot.start()
