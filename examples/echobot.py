@@ -20,7 +20,7 @@ Signal Bot example, repeats received messages.
 """
 import os
 
-from semaphore import Bot, ChatContext, Reply
+from semaphore import Bot, ChatContext
 
 
 async def echo(ctx: ChatContext) -> None:
