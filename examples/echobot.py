@@ -24,7 +24,8 @@ from semaphore import Bot, ChatContext
 
 
 async def echo(ctx: ChatContext) -> None:
-    await ctx.message.reply(ctx.message.get_body())
+    if not ctx.message.empty():
+        await ctx.message.reply(ctx.message.get_body())
 
 
 async def main():
