@@ -130,6 +130,11 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.8.0**
+* Support for Python 3.9
+* Support for executing multiple handlers in parallel
+* Support incoming sticker messages
+
 **v0.7.1**
 * Support for decorators to register handlers
 * Support for sending delivery receipts
