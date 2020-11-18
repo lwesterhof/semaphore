@@ -23,6 +23,7 @@ import attr
 from .attachment import Attachment
 from .sticker import Sticker
 from .group import Group
+from .groupV2 import GroupV2
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -34,4 +35,5 @@ class DataMessage:
     expires_in_seconds: int = attr.ib(default=0)
     attachments: List[Attachment] = attr.ib(factory=list)
     group: Optional[Group] = attr.ib(default=None)
+    groupV2: Optional[GroupV2] = attr.ib(default=None)
     sticker: Optional[Sticker] = attr.ib(default=None)

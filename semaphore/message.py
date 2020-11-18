@@ -71,10 +71,12 @@ class Message:
 
     def get_group_id(self) -> Optional[str]:
         """Get group id if message is a group message."""
-        if self.data_message and self.data_message.group:
-            return self.data_message.group.group_id
-        else:
-            return None
+        if self.data_message:
+            if self.data_message.groupV2:
+                return self.data_message.groupV2.group_id
+            if self.data_message.group:
+                return self.data_message.group.group_id
+        return None
 
     async def reply(self, *args, **kwargs) -> None:
         """Send a reply to the message.

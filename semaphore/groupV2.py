@@ -15,19 +15,12 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""Semaphore: A simple (rule-based) bot library for Signal Private Messenger."""
-from .meta import *
+"""This module contains an object that represents Signal group v2 info."""
+import attr
 
-from .attachment import Attachment
-from .bot import Bot, StopPropagation
-from .chat_context import ChatContext
-from .data_message import DataMessage
-from .group import Group
-from .groupV2 import GroupV2
-from .job import Job
-from .job_queue import JobQueue
-from .message import Message
-from .message_receiver import MessageReceiver
-from .message_sender import MessageSender
-from .reply import Reply
-from .socket import Socket
+
+@attr.s(auto_attribs=True, frozen=True)
+class GroupV2:
+    """This object represents Signal group info."""
+
+    group_id: str

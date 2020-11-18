@@ -23,6 +23,7 @@ from typing import AsyncIterable, Optional
 from .attachment import Attachment
 from .data_message import DataMessage
 from .group import Group
+from .groupV2 import GroupV2
 from .message import Message
 from .message_sender import MessageSender
 from .sticker import Sticker
@@ -61,11 +62,16 @@ class MessageReceiver:
                 data = message.get("dataMessage")
                 if data:
                     group: Optional[Group] = None
+                    groupV2: Optional[GroupV2] = None
                     if data.get("group"):
                         group = Group(
                             group_id=data["group"].get("groupId"),
                             name=data["group"].get("name"),
                             group_type=data["group"].get("type"),
+                        )
+                    if data.get("groupV2"):
+                        groupV2 = GroupV2(
+                            group_id=data["groupV2"].get("id")
                         )
 
                     sticker_data = data.get("sticker")
@@ -96,6 +102,7 @@ class MessageReceiver:
                             for attachment in data.get("attachments", [])
                         ],
                         group=group,
+                        groupV2=groupV2,
                         sticker=sticker,
                     )
 
