@@ -85,6 +85,14 @@ class Message:
         """
         await self._sender.send_message(self, Reply(*args, **kwargs))
 
+    async def typing_started(self) -> None:
+        """Send a typing started message."""
+        await self._sender.typing_started(self)
+
+    async def typing_stopped(self) -> None:
+        """Send a typing stopped message."""
+        await self._sender.typing_stopped(self)
+
     async def mark_delivered(self) -> None:
         """Mark the message as delivered."""
         await self._sender.mark_delivered(self)

@@ -77,6 +77,40 @@ class MessageSender:
 
         await self._send(bot_message)
 
+    async def typing_started(self, message: Message) -> None:
+        """
+        Send a typing started message.
+
+        message: The Signal message you received.
+        """
+        # Construct reply message.
+        typing_message: Dict[str, Any] = {"type": "typing_started",
+                                          "username": self._username,
+                                          "recipientAddress": {"number": message.source}}
+
+        # Add group id.
+        if message.get_group_id():
+            typing_message["recipientGroupId"] = message.get_group_id()
+
+        await self._send(typing_message)
+
+    async def typing_stopped(self, message: Message) -> None:
+        """
+        Send a typing stopped message.
+
+        message: The Signal message you received.
+        """
+        # Construct reply message.
+        typing_message: Dict[str, Any] = {"type": "typing_stopped",
+                                          "username": self._username,
+                                          "recipientAddress": {"number": message.source}}
+
+        # Add group id.
+        if message.get_group_id():
+            typing_message["recipientGroupId"] = message.get_group_id()
+
+        await self._send(typing_message)
+
     async def mark_delivered(self, message: Message) -> None:
         """
         Mark a Signal message you received as delivered.
