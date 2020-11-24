@@ -14,7 +14,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/thefinn93/signald) ([01f4e764](https://gitlab.com/thefinn93/signald/-/commit/01f4e7640e3fefb836fe48a3e60d5d5996dc2f7c) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/thefinn93/signald) ([82c6e115](https://gitlab.com/thefinn93/signald/-/commit/82c6e115a5e24947901089c0c7c91927ea18d5cc) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
