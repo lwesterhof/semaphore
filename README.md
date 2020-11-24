@@ -41,7 +41,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
     ```bash
     $ git clone https://github.com/lwesterhof/semaphore.git
     $ cd semaphore
-    $ python -m pip install -r requirements.txt
+    $ python -m pip install .
     $ python setup.py sdist bdist_wheel
     $ python -m pip install dist/semaphore-*.tar.gz
     ```
