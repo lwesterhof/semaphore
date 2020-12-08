@@ -89,7 +89,7 @@ class MessageReceiver:
                     data_message = DataMessage(
                         timestamp=data["timestamp"],
                         body=data.get("body", ""),
-                        expires_in_seconds=data["expiresInSeconds"],
+                        expires_in_seconds=data.get("expiresInSeconds"),
                         attachments=[
                             Attachment(
                                 content_type=attachment["contentType"],
@@ -112,7 +112,7 @@ class MessageReceiver:
                     envelope_type=message["type"],
                     timestamp=message["timestamp"],
                     timestamp_iso=message["timestampISO"],
-                    server_timestamp=message["serverTimestamp"],
+                    server_timestamp=message["serverDeliveredTimestamp"],
                     source_device=message.get("sourceDevice"),
                     uuid=message.get("uuid"),
                     relay=message.get("relay"),
