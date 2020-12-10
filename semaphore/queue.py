@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 """PriorityQueue implementation for anyio."""
-from heapq import heappush, heappop
+from heapq import heappop, heappush
 
 import anyio
 from anyio import WouldBlock
@@ -27,7 +27,9 @@ class PriorityQueue:
     def get_nowait(self):
         """Remove and return an item if one is immediately available.
 
-        If not, raise WouldBlock.
+        :raises WouldBlock: If no item is immediately available
+
+        :returns: Item from the queue
         """
         if not self._not_empty.is_set():
             raise WouldBlock
@@ -43,6 +45,8 @@ class PriorityQueue:
         """Remove and return an item from the queue.
 
         If the queue is empty, wait until an item is available.
+
+        :returns: Item from the queue
         """
         while True:
             await self._not_empty.wait()

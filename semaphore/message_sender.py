@@ -38,8 +38,8 @@ class MessageSender:
         """
         Send the bot message.
 
-        message: The original message replying to.
-        reply:   The reply to send.
+        :param message: The original message replying to.
+        :param reply:   The reply to send.
         """
         # Mark message as read before replying.
         if reply.mark_read:
@@ -81,7 +81,7 @@ class MessageSender:
         """
         Send a typing started message.
 
-        message: The Signal message you received.
+        :param message: The Signal message you received.
         """
         # Construct reply message.
         typing_message: Dict[str, Any] = {"type": "typing_started",
@@ -98,7 +98,7 @@ class MessageSender:
         """
         Send a typing stopped message.
 
-        message: The Signal message you received.
+        :param message: The Signal message you received.
         """
         # Construct reply message.
         typing_message: Dict[str, Any] = {"type": "typing_stopped",
@@ -115,7 +115,7 @@ class MessageSender:
         """
         Mark a Signal message you received as delivered.
 
-        message: The Signal message you received.
+        :param message: The Signal message you received.
         """
         await self._send({
             "type": "mark_delivered",
@@ -128,7 +128,7 @@ class MessageSender:
         """
         Mark a Signal message you received as read.
 
-        message: The Signal message you received.
+        :param message: The Signal message you received.
         """
         await self._send({
             "type": "mark_read",

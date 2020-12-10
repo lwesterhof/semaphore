@@ -26,9 +26,9 @@ from .group import Group
 from .groupV2 import GroupV2
 from .message import Message
 from .message_sender import MessageSender
+from .socket import Socket
 from .sticker import Sticker
 from .sticker_pack import StickerPack
-from .socket import Socket
 
 
 class MessageReceiver:

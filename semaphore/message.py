@@ -81,7 +81,8 @@ class Message:
     async def reply(self, *args, **kwargs) -> None:
         """Send a reply to the message.
 
-        The args are the same as for the Reply constructor.
+        :param *args:    The body of the reply
+        :param **kwargs: Keyword arguments of the Reply constructor
         """
         await self._sender.send_message(self, Reply(*args, **kwargs))
 

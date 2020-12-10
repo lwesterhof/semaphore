@@ -58,7 +58,7 @@ async def list_timers(ctx: ChatContext) -> None:
 
     menu = io.StringIO()
     now = time()
-    for job_id, (timestamp, job) in enumerate(jobs, 1):
+    for job_id, (timestamp, _job) in enumerate(jobs, 1):
         menu.write(f"{job_id}: In {timestamp - now:.0f} seconds\n")
 
     menu.write("\nUse !timer unset <id> to unset a specific timer.")

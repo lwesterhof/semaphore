@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Semaphore: A simple (rule-based) bot library for Signal Private Messenger."""
-from .meta import *
 
 from .attachment import Attachment
 from .bot import Bot, StopPropagation
@@ -29,5 +28,6 @@ from .job_queue import JobQueue
 from .message import Message
 from .message_receiver import MessageReceiver
 from .message_sender import MessageSender
+from .meta import *
 from .reply import Reply
 from .socket import Socket

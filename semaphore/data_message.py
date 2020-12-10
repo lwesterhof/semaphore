@@ -21,9 +21,9 @@ from typing import List, Optional
 import attr
 
 from .attachment import Attachment
-from .sticker import Sticker
 from .group import Group
 from .groupV2 import GroupV2
+from .sticker import Sticker
 
 
 @attr.s(auto_attribs=True, frozen=True)

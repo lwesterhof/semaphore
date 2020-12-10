@@ -22,8 +22,8 @@ from typing import Callable
 
 from anyio import sleep, WouldBlock
 
-from .queue import PriorityQueue
 from .job import Job
+from .queue import PriorityQueue
 
 
 class JobQueue:

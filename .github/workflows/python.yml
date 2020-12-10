@@ -22,13 +22,9 @@ jobs:
           python -m pip install --upgrade setuptools pip wheel
           python -m pip install .[dev]
 
-      - name: Check pep8
+      - name: Lint with flake8
         run: |
           flake8 --statistics
-
-      - name: Check pep257
-        run: |
-          pep257 semaphore
 
       - name: Check static typing
         run: |

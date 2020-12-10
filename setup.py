@@ -44,7 +44,8 @@ setup(
     install_requires=requirements,
     extras_require={'dev': [
         'flake8',
-        'pep257',
+        'flake8-import-order',
+        'darglint',
         'mypy',
         'sphinx',
         'sphinx_rtd_theme',
