@@ -14,7 +14,7 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/thefinn93/signald) ([6a045396](https://gitlab.com/thefinn93/signald/-/commit/6a045396757ae41eb404463a73abbd68742b932a) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/thefinn93/signald) 0.11.1+ ([7ef8166d](https://gitlab.com/thefinn93/signald/-/commit/7ef8166d7cc12be96818dfc4480da01994dd7be4) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
@@ -131,10 +131,16 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.9.0**
+* Support for typing indicators
+* Support for GroupsV2 (thanks @thefinn93)
+* Example sticker bot (thanks @iomintz)
+* Compatibility with signald 0.11.0+
+
 **v0.8.0**
 * Support for Python 3.9
-* Support for executing multiple handlers in parallel
-* Support incoming sticker messages
+* Support for executing multiple handlers in parallel (thanks @iomintz)
+* Support incoming sticker messages (thanks @iomintz)
 
 **v0.7.1**
 * Support for decorators to register handlers
@@ -143,7 +149,7 @@ The following example bots can be found in [examples](examples):
 
 **v0.7.0**
 * Compatibility with signald 0.10.0+
-* Support for multiple replies/reactions by handler
+* Support for multiple replies/reactions by handler (thanks @iomintz)
 * Marking messages as read is optional
 * First release on PyPi
 
