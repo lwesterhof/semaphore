@@ -131,6 +131,9 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.9.1**
+* Fix repeating job re-add to queue (thanks @grandchild)
+
 **v0.9.0**
 * Support for typing indicators
 * Support for GroupsV2 (thanks @thefinn93)
