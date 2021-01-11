@@ -1,6 +1,7 @@
 # Semaphore [![PyPI](https://img.shields.io/pypi/v/semaphore-bot)](https://pypi.org/project/semaphore-bot/) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore) ![GitHub](https://img.shields.io/github/license/lwesterhof/semaphore)
 
 A simple (rule-based) bot library for [Signal](https://signal.org/) Private Messenger in Python.
+Please note that this library is unofficial, unapproved and not nearly as secure as the real Signal clients.
 
 ## Table of contents
    * [Requirements](#requirements)
@@ -14,12 +15,12 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/thefinn93/signald) 0.11.1+ ([7ef8166d](https://gitlab.com/thefinn93/signald/-/commit/7ef8166d7cc12be96818dfc4480da01994dd7be4) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) 0.11.1+ ([7ef8166d](https://gitlab.com/signald/signald/-/commit/7ef8166d7cc12be96818dfc4480da01994dd7be4) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
     ```bash
-    $ git clone https://gitlab.com/thefinn93/signald.git
+    $ git clone https://gitlab.com/signald/signald.git
     $ cd signald
     $ make installDist
     $ make setup
@@ -91,11 +92,6 @@ A simple (rule-based) bot library for [Signal](https://signal.org/) Private Mess
 9. Send message to Signal bot running on `+xxxxxxxxxxx` and wait for an echo
 
 10. Now you can start writing your own bot for [Signal](https://signal.org/) Private Messenger!
-
-## Demo
-A demonstration bot is running on `+31686100384`.
-Do not send anything confidential, use at your own risk!
-![Conversation with demonstration bot](demo.jpg)
 
 ## Code example
 ```python
