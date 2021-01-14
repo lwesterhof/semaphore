@@ -46,34 +46,40 @@ class MessageSender:
             await message.mark_read()
 
         # Construct reply message.
-        bot_message: Dict[str, Any] = {"type": "react",
-                                       "username": self._username}
+        bot_message: Dict[str, Any] = {}
+        if reply.reaction:
+            bot_message = {
+                "type": "react",
+                "username": self._username,
+                "reaction": {
+                    "emoji": reply.body,
+                    "targetAuthor": {"uuid": message.source},
+                    "targetSentTimestamp": message.timestamp
+                }
+            }
+        else:
+            bot_message = {
+                "type": "send",
+                "username": self._username,
+                "messageBody": reply.body
+            }
+
+            # Add attachments to message.
+            if reply.attachments:
+                bot_message["attachments"] = reply.attachments
+
+            # Add quote to message.
+            if reply.quote:
+                quote = {"id": message.timestamp,
+                         "author": {'uuid': message.source},
+                         "text": message.get_body()}
+                bot_message["quote"] = quote
 
         # Add message recipient.
         if message.get_group_id():
             bot_message["recipientGroupId"] = message.get_group_id()
         else:
-            bot_message["recipientAddress"] = {"number": message.source}
-
-        if reply.reaction:
-            bot_message["type"] = "react"
-            bot_message["reaction"] = {"emoji": reply.body,
-                                       "targetAuthor": {"number": message.source},
-                                       "targetSentTimestamp": message.timestamp}
-        else:
-            bot_message["type"] = "send"
-            bot_message["messageBody"] = reply.body
-
-        # Add attachments to message.
-        if reply.attachments:
-            bot_message["attachments"] = reply.attachments
-
-        # Add quote to message.
-        if reply.quote:
-            quote = {"id": message.timestamp,
-                     "author": message.source,
-                     "text": message.get_body()}
-            bot_message["quote"] = quote
+            bot_message["recipientAddress"] = {"uuid": message.source}
 
         await self._send(bot_message)
 
@@ -86,7 +92,7 @@ class MessageSender:
         # Construct reply message.
         typing_message: Dict[str, Any] = {"type": "typing_started",
                                           "username": self._username,
-                                          "recipientAddress": {"number": message.source}}
+                                          "recipientAddress": {"uuid": message.source}}
 
         # Add group id.
         if message.get_group_id():
@@ -103,7 +109,7 @@ class MessageSender:
         # Construct reply message.
         typing_message: Dict[str, Any] = {"type": "typing_stopped",
                                           "username": self._username,
-                                          "recipientAddress": {"number": message.source}}
+                                          "recipientAddress": {"uuid": message.source}}
 
         # Add group id.
         if message.get_group_id():
@@ -120,7 +126,7 @@ class MessageSender:
         await self._send({
             "type": "mark_delivered",
             "username": self._username,
-            "recipientAddress": {"number": message.source},
+            "recipientAddress": {"uuid": message.source},
             "timestamps": [message.timestamp],
         })
 
@@ -133,6 +139,6 @@ class MessageSender:
         await self._send({
             "type": "mark_read",
             "username": self._username,
-            "recipientAddress": {"number": message.source},
+            "recipientAddress": {"uuid": message.source},
             "timestamps": [message.timestamp],
         })

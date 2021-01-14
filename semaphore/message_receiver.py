@@ -108,7 +108,7 @@ class MessageReceiver:
 
                 yield Message(
                     username=message["username"],
-                    source=message["source"].get("number"),
+                    source=message["source"].get("uuid"),
                     envelope_type=message["type"],
                     timestamp=message["timestamp"],
                     timestamp_iso=message["timestampISO"],
