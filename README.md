@@ -1,4 +1,9 @@
-# Semaphore [![PyPI](https://img.shields.io/pypi/v/semaphore-bot)](https://pypi.org/project/semaphore-bot/) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore) ![GitHub](https://img.shields.io/github/license/lwesterhof/semaphore)
+# Semaphore
+
+[![PyPI](https://img.shields.io/pypi/v/semaphore-bot)](https://pypi.org/project/semaphore-bot/)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore)
+![License](https://img.shields.io/github/license/lwesterhof/semaphore)
 
 A simple (rule-based) bot library for [Signal](https://signal.org/) Private Messenger in Python.
 Please note that this library is unofficial, unapproved and not nearly as secure as the real Signal clients.
