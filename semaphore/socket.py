@@ -27,9 +27,13 @@ import anyio.abc
 class Socket:
     """This object represents a signald socket."""
 
-    def __init__(self, username: str, socket_path: str = "/var/run/signald/signald.sock"):
+    def __init__(self,
+                 username: str,
+                 profile_name: str,
+                 socket_path: str = "/var/run/signald/signald.sock"):
         """Initialize socket."""
         self._username: str = username
+        self._profile_name: str = profile_name
         self._socket_path: str = socket_path
         self._socket: anyio.abc.SocketStream
 
@@ -40,7 +44,11 @@ class Socket:
         self._socket = await (await anyio.connect_unix(self._socket_path)).__aenter__()
         self.log.info(f"Connected to socket ({self._socket_path})")
         await self.send({"type": "subscribe", "username": self._username})
-        self.log.info(f"Bot attempted to subscribe to +********{self._username[-3:]}")
+        await self.send({"type": "set_profile",
+                         "username": self._username,
+                         "name": self._profile_name})
+        self.log.info(f"{self._profile_name} attempted to subscribe "
+                      f"to +********{self._username[-3:]}")
         return self
 
     async def __aexit__(self, *excinfo):

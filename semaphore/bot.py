@@ -41,10 +41,12 @@ class Bot:
 
     def __init__(self,
                  username: str,
+                 profile_name="Semaphore bot",
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
         self._username: str = username
+        self._profile_name: str = profile_name
         self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
@@ -133,7 +135,9 @@ class Bot:
 
     async def __aenter__(self) -> 'Bot':
         """Connect to the bot's internal socket."""
-        self._socket = await Socket(self._username, self._socket_path).__aenter__()
+        self._socket = await Socket(self._username,
+                                    self._profile_name,
+                                    self._socket_path).__aenter__()
         return self
 
     async def __aexit__(self, *excinfo):
@@ -142,8 +146,7 @@ class Bot:
 
     async def start(self) -> None:
         """Start the bot event loop."""
-        self.log.info("Bot started")
-
+        self.log.info(f"{self._profile_name} started")
         self._sender = MessageSender(self._username, self._socket)
         self._receiver = MessageReceiver(self._socket, self._sender)
 
