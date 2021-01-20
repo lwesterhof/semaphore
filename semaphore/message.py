@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -53,10 +53,6 @@ class Message:
             if self.data_message.body != "":
                 return False
         return True
-
-    def get_redacted_source(self) -> str:
-        """Return the message source redacted."""
-        return f"+********{self.source[-3:]}"
 
     def get_body(self):
         """Check if the message is not empty."""

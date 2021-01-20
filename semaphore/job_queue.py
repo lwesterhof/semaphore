@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -22,6 +22,7 @@ from typing import Callable
 
 from anyio import sleep, WouldBlock
 
+from .exceptions import StopPropagation
 from .job import Job
 from .queue import PriorityQueue
 
@@ -108,11 +109,12 @@ class JobQueue:
                 reply = await job.run()
                 if reply:
                     await self._sender.send_message(message, reply)
-                    self.log.info(f"Reply for job ({id(job)}) sent "
-                                  f"to {message.get_redacted_source()}")
+                    self.log.info(f"Reply for job ({id(job)}) sent to {message.source}")
+            except StopPropagation:
+                continue
             except Exception as exc:
                 self.log.warning(f"Sending reply for message ({id(message)}) "
-                                 f"to {message.get_redacted_source()} failed",
+                                 f"to {message.source} failed",
                                  exc_info=exc)
                 continue
 
