@@ -22,5 +22,5 @@ semaphore package
     semaphore.message
     semaphore.reply
     semaphore.socket
-    semaphore.sticker_pack
     semaphore.sticker
+    semaphore.sticker_pack
