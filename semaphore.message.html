@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>semaphore.Message &mdash; Semaphore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+    <link rel="canonical" href="https://lwesterhof.github.io/semaphore/semaphore.message.html" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="semaphore.Reply" href="semaphore.reply.html" />
+    <link rel="prev" title="semaphore.MessageSender" href="semaphore.message_sender.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Semaphore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="semaphore.html">semaphore package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="semaphore.attachment.html">semaphore.Attachment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.bot.html">semaphore.Bot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.chat_context.html">semaphore.ChatContext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.data_message.html">semaphore.DataMessage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.job_queue.html">semaphore.JobQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.job.html">semaphore.Job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.message_receiver.html">semaphore.MessageReceiver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.message_sender.html">semaphore.MessageSender</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.Message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.reply.html">semaphore.Reply</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.socket.html">semaphore.Socket</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Semaphore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="semaphore.html">semaphore package</a> &raquo;</li>
+        
+      <li>semaphore.Message</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/semaphore.message.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="semaphore-message">
+<h1>semaphore.Message<a class="headerlink" href="#semaphore-message" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="semaphore.Message">
+<em class="property">class </em><code class="sig-prename descclassname">semaphore.</code><code class="sig-name descname">Message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">envelope_type</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">timestamp</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">timestamp_iso</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">server_timestamp</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">sender</span><span class="p">:</span> <span class="n">MessageSender</span></em>, <em class="sig-param"><span class="n">source_device</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">uuid</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">relay</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">has_legacy_message</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">has_content</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">is_receipt</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">data_message</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>semaphore.data_message.DataMessage<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">is_unidentified_sender</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object represents a Signal message.</p>
+<dl class="py method">
+<dt id="semaphore.Message.empty">
+<code class="sig-name descname">empty</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/semaphore/message.html#Message.empty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the message is not empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.get_body">
+<code class="sig-name descname">get_body</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message.html#Message.get_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.get_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the message is not empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.get_group_id">
+<code class="sig-name descname">get_group_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="_modules/semaphore/message.html#Message.get_group_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.get_group_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get group id if message is a group message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.get_sticker">
+<code class="sig-name descname">get_sticker</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message.html#Message.get_sticker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.get_sticker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the message’s sticker if there is one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.mark_delivered">
+<em class="property">async </em><code class="sig-name descname">mark_delivered</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message.html#Message.mark_delivered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.mark_delivered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark the message as delivered.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.mark_read">
+<em class="property">async </em><code class="sig-name descname">mark_read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message.html#Message.mark_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.mark_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark the message as read.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.reply">
+<em class="property">async </em><code class="sig-name descname">reply</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message.html#Message.reply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.reply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a reply to the message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – <p>The body of the reply</p>
+</p></li>
+<li><p><strong>**kwargs</strong> – <p>Keyword arguments of the Reply constructor</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.typing_started">
+<em class="property">async </em><code class="sig-name descname">typing_started</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message.html#Message.typing_started"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.typing_started" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a typing started message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="semaphore.Message.typing_stopped">
+<em class="property">async </em><code class="sig-name descname">typing_stopped</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message.html#Message.typing_stopped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Message.typing_stopped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a typing stopped message.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="semaphore.reply.html" class="btn btn-neutral float-right" title="semaphore.Reply" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="semaphore.message_sender.html" class="btn btn-neutral float-left" title="semaphore.MessageSender" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020-2021, Lazlo Westerhof.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

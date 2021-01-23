@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>semaphore.message_receiver &mdash; Semaphore  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+    <link rel="canonical" href="https://lwesterhof.github.io/semaphore/_modules/semaphore/message_receiver.html" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Semaphore
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../semaphore.html">semaphore package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Semaphore</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>semaphore.message_receiver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for semaphore.message_receiver</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
+<span class="c1"># Copyright (C) 2020 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Affero General Public License as</span>
+<span class="c1"># published by the Free Software Foundation, either version 3 of the</span>
+<span class="c1"># License, or (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Affero General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Affero General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;This module contains an object that represents a Signal message queue.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">.attachment</span> <span class="kn">import</span> <span class="n">Attachment</span>
+<span class="kn">from</span> <span class="nn">.data_message</span> <span class="kn">import</span> <span class="n">DataMessage</span>
+<span class="kn">from</span> <span class="nn">.group</span> <span class="kn">import</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">.groupV2</span> <span class="kn">import</span> <span class="n">GroupV2</span>
+<span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">.message_sender</span> <span class="kn">import</span> <span class="n">MessageSender</span>
+<span class="kn">from</span> <span class="nn">.socket</span> <span class="kn">import</span> <span class="n">Socket</span>
+<span class="kn">from</span> <span class="nn">.sticker</span> <span class="kn">import</span> <span class="n">Sticker</span>
+<span class="kn">from</span> <span class="nn">.sticker_pack</span> <span class="kn">import</span> <span class="n">StickerPack</span>
+
+
+<div class="viewcode-block" id="MessageReceiver"><a class="viewcode-back" href="../../semaphore.message_receiver.html#semaphore.MessageReceiver">[docs]</a><span class="k">class</span> <span class="nc">MessageReceiver</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This object represents a Signal message queue.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">socket</span><span class="p">:</span> <span class="n">Socket</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="n">MessageSender</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize message receiver.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_socket</span><span class="p">:</span> <span class="n">Socket</span> <span class="o">=</span> <span class="n">socket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="p">:</span> <span class="n">MessageSender</span> <span class="o">=</span> <span class="n">sender</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MessageReceiver.receive"><a class="viewcode-back" href="../../semaphore.message_receiver.html#semaphore.MessageReceiver.receive">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterable</span><span class="p">[</span><span class="n">Message</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Receive messages and return as Iterator.&quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">raw_line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_socket</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
+            <span class="n">line</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">raw_line</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Socket receive: </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Load Signal message wrapper</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">message_wrapper</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Only handle messages.</span>
+            <span class="k">if</span> <span class="n">message_wrapper</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">message_wrapper</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+                <span class="n">data_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DataMessage</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dataMessage&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="n">group</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Group</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">groupV2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GroupV2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;group&quot;</span><span class="p">):</span>
+                        <span class="n">group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span>
+                            <span class="n">group_id</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;groupId&quot;</span><span class="p">),</span>
+                            <span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+                            <span class="n">group_type</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;groupV2&quot;</span><span class="p">):</span>
+                        <span class="n">groupV2</span> <span class="o">=</span> <span class="n">GroupV2</span><span class="p">(</span>
+                            <span class="n">group_id</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;groupV2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+                        <span class="p">)</span>
+
+                    <span class="n">sticker_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sticker&quot;</span><span class="p">)</span>
+                    <span class="n">sticker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sticker</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">sticker_data</span><span class="p">:</span>
+                        <span class="n">pack</span> <span class="o">=</span> <span class="n">StickerPack</span><span class="p">(</span>
+                            <span class="n">pack_id</span><span class="o">=</span><span class="n">sticker_data</span><span class="p">[</span><span class="s2">&quot;packID&quot;</span><span class="p">],</span>
+                            <span class="n">pack_key</span><span class="o">=</span><span class="n">sticker_data</span><span class="p">[</span><span class="s2">&quot;packKey&quot;</span><span class="p">],</span>
+                        <span class="p">)</span>
+                        <span class="n">sticker</span> <span class="o">=</span> <span class="n">Sticker</span><span class="p">(</span>
+                            <span class="n">sticker_id</span><span class="o">=</span><span class="n">sticker_data</span><span class="p">[</span><span class="s2">&quot;stickerID&quot;</span><span class="p">],</span>
+                            <span class="n">pack</span><span class="o">=</span><span class="n">pack</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+                    <span class="n">data_message</span> <span class="o">=</span> <span class="n">DataMessage</span><span class="p">(</span>
+                        <span class="n">timestamp</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">],</span>
+                        <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                        <span class="n">expires_in_seconds</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expiresInSeconds&quot;</span><span class="p">),</span>
+                        <span class="n">attachments</span><span class="o">=</span><span class="p">[</span>
+                            <span class="n">Attachment</span><span class="p">(</span>
+                                <span class="n">content_type</span><span class="o">=</span><span class="n">attachment</span><span class="p">[</span><span class="s2">&quot;contentType&quot;</span><span class="p">],</span>
+                                <span class="nb">id</span><span class="o">=</span><span class="n">attachment</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                                <span class="n">size</span><span class="o">=</span><span class="n">attachment</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">],</span>
+                                <span class="n">stored_filename</span><span class="o">=</span><span class="n">attachment</span><span class="p">[</span><span class="s2">&quot;storedFilename&quot;</span><span class="p">],</span>
+                                <span class="n">width</span><span class="o">=</span><span class="n">attachment</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">],</span>
+                                <span class="n">height</span><span class="o">=</span><span class="n">attachment</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">],</span>
+                            <span class="p">)</span>
+                            <span class="k">for</span> <span class="n">attachment</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attachments&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                        <span class="p">],</span>
+                        <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+                        <span class="n">groupV2</span><span class="o">=</span><span class="n">groupV2</span><span class="p">,</span>
+                        <span class="n">sticker</span><span class="o">=</span><span class="n">sticker</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                <span class="k">yield</span> <span class="n">Message</span><span class="p">(</span>
+                    <span class="n">username</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">],</span>
+                    <span class="n">source</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uuid&quot;</span><span class="p">),</span>
+                    <span class="n">envelope_type</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
+                    <span class="n">timestamp</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">],</span>
+                    <span class="n">timestamp_iso</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;timestampISO&quot;</span><span class="p">],</span>
+                    <span class="n">server_timestamp</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;serverDeliveredTimestamp&quot;</span><span class="p">],</span>
+                    <span class="n">source_device</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceDevice&quot;</span><span class="p">),</span>
+                    <span class="n">uuid</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uuid&quot;</span><span class="p">),</span>
+                    <span class="n">relay</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relay&quot;</span><span class="p">),</span>
+                    <span class="n">has_legacy_message</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hasLegacyMessage&quot;</span><span class="p">),</span>
+                    <span class="n">is_receipt</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;isReceipt&quot;</span><span class="p">),</span>
+                    <span class="n">is_unidentified_sender</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;isUnidentifiedSender&quot;</span><span class="p">),</span>
+                    <span class="n">data_message</span><span class="o">=</span><span class="n">data_message</span><span class="p">,</span>
+                    <span class="n">sender</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Could not receive message: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">exc_info</span><span class="o">=</span><span class="n">exc</span><span class="p">,</span>
+                <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020-2021, Lazlo Westerhof.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
