@@ -32,3 +32,5 @@ from .message_sender import MessageSender
 from .meta import *
 from .reply import Reply
 from .socket import Socket
+from .sticker import Sticker
+from .sticker_pack import StickerPack
