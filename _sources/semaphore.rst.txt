@@ -12,7 +12,9 @@ semaphore package
     semaphore.bot
     semaphore.chat_context
     semaphore.data_message
-    semaphore.group_info
+    semaphore.exceptions
+    semaphore.group
+    semaphore.groupV2
     semaphore.job_queue
     semaphore.job
     semaphore.message_receiver
@@ -20,3 +22,5 @@ semaphore package
     semaphore.message
     semaphore.reply
     semaphore.socket
+    semaphore.sticker_pack
+    semaphore.sticker

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>semaphore package &mdash; Semaphore  documentation</title>
+  <title>semaphore.Sticker &mdash; Semaphore  documentation</title>
   
 
   
@@ -38,8 +38,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="semaphore.Attachment" href="semaphore.attachment.html" />
-    <link rel="prev" title="Semaphore technical documentation" href="index.html" /> 
+    <link rel="prev" title="semaphore.StickerPack" href="semaphore.sticker_pack.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,7 +84,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">semaphore package</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="semaphore.html">semaphore package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="semaphore.attachment.html">semaphore.Attachment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.bot.html">semaphore.Bot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.chat_context.html">semaphore.ChatContext</a></li>
@@ -101,7 +100,7 @@
 <li class="toctree-l2"><a class="reference internal" href="semaphore.reply.html">semaphore.Reply</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.socket.html">semaphore.Socket</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.sticker_pack.html">semaphore.StickerPack</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.sticker.html">semaphore.Sticker</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.Sticker</a></li>
 </ul>
 </li>
 </ul>
@@ -152,13 +151,15 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>semaphore package</li>
+          <li><a href="semaphore.html">semaphore package</a> &raquo;</li>
+        
+      <li>semaphore.Sticker</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/semaphore.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/semaphore.sticker.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -171,29 +172,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-semaphore">
-<span id="semaphore-package"></span><h1>semaphore package<a class="headerlink" href="#module-semaphore" title="Permalink to this headline">¶</a></h1>
-<p>Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.attachment.html">semaphore.Attachment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.bot.html">semaphore.Bot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.chat_context.html">semaphore.ChatContext</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.data_message.html">semaphore.DataMessage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.exceptions.html">semaphore.Exceptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.group.html">semaphore.Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.groupV2.html">semaphore.GroupV2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.job_queue.html">semaphore.JobQueue</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.job.html">semaphore.Job</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.message_receiver.html">semaphore.MessageReceiver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.message_sender.html">semaphore.MessageSender</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.message.html">semaphore.Message</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.reply.html">semaphore.Reply</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.socket.html">semaphore.Socket</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.sticker_pack.html">semaphore.StickerPack</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semaphore.sticker.html">semaphore.Sticker</a></li>
-</ul>
-</div>
+  <div class="section" id="semaphore-sticker">
+<h1>semaphore.Sticker<a class="headerlink" href="#semaphore-sticker" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="semaphore.Sticker">
+<em class="property">class </em><code class="sig-prename descclassname">semaphore.</code><code class="sig-name descname">Sticker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pack</span><span class="p">:</span> <span class="n">semaphore.sticker_pack.StickerPack</span></em>, <em class="sig-param"><span class="n">sticker_id</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">emoji</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/sticker.html#Sticker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.Sticker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object represents a Signal sticker.</p>
+</dd></dl>
+
 </div>
 
 
@@ -202,8 +189,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="semaphore.attachment.html" class="btn btn-neutral float-right" title="semaphore.Attachment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.html" class="btn btn-neutral float-left" title="Semaphore technical documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="semaphore.sticker_pack.html" class="btn btn-neutral float-left" title="semaphore.StickerPack" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
