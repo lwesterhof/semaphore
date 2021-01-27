@@ -20,7 +20,7 @@ import logging
 import re
 import threading
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Pattern, TYPE_CHECKING
+from typing import Any, Callable, Dict, List, Pattern, TYPE_CHECKING, Optional, Awaitable
 
 import anyio
 
@@ -50,6 +50,8 @@ class Bot:
         self._job_queue: JobQueue
         self._handlers: List = []
         self._chat_context: Dict[str, ChatContext] = {}
+        self._exception_handler: Optional[Callable[[Exception, ChatContext],
+                                                   Awaitable[None]]]
 
         threading.current_thread().name = 'bot'
         logging.basicConfig(
@@ -68,11 +70,16 @@ class Bot:
         self._handlers.append((regex, func))
         self.log.info(f"Handler <{func.__name__}> registered ('{regex.pattern}')")
 
+    def set_exception_handler(self, func: Callable):
+        self._exception_handler = func
+
     def handler(self, regex: Pattern):
         """Decorator to register handlers."""
+
         def decorator(func: Callable):
             self.register_handler(regex, func)
             return func
+
         return decorator
 
     async def _handle_message(self, message: Message, func: Callable, match) -> None:
@@ -101,6 +108,8 @@ class Bot:
                 f"Processing message ({message_id}) by {func.__name__} failed",
                 exc_info=exc,
             )
+            if self._exception_handler:
+                await self._exception_handler(exc, context)
 
     async def _match_message(self, message: Message) -> None:
         """Match an incoming message against a handler."""
