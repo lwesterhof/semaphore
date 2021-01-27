@@ -42,7 +42,7 @@ class MessageSender:
             "messageBody": body
         }
 
-        if re.search("\+\d*", receiver):
+        if re.search(r"\+\d*", receiver):
             bot_message["recipientAddress"] = {"number": receiver}
         else:
             bot_message["recipientAddress"] = {"uuid": receiver}

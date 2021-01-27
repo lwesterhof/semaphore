@@ -39,9 +39,11 @@ class NewsletterBot:
         await ctx.message.reply("Subscription successful!")
 
     async def sendHandler(self, ctx: ChatContext) -> None:
-        # Send messages to all subscribers without using ChatContext
+        message = ctx.message.get_body()[len("!sendToAll"):].strip()
+
+        # Send message to all subscribers without using ChatContext
         for subscriber in self.subscribers:
-            await self.bot.send_message(subscriber, ctx.message.get_body()[len("!sendToAll"):].strip())
+            await self.bot.send_message(subscriber, message)
 
     async def start(self) -> None:
         # Run the bot until you press Ctrl-C.
