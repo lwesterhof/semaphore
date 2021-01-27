@@ -24,13 +24,6 @@ from typing import List
 from semaphore import Bot, ChatContext
 
 
-async def echo(ctx: ChatContext) -> None:
-    if not ctx.message.empty():
-        await ctx.message.typing_started()
-        await ctx.message.reply(ctx.message.get_body())
-        await ctx.message.typing_stopped()
-
-
 class NewsletterBot:
     bot: Bot
     subscribers: List[str] = []
