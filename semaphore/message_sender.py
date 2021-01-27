@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains a class that handles sending bot messages."""
+import re
 from typing import Any, Dict
 
 from .message import Message
@@ -34,7 +35,25 @@ class MessageSender:
     async def _send(self, message: Dict) -> None:
         await self._socket.send(message)
 
-    async def send_message(self, message: Message, reply: Reply) -> None:
+    async def send_message(self, receiver, body, attachments=None):
+        bot_message = {
+            "type": "send",
+            "username": self._username,
+            "messageBody": body
+        }
+
+        if re.search("\+\d*", receiver):
+            bot_message["recipientAddress"] = {"number": receiver}
+        else:
+            bot_message["recipientAddress"] = {"uuid": receiver}
+
+        # Add attachments to message.
+        if attachments:
+            bot_message["attachments"] = attachments
+
+        await self._send(bot_message)
+
+    async def reply_message(self, message: Message, reply: Reply) -> None:
         """
         Send the bot message.
 
