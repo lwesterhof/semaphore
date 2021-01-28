@@ -38,3 +38,8 @@ jobs:
       - name: Install package
         run: |
           python -m pip install dist/semaphore-*.tar.gz
+
+      - name: Build documentation
+        run: |
+          cd docs
+          make html
