@@ -122,6 +122,7 @@ anyio.run(main)
 The following example bots can be found in [examples](examples):
 - [apodbot](examples/apodbot.py), replies with Astronomy Picture of the Day
 - [bbcbot](examples/bbcbot.py), replies with latest BBC headlines
+- [broadcastbot](examples/broadcastbot.py), send broadcast to all subscribers
 - [btcbot](examples/btcbot.py), sends notification when BTC price drops below a set price
 - [echobot](examples/echobot.py), repeats received messages
 - [lovebot](examples/lovebot.py), loves everything you say!
