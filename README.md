@@ -125,6 +125,7 @@ The following example bots can be found in [examples](examples):
 - [broadcastbot](examples/broadcastbot.py), send broadcast to all subscribers
 - [btcbot](examples/btcbot.py), sends notification when BTC price drops below a set price
 - [echobot](examples/echobot.py), repeats received messages
+- [exceptionbot](examples/exceptionbot.py), with custom exception handler
 - [lovebot](examples/lovebot.py), loves everything you say!
 - [spongebot](examples/spongebot.py), repeats received messages in sPOngEbOb sqUArepAnTs text
 - [stickerbot](examples/stickerbot.py), links to the sticker pack for received stickers

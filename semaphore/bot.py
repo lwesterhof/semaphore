@@ -20,7 +20,7 @@ import logging
 import re
 import threading
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Pattern, TYPE_CHECKING, Optional, Awaitable
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Pattern, TYPE_CHECKING
 
 import anyio
 

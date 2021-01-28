@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-Signal Bot example, repeats received messages.
+Signal Bot example, with custom exception handler.
 """
 import logging
 import os
