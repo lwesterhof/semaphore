@@ -108,7 +108,7 @@ class JobQueue:
             try:
                 reply = await job.run()
                 if reply:
-                    await self._sender.send_message(message, reply)
+                    await self._sender.reply_message(message, reply)
                     self.log.info(f"Reply for job ({id(job)}) sent to {message.source}")
             except StopPropagation:
                 continue

@@ -153,3 +153,6 @@ class Bot:
             async for message in self._receiver.receive():
                 if message.data_message is not None:
                     await tg.spawn(self._match_message, message)
+
+    async def send_message(self, receiver, body, attachments=None) -> None:
+        await self._sender.send_message(receiver, body, attachments)

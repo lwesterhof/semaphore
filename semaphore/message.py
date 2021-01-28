@@ -80,7 +80,7 @@ class Message:
         :param *args:    The body of the reply
         :param **kwargs: Keyword arguments of the Reply constructor
         """
-        await self._sender.send_message(self, Reply(*args, **kwargs))
+        await self._sender.reply_message(self, Reply(*args, **kwargs))
 
     async def typing_started(self) -> None:
         """Send a typing started message."""
