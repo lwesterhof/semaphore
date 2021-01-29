@@ -45,7 +45,8 @@ class Socket:
         self.log.info(f"Connected to socket ({self._socket_path})")
         await self.send({"type": "subscribe", "username": self._username})
         await self.send({"type": "set_profile",
-                         "username": self._username,
+                         "version": "v1",
+                         "account": self._username,
                          "name": self._profile_name})
         self.log.info(f"{self._profile_name} attempted to subscribe "
                       f"to +********{self._username[-3:]}")
