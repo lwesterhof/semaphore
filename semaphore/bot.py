@@ -142,6 +142,7 @@ class Bot:
         self._socket = await Socket(self._username,
                                     self._profile_name,
                                     self._socket_path).__aenter__()
+        self._sender = MessageSender(self._username, self._socket)
         return self
 
     async def __aexit__(self, *excinfo):
@@ -151,7 +152,6 @@ class Bot:
     async def start(self) -> None:
         """Start the bot event loop."""
         self.log.info(f"{self._profile_name} started")
-        self._sender = MessageSender(self._username, self._socket)
         self._receiver = MessageReceiver(self._socket, self._sender)
 
         async with anyio.create_task_group() as tg:
