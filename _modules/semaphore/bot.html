@@ -315,8 +315,15 @@
                 <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">data_message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">await</span> <span class="n">tg</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match_message</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Bot.send_message"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.send_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send a message.</span>
+
+<span class="sd">        :param receiver:    The receiver of the message (uuid or number).</span>
+<span class="sd">        :param body:        The body of the message.</span>
+<span class="sd">        :param attachments: Optional attachments to the message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
