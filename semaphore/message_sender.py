@@ -36,6 +36,13 @@ class MessageSender:
         await self._socket.send(message)
 
     async def send_message(self, receiver, body, attachments=None):
+        """
+        Send a message.
+
+        :param receiver:    The receiver of the message (uuid or number).
+        :param body:        The body of the message.
+        :param attachments: Optional attachments to the message.
+        """
         bot_message = {
             "type": "send",
             "username": self._username,

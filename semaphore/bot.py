@@ -164,4 +164,11 @@ class Bot:
                     await tg.spawn(self._match_message, message)
 
     async def send_message(self, receiver, body, attachments=None) -> None:
+        """
+        Send a message.
+
+        :param receiver:    The receiver of the message (uuid or number).
+        :param body:        The body of the message.
+        :param attachments: Optional attachments to the message.
+        """
         await self._sender.send_message(receiver, body, attachments)
