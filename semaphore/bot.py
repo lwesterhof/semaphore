@@ -39,11 +39,13 @@ class Bot:
     def __init__(self,
                  username: str,
                  profile_name="Semaphore bot",
+                 profile_picture=None,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
         self._username: str = username
         self._profile_name: str = profile_name
+        self._profile_picture: str = profile_picture
         self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
@@ -141,6 +143,7 @@ class Bot:
         """Connect to the bot's internal socket."""
         self._socket = await Socket(self._username,
                                     self._profile_name,
+                                    self._profile_picture,
                                     self._socket_path).__aenter__()
         return self
 
