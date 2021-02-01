@@ -36,8 +36,16 @@ class MessageSender:
         await self._socket.send(message)
 
     async def send_message(self, receiver, body, attachments=None):
+        """
+        Send a message.
+
+        :param receiver:    The receiver of the message (uuid or number).
+        :param body:        The body of the message.
+        :param attachments: Optional attachments to the message.
+        """
         bot_message = {
             "type": "send",
+            "version": "v1",
             "username": self._username,
             "messageBody": body
         }
@@ -69,6 +77,7 @@ class MessageSender:
         if reply.reaction:
             bot_message = {
                 "type": "react",
+                "version": "v1",
                 "username": self._username,
                 "reaction": {
                     "emoji": reply.body,
@@ -79,6 +88,7 @@ class MessageSender:
         else:
             bot_message = {
                 "type": "send",
+                "version": "v1",
                 "username": self._username,
                 "messageBody": reply.body
             }
@@ -157,7 +167,8 @@ class MessageSender:
         """
         await self._send({
             "type": "mark_read",
-            "username": self._username,
-            "recipientAddress": {"uuid": message.source},
+            "version": "v1",
+            "account": self._username,
+            "to": {"uuid": message.source},
             "timestamps": [message.timestamp],
         })

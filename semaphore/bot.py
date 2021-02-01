@@ -145,6 +145,7 @@ class Bot:
                                     self._profile_name,
                                     self._profile_picture,
                                     self._socket_path).__aenter__()
+        self._sender = MessageSender(self._username, self._socket)
         return self
 
     async def __aexit__(self, *excinfo):
@@ -154,7 +155,6 @@ class Bot:
     async def start(self) -> None:
         """Start the bot event loop."""
         self.log.info(f"{self._profile_name} started")
-        self._sender = MessageSender(self._username, self._socket)
         self._receiver = MessageReceiver(self._socket, self._sender)
 
         async with anyio.create_task_group() as tg:
@@ -167,4 +167,11 @@ class Bot:
                     await tg.spawn(self._match_message, message)
 
     async def send_message(self, receiver, body, attachments=None) -> None:
+        """
+        Send a message.
+
+        :param receiver:    The receiver of the message (uuid or number).
+        :param body:        The body of the message.
+        :param attachments: Optional attachments to the message.
+        """
         await self._sender.send_message(receiver, body, attachments)

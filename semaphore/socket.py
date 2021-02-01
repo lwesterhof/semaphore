@@ -46,10 +46,12 @@ class Socket:
         self._socket = await (await anyio.connect_unix(self._socket_path)).__aenter__()
         self.log.info(f"Connected to socket ({self._socket_path})")
         await self.send({"type": "subscribe", "username": self._username})
-
+        
         profile_message = {"type": "set_profile",
-                           "username": self._username,
-                           "name": self._profile_name}
+                           "version": "v1",
+                           "account": self._username,
+                           "name": self._profile_name}}
+
         if self._profile_picture:
             profile_message["avatarFile"] = self._profile_picture
 
