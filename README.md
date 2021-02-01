@@ -12,7 +12,6 @@ Please note that this library is unofficial, unapproved and not nearly as secure
    * [Requirements](#requirements)
    * [Installation](#installation)
    * [Quick start](#quick-start)
-   * [Demo](#demo)
    * [Code example](#code-example)
    * [Example bots](#example-bots)
    * [Changelog](#changelog)
@@ -20,7 +19,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/signald/signald) 0.11.1+ ([7ef8166d](https://gitlab.com/signald/signald/-/commit/7ef8166d7cc12be96818dfc4480da01994dd7be4) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) 0.12.0+ ([f3a2a189](https://gitlab.com/signald/signald/-/commit/f3a2a1894e97ad58e7afe7612cf924b15d46423d) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
@@ -91,7 +90,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 8. Start the example echo bot
     ```bash
-    $ python echobot.py
+    $ python examples/echobot.py
     ```
 
 9. Send message to Signal bot running on `+xxxxxxxxxxx` and wait for an echo
@@ -134,6 +133,13 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.10.0**
+* Add support for sending messages without previous context (thanks @eknoes)
+* Add support for exception handlers (thanks @eknoes)
+* Add ability to set profile picture (thanks @eknoes)
+* Support signald client protocol v1
+* Compatibility with signald 0.12.0+
+
 **v0.9.1**
 * Fix repeating job re-add to queue (thanks @grandchild)
 
