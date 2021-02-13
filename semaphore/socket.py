@@ -18,7 +18,7 @@
 """This module contains an object that represents a signald socket."""
 import json
 import logging
-from typing import AsyncIterable, List
+from typing import AsyncIterable, List, Optional
 
 import anyio
 import anyio.abc
@@ -29,8 +29,8 @@ class Socket:
 
     def __init__(self,
                  username: str,
-                 profile_name: str,
-                 profile_picture: str,
+                 profile_name: Optional[str] = "Semaphore Bot",
+                 profile_picture: Optional[str] = None,
                  socket_path: str = "/var/run/signald/signald.sock",
                  subscribe: bool = False):
         """Initialize socket."""
@@ -52,16 +52,19 @@ class Socket:
             await self.send({"type": "subscribe", "username": self._username})
             self.log.info(f"{self._profile_name} attempted to subscribe "
                           f"to +********{self._username[-3:]}")
+        self.log.info(f"{self._username} attempted to subscribe "
+                      f"to +********{self._username[-3:]}")
+        if self._username:
+            profile_message = {"type": "set_profile",
+                               "version": "v1",
+                               "account": self._username,
+                               "name": self._profile_name}
 
-        profile_message = {"type": "set_profile",
-                           "version": "v1",
-                           "account": self._username,
-                           "name": self._profile_name}
+            if self._profile_picture:
+                profile_message["avatarFile"] = self._profile_picture
 
-        if self._profile_picture:
-            profile_message["avatarFile"] = self._profile_picture
-
-        await self.send(profile_message)
+            await self.send(profile_message)
+            self.log.info(f"Attempted to set Username to {self._username}")
         return self
 
     async def __aexit__(self, *excinfo):
