@@ -37,7 +37,7 @@ class Bot:
 
     def __init__(self,
                  username: str,
-                 profile_name: Optional[str] = None,
+                 profile_name: Optional[str] = "Semaphore Bot",
                  profile_picture: Optional[str] = None,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):

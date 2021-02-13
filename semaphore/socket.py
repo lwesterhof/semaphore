@@ -29,7 +29,7 @@ class Socket:
 
     def __init__(self,
                  username: str,
-                 profile_name: Optional[str] = "Semaphore Bot",
+                 profile_name: Optional[str] = None,
                  profile_picture: Optional[str] = None,
                  socket_path: str = "/var/run/signald/signald.sock",
                  subscribe: bool = False):
@@ -42,6 +42,9 @@ class Socket:
         self._subscribe: bool = subscribe
 
         self.log = logging.getLogger(__name__)
+
+        if self._profile_picture and not self._profile_name:
+            self.log.warning("Setting a profile picture requires setting a username")
 
     async def __aenter__(self) -> 'Socket':
         """Connect to the socket."""
