@@ -55,7 +55,11 @@ async def broadcast(ctx: ChatContext) -> None:
 
     # Broadcast message to all subscribers.
     for subscriber in subscribers:
-        await ctx.bot.send_message(subscriber, message)
+        if await ctx.bot.send_message(subscriber, message):
+            print(f"Message successfully sent to {subscriber}")
+        else:
+            print(f"Could not send message to {subscriber}")
+            del subscribers[subscriber]
 
 
 async def main():
