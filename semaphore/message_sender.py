@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains a class that handles sending bot messages."""
+import json
+import logging
 import re
 from typing import Any, Dict
 
@@ -31,11 +33,12 @@ class MessageSender:
         """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
+        self.log = logging.getLogger(__name__)
 
     async def _send(self, message: Dict) -> None:
         await self._socket.send(message)
 
-    async def send_message(self, receiver, body, attachments=None):
+    async def send_message(self, receiver, body, attachments=None) -> bool:
         """
         Send a message.
 
@@ -60,6 +63,37 @@ class MessageSender:
             bot_message["attachments"] = attachments
 
         await self._send(bot_message)
+
+        # Wait for success response
+        async for line in self._socket.read():
+            self.log.debug(f"Socket of sender received: {line.decode()}")
+
+            # Load Signal message wrapper
+            try:
+                response_wrapper = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+
+            # Skip everything but response for our message
+            if response_wrapper['type'] != "send":
+                continue
+
+            if response_wrapper.get("error"):
+                self.log.warning(f"Could not send message to {receiver}: {response_wrapper['error'].get('message')}")
+                return False
+
+            response = response_wrapper['data']
+            results = response.get("results")
+            if not results:
+                continue
+
+            for result in results:
+                if result['address'].get('uuid') == receiver or result['address'].get('number') == receiver:
+                    if result.get('success'):
+                        return True
+                    return False
+                self.log.debug(f"Result is not for us but for {result['address']}")
+        return False
 
     async def reply_message(self, message: Message, reply: Reply) -> None:
         """
