@@ -51,7 +51,7 @@ class Socket:
         await self.send({"type": "subscribe", "username": self._username})
         self.log.info(f"{self._username} attempted to subscribe "
                       f"to +********{self._username[-3:]}")
-        if self._username:
+        if self._profile_name:
             profile_message = {"type": "set_profile",
                                "version": "v1",
                                "account": self._username,

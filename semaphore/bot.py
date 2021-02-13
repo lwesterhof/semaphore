@@ -142,9 +142,9 @@ class Bot:
     async def __aenter__(self) -> 'Bot':
         """Connect to the bot's internal socket."""
         self._socket = await Socket(self._username,
-                                    self._profile_name,
-                                    self._profile_picture,
-                                    self._socket_path).__aenter__()
+                                    profile_name=None,
+                                    profile_picture=None,
+                                    socket_path=self._socket_path).__aenter__()
         self._sender = MessageSender(self._username, self._socket)
         return self
 
