@@ -31,13 +31,15 @@ class Socket:
                  username: str,
                  profile_name: str,
                  profile_picture: str,
-                 socket_path: str = "/var/run/signald/signald.sock"):
+                 socket_path: str = "/var/run/signald/signald.sock",
+                 subscribe: bool = False):
         """Initialize socket."""
         self._username: str = username
         self._profile_name: str = profile_name
         self._profile_picture: str = profile_picture
         self._socket_path: str = socket_path
         self._socket: anyio.abc.SocketStream
+        self._subscribe: bool = subscribe
 
         self.log = logging.getLogger(__name__)
 
@@ -45,7 +47,11 @@ class Socket:
         """Connect to the socket."""
         self._socket = await (await anyio.connect_unix(self._socket_path)).__aenter__()
         self.log.info(f"Connected to socket ({self._socket_path})")
-        await self.send({"type": "subscribe", "username": self._username})
+
+        if self._subscribe:
+            await self.send({"type": "subscribe", "username": self._username})
+            self.log.info(f"{self._profile_name} attempted to subscribe "
+                          f"to +********{self._username[-3:]}")
 
         profile_message = {"type": "set_profile",
                            "version": "v1",
@@ -56,8 +62,6 @@ class Socket:
             profile_message["avatarFile"] = self._profile_picture
 
         await self.send(profile_message)
-        self.log.info(f"{self._profile_name} attempted to subscribe "
-                      f"to +********{self._username[-3:]}")
         return self
 
     async def __aexit__(self, *excinfo):
