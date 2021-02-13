@@ -180,6 +180,7 @@ class Bot:
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
-        :@return successful: Whether sending message was successful
+        :return: Returns whether sending is successful
+        :rtype: bool
         """
         return await self._sender.send_message(receiver, body, attachments)

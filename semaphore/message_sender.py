@@ -45,6 +45,8 @@ class MessageSender:
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
+        :return: Returns whether sending is successful
+        :rtype: bool
         """
         bot_message = {
             "type": "send",
@@ -79,7 +81,8 @@ class MessageSender:
                 continue
 
             if response_wrapper.get("error"):
-                self.log.warning(f"Could not send message to {receiver}: {response_wrapper['error'].get('message')}")
+                self.log.warning(f"Could not send message to {receiver}:"
+                                 f"{response_wrapper['error'].get('message')}")
                 return False
 
             response = response_wrapper['data']
@@ -88,7 +91,8 @@ class MessageSender:
                 continue
 
             for result in results:
-                if result['address'].get('uuid') == receiver or result['address'].get('number') == receiver:
+                if result['address'].get('uuid') == receiver or \
+                        result['address'].get('number') == receiver:
                     if result.get('success'):
                         return True
                     return False
