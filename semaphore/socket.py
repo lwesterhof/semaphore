@@ -66,9 +66,10 @@ class Socket:
 
     async def __aexit__(self, *excinfo):
         """Disconnect from the internal socket."""
-        await self.send({"type": "unsubscribe", "username": self._username})
-        self.log.info(f"{self._profile_name} attempted to unsubscribe "
-                      f"to +********{self._username[-3:]}")
+        if self._subscribe:
+            await self.send({"type": "unsubscribe", "username": self._username})
+            self.log.info(f"{self._profile_name} attempted to unsubscribe "
+                          f"to +********{self._username[-3:]}")
         return await self._socket.__aexit__(*excinfo)
 
     async def read(self) -> AsyncIterable[bytes]:
