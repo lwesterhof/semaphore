@@ -29,7 +29,7 @@ class Socket:
 
     def __init__(self,
                  username: str,
-                 profile_name: Optional[str] = "Semaphore Bot",
+                 profile_name: Optional[str] = None,
                  profile_picture: Optional[str] = None,
                  socket_path: str = "/var/run/signald/signald.sock"):
         """Initialize socket."""
