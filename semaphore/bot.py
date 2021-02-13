@@ -63,6 +63,8 @@ class Bot:
         )
         self.log = logging.getLogger(__name__)
 
+        self._socket: Socket
+
     def register_handler(self, regex: Pattern, func: Callable) -> None:
         """Register a chat handler with a regex."""
         if not isinstance(regex, type(re.compile(""))):
@@ -141,10 +143,10 @@ class Bot:
     async def __aenter__(self) -> 'Bot':
         """Connect to the bot's internal socket."""
         self._send_socket = await Socket(self._username,
-                                         self._profile_name,
-                                         self._profile_picture,
-                                         self._socket_path,
-                                         False).__aenter__()
+                                         profile_name=None,
+                                         profile_picture=None,
+                                         socket_path=self._socket_path,
+                                         subscribe=False).__aenter__()
         self._sender = MessageSender(self._username, self._send_socket)
         return self
 
