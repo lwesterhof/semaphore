@@ -41,6 +41,9 @@ class Socket:
 
         self.log = logging.getLogger(__name__)
 
+        if self._profile_picture and not self._profile_name:
+            self.log.warning("Setting a profile picture requires setting a username")
+
     async def __aenter__(self) -> 'Socket':
         """Connect to the socket."""
         self._socket = await (await anyio.connect_unix(self._socket_path)).__aenter__()
