@@ -177,12 +177,12 @@
 <h1>semaphore.MessageSender<a class="headerlink" href="#semaphore-messagesender" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="semaphore.MessageSender">
-<em class="property">class </em><code class="sig-prename descclassname">semaphore.</code><code class="sig-name descname">MessageSender</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">socket</span><span class="p">:</span> <span class="n">semaphore.socket.Socket</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.MessageSender" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">semaphore.</span></code><code class="sig-name descname"><span class="pre">MessageSender</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.socket.Socket</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class handles sending bot messages.</p>
 <dl class="py method">
 <dt id="semaphore.MessageSender.mark_delivered">
-<em class="property">async </em><code class="sig-name descname">mark_delivered</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">semaphore.message.Message</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.mark_delivered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.MessageSender.mark_delivered" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">mark_delivered</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.message.Message</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.mark_delivered"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.mark_delivered" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark a Signal message you received as delivered.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -193,7 +193,7 @@
 
 <dl class="py method">
 <dt id="semaphore.MessageSender.mark_read">
-<em class="property">async </em><code class="sig-name descname">mark_read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">semaphore.message.Message</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.mark_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.MessageSender.mark_read" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">mark_read</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.message.Message</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.mark_read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.mark_read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark a Signal message you received as read.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -204,7 +204,7 @@
 
 <dl class="py method">
 <dt id="semaphore.MessageSender.reply_message">
-<em class="property">async </em><code class="sig-name descname">reply_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">semaphore.message.Message</span></em>, <em class="sig-param"><span class="n">reply</span><span class="p">:</span> <span class="n">semaphore.reply.Reply</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.reply_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.MessageSender.reply_message" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">reply_message</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.message.Message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reply</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.reply.Reply</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.reply_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.reply_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send the bot message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -218,7 +218,7 @@
 
 <dl class="py method">
 <dt id="semaphore.MessageSender.send_message">
-<em class="property">async </em><code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">receiver</span></em>, <em class="sig-param"><span class="n">body</span></em>, <em class="sig-param"><span class="n">attachments</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.send_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.MessageSender.send_message" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">send_message</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.send_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -233,7 +233,7 @@
 
 <dl class="py method">
 <dt id="semaphore.MessageSender.typing_started">
-<em class="property">async </em><code class="sig-name descname">typing_started</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">semaphore.message.Message</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.typing_started"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.MessageSender.typing_started" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">typing_started</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.message.Message</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.typing_started"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.typing_started" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a typing started message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -244,7 +244,7 @@
 
 <dl class="py method">
 <dt id="semaphore.MessageSender.typing_stopped">
-<em class="property">async </em><code class="sig-name descname">typing_stopped</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">semaphore.message.Message</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.typing_stopped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semaphore.MessageSender.typing_stopped" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">typing_stopped</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.message.Message</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.typing_stopped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.typing_stopped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a typing stopped message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
