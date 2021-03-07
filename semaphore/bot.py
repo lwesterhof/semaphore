@@ -38,14 +38,10 @@ class Bot:
 
     def __init__(self,
                  username: str,
-                 profile_name="Semaphore bot",
-                 profile_picture=None,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
         self._username: str = username
-        self._profile_name: str = profile_name
-        self._profile_picture: str = profile_picture
         self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
@@ -142,8 +138,6 @@ class Bot:
     async def __aenter__(self) -> 'Bot':
         """Connect to the bot's internal socket."""
         self._socket = await Socket(self._username,
-                                    self._profile_name,
-                                    self._profile_picture,
                                     self._socket_path).__aenter__()
         self._sender = MessageSender(self._username, self._socket)
         return self
@@ -154,7 +148,7 @@ class Bot:
 
     async def start(self) -> None:
         """Start the bot event loop."""
-        self.log.info(f"{self._profile_name} started")
+        self.log.info("Bot started")
         self._receiver = MessageReceiver(self._socket, self._sender)
 
         async with anyio.create_task_group() as tg:
@@ -175,3 +169,12 @@ class Bot:
         :param attachments: Optional attachments to the message.
         """
         await self._sender.send_message(receiver, body, attachments)
+
+    async def set_profile(self, profile_name: str, profile_avatar: str = None) -> None:
+        """
+        Set Signal profile.
+
+        :param profile_name:   New profile name, empty string for no profile name.
+        :param profile_avatar: Path to profile avatar file.
+        """
+        await self._sender.set_profile(profile_name, profile_avatar)

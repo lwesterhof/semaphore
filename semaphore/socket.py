@@ -29,13 +29,9 @@ class Socket:
 
     def __init__(self,
                  username: str,
-                 profile_name: str,
-                 profile_picture: str,
                  socket_path: str = "/var/run/signald/signald.sock"):
         """Initialize socket."""
         self._username: str = username
-        self._profile_name: str = profile_name
-        self._profile_picture: str = profile_picture
         self._socket_path: str = socket_path
         self._socket: anyio.abc.SocketStream
 
@@ -46,25 +42,13 @@ class Socket:
         self._socket = await (await anyio.connect_unix(self._socket_path)).__aenter__()
         self.log.info(f"Connected to socket ({self._socket_path})")
         await self.send({"type": "subscribe", "username": self._username})
-
-        profile_message = {"type": "set_profile",
-                           "version": "v1",
-                           "account": self._username,
-                           "name": self._profile_name}
-
-        if self._profile_picture:
-            profile_message["avatarFile"] = self._profile_picture
-
-        await self.send(profile_message)
-        self.log.info(f"{self._profile_name} attempted to subscribe "
-                      f"to +********{self._username[-3:]}")
+        self.log.info(f"Bot attempted to subscribe to +********{self._username[-3:]}")
         return self
 
     async def __aexit__(self, *excinfo):
         """Disconnect from the internal socket."""
         await self.send({"type": "unsubscribe", "username": self._username})
-        self.log.info(f"{self._profile_name} attempted to unsubscribe "
-                      f"to +********{self._username[-3:]}")
+        self.log.info(f"Bot attempted to unsubscribe to +********{self._username[-3:]}")
         return await self._socket.__aexit__(*excinfo)
 
     async def read(self) -> AsyncIterable[bytes]:

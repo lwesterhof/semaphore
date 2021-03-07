@@ -19,7 +19,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/signald/signald) 0.12.0+ ([f3a2a189](https://gitlab.com/signald/signald/-/commit/f3a2a1894e97ad58e7afe7612cf924b15d46423d) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) [1f18d539](https://gitlab.com/signald/signald/-/commit/1f18d539bb0d09ea51948e9559ab5e04ca9359a5) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
@@ -111,6 +111,9 @@ async def echo(ctx: ChatContext) -> None:
 
 async def main():
     async with bot:
+        # Set profile name.
+        await bot.set_profile("Semaphore example bot")
+
         # Run the bot until you press Ctrl-C.
         await bot.start()
 

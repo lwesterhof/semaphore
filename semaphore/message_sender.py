@@ -172,3 +172,20 @@ class MessageSender:
             "to": {"uuid": message.source},
             "timestamps": [message.timestamp],
         })
+
+    async def set_profile(self, profile_name: str, profile_avatar: str = None) -> None:
+        """
+        Set Signal profile.
+
+        :param profile_name:   New profile name, empty string for no profile name.
+        :param profile_avatar: Path to profile avatar file.
+        """
+        profile_message = {"type": "set_profile",
+                           "version": "v1",
+                           "account": self._username,
+                           "name": profile_name}
+
+        if profile_avatar:
+            profile_message["avatarFile"] = profile_avatar
+
+        await self._send(profile_message)
