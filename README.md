@@ -136,6 +136,10 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.10.1**
+* Add method to set profile name and profile picture
+* Store e164 phone number and uuid for received messages
+
 **v0.10.0**
 * Add support for sending messages without previous context (thanks @eknoes)
 * Add support for exception handlers (thanks @eknoes)
