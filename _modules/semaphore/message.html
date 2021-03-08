@@ -172,6 +172,7 @@
 
 <span class="kn">import</span> <span class="nn">attr</span>
 
+<span class="kn">from</span> <span class="nn">.address</span> <span class="kn">import</span> <span class="n">Address</span>
 <span class="kn">from</span> <span class="nn">.data_message</span> <span class="kn">import</span> <span class="n">DataMessage</span>
 <span class="kn">from</span> <span class="nn">.reply</span> <span class="kn">import</span> <span class="n">Reply</span>
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
@@ -184,7 +185,7 @@
     <span class="sd">&quot;&quot;&quot;This object represents a Signal message.&quot;&quot;&quot;</span>
 
     <span class="n">username</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">source</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">source</span><span class="p">:</span> <span class="n">Address</span>
     <span class="n">envelope_type</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">timestamp_iso</span><span class="p">:</span> <span class="nb">str</span>
