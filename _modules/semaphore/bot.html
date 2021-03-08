@@ -190,10 +190,14 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">profile_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">profile_picture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
                  <span class="n">socket_path</span><span class="o">=</span><span class="s2">&quot;/var/run/signald/signald.sock&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize bot.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_picture</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_picture</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_socket_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">socket_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_receiver</span><span class="p">:</span> <span class="n">MessageReceiver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="p">:</span> <span class="n">MessageSender</span>
@@ -302,6 +306,9 @@
         <span class="sd">&quot;&quot;&quot;Start the bot event loop.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Bot started&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_receiver</span> <span class="o">=</span> <span class="n">MessageReceiver</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_socket</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_profile_name</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_profile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_profile_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_profile_picture</span><span class="p">)</span>
 
         <span class="k">async</span> <span class="k">with</span> <span class="n">anyio</span><span class="o">.</span><span class="n">create_task_group</span><span class="p">()</span> <span class="k">as</span> <span class="n">tg</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_job_queue</span> <span class="o">=</span> <span class="n">JobQueue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="p">)</span>
