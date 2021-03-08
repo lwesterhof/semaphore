@@ -38,10 +38,14 @@ class Bot:
 
     def __init__(self,
                  username: str,
+                 profile_name=None,
+                 profile_picture=None,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
         self._username: str = username
+        self._profile_name: str = profile_name
+        self._profile_picture: str = profile_picture
         self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
@@ -150,6 +154,9 @@ class Bot:
         """Start the bot event loop."""
         self.log.info("Bot started")
         self._receiver = MessageReceiver(self._socket, self._sender)
+
+        if self._profile_name:
+            await self.set_profile(self._profile_name, self._profile_picture)
 
         async with anyio.create_task_group() as tg:
             self._job_queue = JobQueue(self._sender)
