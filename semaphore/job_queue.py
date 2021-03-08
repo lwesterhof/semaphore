@@ -109,12 +109,13 @@ class JobQueue:
                 reply = await job.run()
                 if reply:
                     await self._sender.reply_message(message, reply)
-                    self.log.info(f"Reply for job ({id(job)}) sent to {message.source}")
+                    self.log.info(f"Reply for job ({id(job)}) "
+                                  f"sent to {message.source.uuid}")
             except StopPropagation:
                 continue
             except Exception as exc:
                 self.log.warning(f"Sending reply for message ({id(message)}) "
-                                 f"to {message.source} failed",
+                                 f"to {message.source.uuid} failed",
                                  exc_info=exc)
                 continue
 

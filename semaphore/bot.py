@@ -89,19 +89,19 @@ class Bot:
         message_id = id(message)
 
         # Retrieve or create chat context.
-        if self._chat_context.get(message.source, False):
-            context = self._chat_context[message.source]
+        if self._chat_context.get(message.source.uuid, False):
+            context = self._chat_context[message.source.uuid]
             context.message = message
             context.match = match
-            self.log.debug(f"Chat context exists for {message.source}")
+            self.log.debug(f"Chat context exists for {message.source.uuid}")
         else:
             context = ChatContext(message, match, self._job_queue, self)
-            self.log.debug(f"Chat context created for {message.source}")
+            self.log.debug(f"Chat context created for {message.source.uuid}")
 
         # Process received message and send reply.
         try:
             await func(context)
-            self._chat_context[message.source] = context
+            self._chat_context[message.source.uuid] = context
             self.log.debug(f"Message ({message_id}) processed by handler {func.__name__}")
         except StopPropagation:
             raise
@@ -119,7 +119,7 @@ class Bot:
 
         # Mark message as delivered.
         await message.mark_delivered()
-        self.log.debug(f"Message ({message_id}) received from {message.source}")
+        self.log.debug(f"Message ({message_id}) received from {message.source.uuid}")
         self.log.debug(str(message))
 
         # Loop over all registered handlers.

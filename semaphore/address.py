@@ -15,23 +15,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""Semaphore: A simple (rule-based) bot library for Signal Private Messenger."""
+"""This module contains an object that represents a Signal address."""
+import attr
 
-from .address import Address
-from .attachment import Attachment
-from .bot import Bot
-from .chat_context import ChatContext
-from .data_message import DataMessage
-from .exceptions import StopPropagation
-from .group import Group
-from .groupV2 import GroupV2
-from .job import Job
-from .job_queue import JobQueue
-from .message import Message
-from .message_receiver import MessageReceiver
-from .message_sender import MessageSender
-from .meta import *
-from .reply import Reply
-from .socket import Socket
-from .sticker import Sticker
-from .sticker_pack import StickerPack
+
+@attr.s(auto_attribs=True, frozen=True)
+class Address:
+    """This object represents a Signal address."""
+
+    uuid: str
+    number: str = attr.ib(default=None)

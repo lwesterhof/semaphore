@@ -20,6 +20,7 @@ from typing import Optional, TYPE_CHECKING
 
 import attr
 
+from .address import Address
 from .data_message import DataMessage
 from .reply import Reply
 if TYPE_CHECKING:
@@ -32,7 +33,7 @@ class Message:
     """This object represents a Signal message."""
 
     username: str
-    source: str
+    source: Address
     envelope_type: int
     timestamp: int
     timestamp_iso: str

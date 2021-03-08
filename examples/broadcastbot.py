@@ -29,10 +29,10 @@ subscribers: Dict[str, float] = {}
 
 async def subscribe(ctx: ChatContext) -> None:
     try:
-        if ctx.message.source in subscribers:
+        if ctx.message.source.uuid in subscribers:
             await ctx.message.reply("Already subscribed!")
         else:
-            subscribers[ctx.message.source] = time()
+            subscribers[ctx.message.source.uuid] = time()
             await ctx.message.reply("Subscription successful!")
     except Exception:
         await ctx.message.reply("Could not subscribe!")
@@ -40,8 +40,8 @@ async def subscribe(ctx: ChatContext) -> None:
 
 async def unsubscribe(ctx: ChatContext) -> None:
     try:
-        if ctx.message.source in subscribers:
-            del subscribers[ctx.message.source]
+        if ctx.message.source.uuid in subscribers:
+            del subscribers[ctx.message.source.uuid]
             await ctx.message.reply("Successfully unsubscribed!")
         else:
             await ctx.message.reply("Not subscribed!")

@@ -81,7 +81,7 @@ class MessageSender:
                 "username": self._username,
                 "reaction": {
                     "emoji": reply.body,
-                    "targetAuthor": {"uuid": message.source},
+                    "targetAuthor": {"uuid": message.source.uuid},
                     "targetSentTimestamp": message.timestamp
                 }
             }
@@ -100,7 +100,7 @@ class MessageSender:
             # Add quote to message.
             if reply.quote:
                 quote = {"id": message.timestamp,
-                         "author": {'uuid': message.source},
+                         "author": {'uuid': message.source.uuid},
                          "text": message.get_body()}
                 bot_message["quote"] = quote
 
@@ -108,7 +108,7 @@ class MessageSender:
         if message.get_group_id():
             bot_message["recipientGroupId"] = message.get_group_id()
         else:
-            bot_message["recipientAddress"] = {"uuid": message.source}
+            bot_message["recipientAddress"] = {"uuid": message.source.uuid}
 
         await self._send(bot_message)
 
@@ -121,7 +121,9 @@ class MessageSender:
         # Construct reply message.
         typing_message: Dict[str, Any] = {"type": "typing_started",
                                           "username": self._username,
-                                          "recipientAddress": {"uuid": message.source}}
+                                          "recipientAddress": {
+                                              "uuid": message.source.uuid
+                                          }}
 
         # Add group id.
         if message.get_group_id():
@@ -138,7 +140,9 @@ class MessageSender:
         # Construct reply message.
         typing_message: Dict[str, Any] = {"type": "typing_stopped",
                                           "username": self._username,
-                                          "recipientAddress": {"uuid": message.source}}
+                                          "recipientAddress": {
+                                              "uuid": message.source.uuid
+                                          }}
 
         # Add group id.
         if message.get_group_id():
@@ -155,7 +159,7 @@ class MessageSender:
         await self._send({
             "type": "mark_delivered",
             "username": self._username,
-            "recipientAddress": {"uuid": message.source},
+            "recipientAddress": {"uuid": message.source.uuid},
             "timestamps": [message.timestamp],
         })
 
@@ -169,7 +173,7 @@ class MessageSender:
             "type": "mark_read",
             "version": "v1",
             "account": self._username,
-            "to": {"uuid": message.source},
+            "to": {"uuid": message.source.uuid},
             "timestamps": [message.timestamp],
         })
 
