@@ -170,8 +170,6 @@
 <span class="sd">&quot;&quot;&quot;This module contains an object that represents the context of a chat.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Match</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">import</span> <span class="nn">attr</span>
-
 <span class="kn">from</span> <span class="nn">.job_queue</span> <span class="kn">import</span> <span class="n">JobQueue</span>
 <span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Message</span>
 
@@ -181,15 +179,15 @@
     <span class="kn">from</span> <span class="nn">.bot</span> <span class="kn">import</span> <span class="n">Bot</span>
 
 
-<div class="viewcode-block" id="ChatContext"><a class="viewcode-back" href="../../semaphore.chat_context.html#semaphore.ChatContext">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">auto_attribs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">ChatContext</span><span class="p">():</span>
+<div class="viewcode-block" id="ChatContext"><a class="viewcode-back" href="../../semaphore.chat_context.html#semaphore.ChatContext">[docs]</a><span class="k">class</span> <span class="nc">ChatContext</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This object represents the context of a chat.&quot;&quot;&quot;</span>
 
-    <span class="n">message</span><span class="p">:</span> <span class="n">Message</span>
-    <span class="n">match</span><span class="p">:</span> <span class="n">Match</span>
-    <span class="n">job_queue</span><span class="p">:</span> <span class="n">JobQueue</span>
-    <span class="n">bot</span><span class="p">:</span> <span class="s1">&#39;Bot&#39;</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">job_queue</span><span class="p">,</span> <span class="n">bot</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">:</span> <span class="n">Message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">match</span><span class="p">:</span> <span class="n">Match</span> <span class="o">=</span> <span class="n">match</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_queue</span><span class="p">:</span> <span class="n">JobQueue</span> <span class="o">=</span> <span class="n">job_queue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">:</span> <span class="s1">&#39;Bot&#39;</span> <span class="o">=</span> <span class="n">bot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
 </pre></div>
 
            </div>
