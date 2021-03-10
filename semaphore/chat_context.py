@@ -18,8 +18,6 @@
 """This module contains an object that represents the context of a chat."""
 from typing import Any, Dict, Match, TYPE_CHECKING
 
-import attr
-
 from .job_queue import JobQueue
 from .message import Message
 
@@ -29,12 +27,12 @@ if TYPE_CHECKING:
     from .bot import Bot
 
 
-@attr.s(auto_attribs=True)
-class ChatContext():
+class ChatContext(object):
     """This object represents the context of a chat."""
 
-    message: Message
-    match: Match
-    job_queue: JobQueue
-    bot: 'Bot'
-    data: Dict[str, Any] = {}
+    def __init__(self, message, match, job_queue, bot):
+        self.message: Message = message
+        self.match: Match = match
+        self.job_queue: JobQueue = job_queue
+        self.bot: 'Bot' = bot
+        self.data: Dict[str, Any] = {}

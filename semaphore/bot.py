@@ -88,20 +88,26 @@ class Bot:
         """Handle a matched message."""
         message_id = id(message)
 
+        # Get context id.
+        if message.get_group_id():
+            context_id = f"{message.get_group_id()}+{message.source.uuid}"
+        else:
+            context_id = message.source.uuid
+
         # Retrieve or create chat context.
-        if self._chat_context.get(message.source.uuid, False):
-            context = self._chat_context[message.source.uuid]
+        if self._chat_context.get(context_id, False):
+            context = self._chat_context[context_id]
             context.message = message
             context.match = match
-            self.log.debug(f"Chat context exists for {message.source.uuid}")
+            self.log.info(f"Chat context exists for {context_id}")
         else:
             context = ChatContext(message, match, self._job_queue, self)
-            self.log.debug(f"Chat context created for {message.source.uuid}")
+            self.log.info(f"Chat context created for {context_id}")
 
         # Process received message and send reply.
         try:
             await func(context)
-            self._chat_context[message.source.uuid] = context
+            self._chat_context[context_id] = context
             self.log.debug(f"Message ({message_id}) processed by handler {func.__name__}")
         except StopPropagation:
             raise
