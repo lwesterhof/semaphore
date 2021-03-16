@@ -28,6 +28,7 @@ from .socket import Socket
 
 class MessageSender:
     """This class handles sending bot messages."""
+    signald_message_id: int = 0
 
     def __init__(self, username: str, socket: Socket):
         """Initialize message sender."""
@@ -64,6 +65,9 @@ class MessageSender:
         if attachments:
             bot_message["attachments"] = attachments
 
+        self.signald_message_id += 1
+        bot_message['id'] = self.signald_message_id
+
         await self._send(bot_message)
 
         # Wait for success response
@@ -77,7 +81,7 @@ class MessageSender:
                 continue
 
             # Skip everything but response for our message
-            if response_wrapper['type'] != "send":
+            if 'id' not in response_wrapper or response_wrapper['id'] != bot_message['id']:
                 continue
 
             if response_wrapper.get("error"):
