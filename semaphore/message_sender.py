@@ -66,7 +66,7 @@ class MessageSender:
             bot_message["attachments"] = attachments
 
         self.signald_message_id += 1
-        bot_message['id'] = self.signald_message_id
+        bot_message['id'] = str(self.signald_message_id)
 
         await self._send(bot_message)
 
