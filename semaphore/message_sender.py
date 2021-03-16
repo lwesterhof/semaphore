@@ -77,7 +77,8 @@ class MessageSender:
             # Load Signal message wrapper
             try:
                 response_wrapper = json.loads(line)
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as e:
+                self.log.error("Could not decode signald response", exc_info=e)
                 continue
 
             # Skip everything but response for our message
@@ -92,7 +93,7 @@ class MessageSender:
             response = response_wrapper['data']
             results = response.get("results")
             if not results:
-                continue
+                return False
 
             for result in results:
                 if result['address'].get('uuid') == receiver or \
