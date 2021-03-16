@@ -28,6 +28,7 @@ from .socket import Socket
 
 class MessageSender:
     """This class handles sending bot messages."""
+    signald_message_id: int = 0
 
     def __init__(self, username: str, socket: Socket):
         """Initialize message sender."""
@@ -64,6 +65,9 @@ class MessageSender:
         if attachments:
             bot_message["attachments"] = attachments
 
+        self.signald_message_id += 1
+        bot_message['id'] = self.signald_message_id
+
         await self._send(bot_message)
 
         # Wait for success response
@@ -73,11 +77,12 @@ class MessageSender:
             # Load Signal message wrapper
             try:
                 response_wrapper = json.loads(line)
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as e:
+                self.log.error("Could not decode signald response", exc_info=e)
                 continue
 
             # Skip everything but response for our message
-            if response_wrapper['type'] != "send":
+            if 'id' not in response_wrapper or response_wrapper['id'] != bot_message['id']:
                 continue
 
             if response_wrapper.get("error"):
@@ -88,7 +93,7 @@ class MessageSender:
             response = response_wrapper['data']
             results = response.get("results")
             if not results:
-                continue
+                return False
 
             for result in results:
                 if result['address'].get('uuid') == receiver or \
