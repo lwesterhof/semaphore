@@ -119,15 +119,17 @@ class MessageSender:
         :param message: The Signal message you received.
         """
         # Construct reply message.
-        typing_message: Dict[str, Any] = {"type": "typing_started",
-                                          "username": self._username,
-                                          "recipientAddress": {
+        typing_message: Dict[str, Any] = {"type": "typing",
+                                          "version": "v1",
+                                          "typing": True,
+                                          "account": self._username,
+                                          "address": {
                                               "uuid": message.source.uuid
                                           }}
 
         # Add group id.
         if message.get_group_id():
-            typing_message["recipientGroupId"] = message.get_group_id()
+            typing_message["group"] = message.get_group_id()
 
         await self._send(typing_message)
 
@@ -138,15 +140,17 @@ class MessageSender:
         :param message: The Signal message you received.
         """
         # Construct reply message.
-        typing_message: Dict[str, Any] = {"type": "typing_stopped",
-                                          "username": self._username,
-                                          "recipientAddress": {
+        typing_message: Dict[str, Any] = {"type": "typing",
+                                          "version": "v1",
+                                          "typing": False,
+                                          "account": self._username,
+                                          "address": {
                                               "uuid": message.source.uuid
                                           }}
 
         # Add group id.
         if message.get_group_id():
-            typing_message["recipientGroupId"] = message.get_group_id()
+            typing_message["group"] = message.get_group_id()
 
         await self._send(typing_message)
 
