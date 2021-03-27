@@ -19,7 +19,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/signald/signald) [1f18d539](https://gitlab.com/signald/signald/-/commit/1f18d539bb0d09ea51948e9559ab5e04ca9359a5) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) [0.13.0](https://gitlab.com/signald/signald/-/commit/1f2a0d1ee0713cf8676a4a557cfccf98c0a9ddaf) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
