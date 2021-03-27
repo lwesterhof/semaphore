@@ -271,15 +271,17 @@
 <span class="sd">        :param message: The Signal message you received.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Construct reply message.</span>
-        <span class="n">typing_message</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;typing_started&quot;</span><span class="p">,</span>
-                                          <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
-                                          <span class="s2">&quot;recipientAddress&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">typing_message</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;typing&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;typing&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                                          <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+                                          <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span>
                                               <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uuid</span>
                                           <span class="p">}}</span>
 
         <span class="c1"># Add group id.</span>
         <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">():</span>
-            <span class="n">typing_message</span><span class="p">[</span><span class="s2">&quot;recipientGroupId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">()</span>
+            <span class="n">typing_message</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">()</span>
 
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">typing_message</span><span class="p">)</span></div>
 
@@ -290,15 +292,17 @@
 <span class="sd">        :param message: The Signal message you received.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Construct reply message.</span>
-        <span class="n">typing_message</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;typing_stopped&quot;</span><span class="p">,</span>
-                                          <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
-                                          <span class="s2">&quot;recipientAddress&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">typing_message</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;typing&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;typing&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                                          <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+                                          <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span>
                                               <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uuid</span>
                                           <span class="p">}}</span>
 
         <span class="c1"># Add group id.</span>
         <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">():</span>
-            <span class="n">typing_message</span><span class="p">[</span><span class="s2">&quot;recipientGroupId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">()</span>
+            <span class="n">typing_message</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">()</span>
 
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">typing_message</span><span class="p">)</span></div>
 
