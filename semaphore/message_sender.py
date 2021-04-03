@@ -82,7 +82,8 @@ class MessageSender:
                 continue
 
             # Skip everything but response for our message
-            if 'id' not in response_wrapper or response_wrapper['id'] != bot_message['id']:
+            if ('id' not in response_wrapper or
+                    response_wrapper['id'] != bot_message['id']):
                 continue
 
             if response_wrapper.get("error"):
