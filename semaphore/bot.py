@@ -49,6 +49,8 @@ class Bot:
         self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
+        self._receive_socket: Optional[Socket] = None
+        self._send_socket: Optional[Socket] = None
         self._job_queue: JobQueue
         self._handlers: List = []
         self._chat_context: Dict[str, ChatContext] = {}
@@ -61,8 +63,6 @@ class Bot:
             level=logging_level
         )
         self.log = logging.getLogger(__name__)
-
-        self._socket: Socket
 
     def register_handler(self, regex: Pattern, func: Callable) -> None:
         """Register a chat handler with a regex."""
@@ -147,19 +147,25 @@ class Bot:
 
     async def __aenter__(self) -> 'Bot':
         """Connect to the bot's internal socket."""
-        self._socket = await Socket(self._username,
-                                    self._socket_path).__aenter__()
-        self._sender = MessageSender(self._username, self._socket)
+        self._send_socket = await Socket(self._username,
+                                         self._socket_path,
+                                         False).__aenter__()
+        self._sender = MessageSender(self._username, self._send_socket)
         return self
 
     async def __aexit__(self, *excinfo):
         """Disconnect from the bot's internal socket."""
-        return await self._socket.__aexit__(*excinfo)
+        if self._receive_socket:
+            await self._receive_socket.__aexit__(*excinfo)
+        await self._send_socket.__aexit__(*excinfo)
 
     async def start(self) -> None:
         """Start the bot event loop."""
         self.log.info("Bot started")
-        self._receiver = MessageReceiver(self._socket, self._sender)
+        self._receive_socket = await Socket(self._username,
+                                            self._socket_path,
+                                            True).__aenter__()
+        self._receiver = MessageReceiver(self._receive_socket, self._sender)
 
         if self._profile_name:
             await self.set_profile(self._profile_name, self._profile_picture)
@@ -173,15 +179,16 @@ class Bot:
                 if message.data_message is not None:
                     await tg.spawn(self._match_message, message)
 
-    async def send_message(self, receiver, body, attachments=None) -> None:
+    async def send_message(self, receiver, body, attachments=None) -> bool:
         """
         Send a message.
 
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
+        :@return successful: Whether sending message was successful
         """
-        await self._sender.send_message(receiver, body, attachments)
+        return await self._sender.send_message(receiver, body, attachments)
 
     async def set_profile(self, profile_name: str, profile_avatar: str = None) -> None:
         """
