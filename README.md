@@ -19,7 +19,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/signald/signald) 0.12.0+ ([f3a2a189](https://gitlab.com/signald/signald/-/commit/f3a2a1894e97ad58e7afe7612cf924b15d46423d) or later), a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) [0.13.0](https://gitlab.com/signald/signald/-/commit/1f2a0d1ee0713cf8676a4a557cfccf98c0a9ddaf) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
@@ -111,6 +111,9 @@ async def echo(ctx: ChatContext) -> None:
 
 async def main():
     async with bot:
+        # Set profile name.
+        await bot.set_profile("Semaphore example bot")
+
         # Run the bot until you press Ctrl-C.
         await bot.start()
 
@@ -133,6 +136,10 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.10.1**
+* Add method to set profile name and profile picture
+* Store e164 phone number and uuid for received messages
+
 **v0.10.0**
 * Add support for sending messages without previous context (thanks @eknoes)
 * Add support for exception handlers (thanks @eknoes)

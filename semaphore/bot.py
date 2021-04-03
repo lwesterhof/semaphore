@@ -19,7 +19,8 @@
 import logging
 import re
 import threading
-from typing import Awaitable, Callable, Dict, List, Optional, Pattern
+from datetime import datetime
+from typing import Any, Awaitable, Callable, Dict, List, Optional, Pattern, TYPE_CHECKING
 
 import anyio
 
@@ -37,8 +38,8 @@ class Bot:
 
     def __init__(self,
                  username: str,
-                 profile_name: Optional[str] = "Semaphore Bot",
-                 profile_picture: Optional[str] = None,
+                 profile_name=None,
+                 profile_picture=None,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
@@ -62,8 +63,6 @@ class Bot:
             level=logging_level
         )
         self.log = logging.getLogger(__name__)
-
-        self._socket: Socket
 
     def register_handler(self, regex: Pattern, func: Callable) -> None:
         """Register a chat handler with a regex."""
@@ -89,20 +88,26 @@ class Bot:
         """Handle a matched message."""
         message_id = id(message)
 
+        # Get context id.
+        if message.get_group_id():
+            context_id = f"{message.get_group_id()}+{message.source.uuid}"
+        else:
+            context_id = message.source.uuid
+
         # Retrieve or create chat context.
-        if self._chat_context.get(message.source, False):
-            context = self._chat_context[message.source]
+        if self._chat_context.get(context_id, False):
+            context = self._chat_context[context_id]
             context.message = message
             context.match = match
-            self.log.debug(f"Chat context exists for {message.source}")
+            self.log.info(f"Chat context exists for {context_id}")
         else:
             context = ChatContext(message, match, self._job_queue, self)
-            self.log.debug(f"Chat context created for {message.source}")
+            self.log.info(f"Chat context created for {context_id}")
 
         # Process received message and send reply.
         try:
             await func(context)
-            self._chat_context[message.source] = context
+            self._chat_context[context_id] = context
             self.log.debug(f"Message ({message_id}) processed by handler {func.__name__}")
         except StopPropagation:
             raise
@@ -120,7 +125,7 @@ class Bot:
 
         # Mark message as delivered.
         await message.mark_delivered()
-        self.log.debug(f"Message ({message_id}) received from {message.source}")
+        self.log.debug(f"Message ({message_id}) received from {message.source.uuid}")
         self.log.debug(str(message))
 
         # Loop over all registered handlers.
@@ -143,10 +148,8 @@ class Bot:
     async def __aenter__(self) -> 'Bot':
         """Connect to the bot's internal socket."""
         self._send_socket = await Socket(self._username,
-                                         profile_name=None,
-                                         profile_picture=None,
-                                         socket_path=self._socket_path,
-                                         subscribe=False).__aenter__()
+                                         self._socket_path,
+                                         False).__aenter__()
         self._sender = MessageSender(self._username, self._send_socket)
         return self
 
@@ -158,13 +161,14 @@ class Bot:
 
     async def start(self) -> None:
         """Start the bot event loop."""
-        self.log.info(f"{self._profile_name} started")
+        self.log.info("Bot started")
         self._receive_socket = await Socket(self._username,
-                                            self._profile_name,
-                                            self._profile_picture,
                                             self._socket_path,
                                             True).__aenter__()
         self._receiver = MessageReceiver(self._receive_socket, self._sender)
+
+        if self._profile_name:
+            await self.set_profile(self._profile_name, self._profile_picture)
 
         async with anyio.create_task_group() as tg:
             self._job_queue = JobQueue(self._sender)
@@ -186,3 +190,12 @@ class Bot:
         :rtype: bool
         """
         return await self._sender.send_message(receiver, body, attachments)
+
+    async def set_profile(self, profile_name: str, profile_avatar: str = None) -> None:
+        """
+        Set Signal profile.
+
+        :param profile_name:   New profile name, empty string for no profile name.
+        :param profile_avatar: Path to profile avatar file.
+        """
+        await self._sender.set_profile(profile_name, profile_avatar)

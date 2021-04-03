@@ -20,6 +20,7 @@ import json
 import logging
 from typing import AsyncIterable, Optional
 
+from .address import Address
 from .attachment import Attachment
 from .data_message import DataMessage
 from .group import Group
@@ -108,7 +109,10 @@ class MessageReceiver:
 
                 yield Message(
                     username=message["username"],
-                    source=message["source"].get("uuid"),
+                    source=Address(
+                        uuid=message["source"].get("uuid"),
+                        number=message["source"].get("number"),
+                    ),
                     envelope_type=message["type"],
                     timestamp=message["timestamp"],
                     timestamp_iso=message["timestampISO"],

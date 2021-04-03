@@ -17,6 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Semaphore: A simple (rule-based) bot library for Signal Private Messenger."""
 
+from .address import Address
 from .attachment import Attachment
 from .bot import Bot
 from .chat_context import ChatContext
