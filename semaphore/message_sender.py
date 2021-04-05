@@ -86,6 +86,7 @@ class MessageSender:
                 continue
 
             if response_wrapper['id'] != bot_message['id']:
+                self.log.warning("Received message response for another id")
                 continue
 
             if response_wrapper.get("error"):
@@ -104,7 +105,7 @@ class MessageSender:
                     if result.get('success'):
                         return True
                     return False
-                self.log.debug(f"Result is not for us but for {result['address']}")
+                self.log.warning(f"Result is not for us but for {result['address']}")
         return False
 
     async def reply_message(self, message: Message, reply: Reply) -> None:
