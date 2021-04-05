@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains a class that handles sending bot messages."""
+import asyncio
 import json
 import logging
 import re
@@ -34,45 +35,52 @@ class MessageSender:
         """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
+        self._socket_lock = asyncio.Lock()
         self.log = logging.getLogger(__name__)
 
     async def _send(self, message: Dict) -> bool:
-        self.signald_message_id += 1
-        message['id'] = str(self.signald_message_id)
+        if message['type'] == 'send':
+            self.signald_message_id += 1
+            message['id'] = str(self.signald_message_id)
 
-        await self._socket.send(message)
+        async with self._socket_lock:
+            await self._socket.send(message)
+            if not message.get('id'):
+                return True
 
-        # Wait for success response
-        async for line in self._socket.read():
-            self.log.debug(f"Socket of sender received: {line.decode()}")
+            self.log.debug(f"Waiting for success of {message['id']}")
 
-            # Load Signal message wrapper
-            try:
-                response_wrapper = json.loads(line)
-            except json.JSONDecodeError as e:
-                self.log.error("Could not decode signald response", exc_info=e)
-                continue
+            # Wait for success response
+            async for line in self._socket.read():
+                self.log.debug(f"Socket of sender received: {line.decode()}")
 
-            # Skip everything but response for our message
-            if 'id' not in response_wrapper:
-                continue
+                # Load Signal message wrapper
+                try:
+                    response_wrapper = json.loads(line)
+                except json.JSONDecodeError as e:
+                    self.log.error("Could not decode signald response", exc_info=e)
+                    continue
 
-            if response_wrapper['id'] != message['id']:
-                self.log.warning("Received message response for another id")
-                continue
+                # Skip everything but response for our message
+                if 'id' not in response_wrapper:
+                    continue
 
-            if response_wrapper.get("error"):
-                self.log.warning(f"Could not send message:"
-                                 f"{response_wrapper['error'].get('message')}")
-                return False
+                if response_wrapper['id'] != message['id']:
+                    self.log.warning("Received message response for another id")
+                    continue
 
-            response = response_wrapper['data']
-            results = response.get("results")
+                if response_wrapper.get("error"):
+                    self.log.warning(f"Could not send message:"
+                                     f"{response_wrapper['error'].get('message')}")
+                    return False
 
-            if results:
-                if results[0].get('success'):
-                    return True
-        return False
+                response = response_wrapper['data']
+                results = response.get("results")
+
+                if results:
+                    if results[0].get('success'):
+                        return True
+            return False
 
     async def send_message(self, receiver, body, attachments=None) -> bool:
         """
