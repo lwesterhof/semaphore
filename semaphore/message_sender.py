@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains a class that handles sending bot messages."""
+import json
+import logging
 import re
 from typing import Any, Dict
 
@@ -26,22 +28,26 @@ from .socket import Socket
 
 class MessageSender:
     """This class handles sending bot messages."""
+    signald_message_id: int = 0
 
     def __init__(self, username: str, socket: Socket):
         """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
+        self.log = logging.getLogger(__name__)
 
     async def _send(self, message: Dict) -> None:
         await self._socket.send(message)
 
-    async def send_message(self, receiver, body, attachments=None):
+    async def send_message(self, receiver, body, attachments=None) -> bool:
         """
         Send a message.
 
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
+        :return: Returns whether sending is successful
+        :rtype: bool
         """
         bot_message = {
             "type": "send",
@@ -59,7 +65,47 @@ class MessageSender:
         if attachments:
             bot_message["attachments"] = attachments
 
+        self.signald_message_id += 1
+        bot_message['id'] = str(self.signald_message_id)
+
         await self._send(bot_message)
+
+        # Wait for success response
+        async for line in self._socket.read():
+            self.log.debug(f"Socket of sender received: {line.decode()}")
+
+            # Load Signal message wrapper
+            try:
+                response_wrapper = json.loads(line)
+            except json.JSONDecodeError as e:
+                self.log.error("Could not decode signald response", exc_info=e)
+                continue
+
+            # Skip everything but response for our message
+            if 'id' not in response_wrapper:
+                continue
+
+            if response_wrapper['id'] != bot_message['id']:
+                continue
+
+            if response_wrapper.get("error"):
+                self.log.warning(f"Could not send message to {receiver}:"
+                                 f"{response_wrapper['error'].get('message')}")
+                return False
+
+            response = response_wrapper['data']
+            results = response.get("results")
+            if not results:
+                return False
+
+            for result in results:
+                if result['address'].get('uuid') == receiver or \
+                        result['address'].get('number') == receiver:
+                    if result.get('success'):
+                        return True
+                    return False
+                self.log.debug(f"Result is not for us but for {result['address']}")
+        return False
 
     async def reply_message(self, message: Message, reply: Reply) -> None:
         """
