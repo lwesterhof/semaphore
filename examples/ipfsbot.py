@@ -81,7 +81,7 @@ async def ipfs(ctx: ChatContext) -> None:
             if ctx.message.data_message.body.lower() in ['y', 'yes']:
                 cid = ipfs_add(Latest_photo)
                 Latest_photo = ''
-                await ctx.message.reply(body="The photo has been arcived to IPFS\n\nhttps://ipfs.io/ipfs/" + cid)
+                await ctx.message.reply(body="The photo has been archived to IPFS\n\nhttps://ipfs.io/ipfs/" + cid)
             elif ctx.message.data_message.body.lower() in ['n', 'no']:
                 Latest_photo = ''
                 await ctx.message.reply(body="I will not archive the uploaded photo to IPFS")
