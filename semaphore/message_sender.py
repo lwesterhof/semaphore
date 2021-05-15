@@ -69,9 +69,9 @@ class MessageSender:
                     self.log.warning("Received message response for another id")
                     continue
 
-                if response_wrapper.get("error"):
+                if response_wrapper.get("error") is not None:
                     self.log.warning(f"Could not send message:"
-                                     f"{response_wrapper['error'].get('message')}")
+                                     f"{response_wrapper}")
                     return False
 
                 response = response_wrapper['data']
