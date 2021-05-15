@@ -37,6 +37,12 @@ class MessageSender:
         self.log = logging.getLogger(__name__)
 
     async def _send(self, message: Dict) -> bool:
+        """
+        Send a message wrapper to socket
+
+        :param message: MessageWrapper
+        :return: Returns whether sending is successful
+        """
         self.signald_message_id += 1
         message['id'] = str(self.signald_message_id)
 
@@ -108,6 +114,7 @@ class MessageSender:
 
         :param message: The original message replying to.
         :param reply:   The reply to send.
+        :return: Returns whether reply was sent successfully
         """
         # Mark message as read before replying.
         if reply.mark_read:

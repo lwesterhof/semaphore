@@ -80,6 +80,7 @@ class Message:
 
         :param *args:    The body of the reply
         :param **kwargs: Keyword arguments of the Reply constructor
+        :return: Returns whether reply was sent successfully
         """
         return await self._sender.reply_message(self, Reply(*args, **kwargs))
 
