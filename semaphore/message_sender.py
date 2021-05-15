@@ -72,7 +72,7 @@ class MessageSender:
             if results:
                 if results[0].get('success'):
                     return True
-        return False
+            return False
 
     async def send_message(self, receiver, body, attachments=None) -> bool:
         """
