@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -176,37 +179,37 @@
   <div class="section" id="semaphore-jobqueue">
 <h1>semaphore.JobQueue<a class="headerlink" href="#semaphore-jobqueue" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="semaphore.JobQueue">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">semaphore.</span></code><code class="sig-name descname"><span class="pre">JobQueue</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.JobQueue">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">semaphore.</span></span><span class="sig-name descname"><span class="pre">JobQueue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sender</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>“This object represents a bot job queue.</p>
 <dl class="py method">
-<dt id="semaphore.JobQueue.run_daily">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">run_daily</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">semaphore.job.Job</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_daily"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_daily" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.JobQueue.run_daily">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_daily</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="semaphore.job.html#semaphore.Job" title="semaphore.job.Job"><span class="pre">semaphore.job.Job</span></a><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_daily"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_daily" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a job to the queue that runs daily.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="semaphore.JobQueue.run_monthly">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">run_monthly</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">semaphore.job.Job</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_monthly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_monthly" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.JobQueue.run_monthly">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_monthly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="semaphore.job.html#semaphore.Job" title="semaphore.job.Job"><span class="pre">semaphore.job.Job</span></a><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_monthly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_monthly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a job to the queue that runs monthly.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="semaphore.JobQueue.run_once">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">run_once</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">semaphore.job.Job</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_once"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_once" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.JobQueue.run_once">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_once</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="semaphore.job.html#semaphore.Job" title="semaphore.job.Job"><span class="pre">semaphore.job.Job</span></a><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_once"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_once" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a job to the queue that runs once.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="semaphore.JobQueue.run_repeating">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">run_repeating</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">semaphore.job.Job</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_repeating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_repeating" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.JobQueue.run_repeating">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_repeating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="semaphore.job.html#semaphore.Job" title="semaphore.job.Job"><span class="pre">semaphore.job.Job</span></a><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.run_repeating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.run_repeating" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a job to the queue that runs repeating.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="semaphore.JobQueue.start">
-<em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.start" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.JobQueue.start">
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/job_queue.html#JobQueue.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.JobQueue.start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run all the jobs in the queue that are due.</p>
 </dd></dl>
 

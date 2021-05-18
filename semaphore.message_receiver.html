@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -176,13 +179,13 @@
   <div class="section" id="semaphore-messagereceiver">
 <h1>semaphore.MessageReceiver<a class="headerlink" href="#semaphore-messagereceiver" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="semaphore.MessageReceiver">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">semaphore.</span></code><code class="sig-name descname"><span class="pre">MessageReceiver</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">socket</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.socket.Socket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">semaphore.message_sender.MessageSender</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message_receiver.html#MessageReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageReceiver" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.MessageReceiver">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">semaphore.</span></span><span class="sig-name descname"><span class="pre">MessageReceiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">socket</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="semaphore.socket.html#semaphore.Socket" title="semaphore.socket.Socket"><span class="pre">semaphore.socket.Socket</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender" title="semaphore.message_sender.MessageSender"><span class="pre">semaphore.message_sender.MessageSender</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/message_receiver.html#MessageReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageReceiver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object represents a Signal message queue.</p>
 <dl class="py method">
-<dt id="semaphore.MessageReceiver.receive">
-<code class="sig-name descname"><span class="pre">receive</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><span class="pre">semaphore.message.Message</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/semaphore/message_receiver.html#MessageReceiver.receive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageReceiver.receive" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="semaphore.MessageReceiver.receive">
+<span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="semaphore.message.html#semaphore.Message" title="semaphore.message.Message"><span class="pre">semaphore.message.Message</span></a><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/semaphore/message_receiver.html#MessageReceiver.receive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageReceiver.receive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Receive messages and return as Iterator.</p>
 </dd></dl>
 
