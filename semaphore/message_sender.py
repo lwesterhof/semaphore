@@ -36,8 +36,50 @@ class MessageSender:
         self._socket: Socket = socket
         self.log = logging.getLogger(__name__)
 
-    async def _send(self, message: Dict) -> None:
+    async def _send(self, message: Dict) -> bool:
+        """
+        Send a message wrapper to socket
+
+        :param message: MessageWrapper
+        :return: Returns whether sending is successful
+        """
+        self.signald_message_id += 1
+        message['id'] = str(self.signald_message_id)
+
         await self._socket.send(message)
+
+        # Wait for success response
+        async for line in self._socket.read():
+            self.log.debug(f"Socket of sender received: {line.decode()}")
+
+            # Load Signal message wrapper
+            try:
+                response_wrapper = json.loads(line)
+            except json.JSONDecodeError as e:
+                self.log.error("Could not decode signald response", exc_info=e)
+                continue
+
+            # Skip everything but response for our message
+            if 'id' not in response_wrapper:
+                continue
+
+            if response_wrapper['id'] != message['id']:
+                self.log.warning("Received message response for another id")
+                continue
+
+            if response_wrapper.get("error"):
+                self.log.warning(f"Could not send message:"
+                                 f"{response_wrapper['error'].get('message')}")
+                return False
+
+            response = response_wrapper['data']
+            results = response.get("results")
+
+            if results:
+                if results[0].get('success'):
+                    return True
+            return False
+        return False
 
     async def send_message(self, receiver, body, attachments=None) -> bool:
         """
@@ -65,54 +107,15 @@ class MessageSender:
         if attachments:
             bot_message["attachments"] = attachments
 
-        self.signald_message_id += 1
-        bot_message['id'] = str(self.signald_message_id)
+        return await self._send(bot_message)
 
-        await self._send(bot_message)
-
-        # Wait for success response
-        async for line in self._socket.read():
-            self.log.debug(f"Socket of sender received: {line.decode()}")
-
-            # Load Signal message wrapper
-            try:
-                response_wrapper = json.loads(line)
-            except json.JSONDecodeError as e:
-                self.log.error("Could not decode signald response", exc_info=e)
-                continue
-
-            # Skip everything but response for our message
-            if 'id' not in response_wrapper:
-                continue
-
-            if response_wrapper['id'] != bot_message['id']:
-                continue
-
-            if response_wrapper.get("error"):
-                self.log.warning(f"Could not send message to {receiver}:"
-                                 f"{response_wrapper['error'].get('message')}")
-                return False
-
-            response = response_wrapper['data']
-            results = response.get("results")
-            if not results:
-                return False
-
-            for result in results:
-                if result['address'].get('uuid') == receiver or \
-                        result['address'].get('number') == receiver:
-                    if result.get('success'):
-                        return True
-                    return False
-                self.log.debug(f"Result is not for us but for {result['address']}")
-        return False
-
-    async def reply_message(self, message: Message, reply: Reply) -> None:
+    async def reply_message(self, message: Message, reply: Reply) -> bool:
         """
         Send the bot message.
 
         :param message: The original message replying to.
         :param reply:   The reply to send.
+        :return: Returns whether reply was sent successfully
         """
         # Mark message as read before replying.
         if reply.mark_read:
@@ -156,7 +159,7 @@ class MessageSender:
         else:
             bot_message["recipientAddress"] = {"uuid": message.source.uuid}
 
-        await self._send(bot_message)
+        return await self._send(bot_message)
 
     async def typing_started(self, message: Message) -> None:
         """
