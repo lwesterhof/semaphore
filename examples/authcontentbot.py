@@ -107,22 +107,63 @@ async def ipfs(ctx: ChatContext) -> None:
                 await ctx.message.reply(body="I will not archive the uploaded photo to IPFS")
         elif cmd == '/register':
             Verifiers.append(ctx.message.source.number)
-            await ctx.message.reply(body="{} is a verifier now".format(ctx.message.source.number))
+            await ctx.message.reply(body=(
+                '{} is a verifier now.\n\n'
+                'Please send "/verify" to get the latest photo to verify.'.format(
+                    ctx.message.source.number
+                )
+            ))
         elif cmd == '/verify':
             # get latest photo URL to verify
             if ctx.message.source.number in Verifiers:
-                msg = 'Do you agree the authenticity of the photo?\n\n{0}\n\nagree: /agree y\ndisagree: /agree n'.format(Latest_photo_url)
+                msg = (
+                    'Please review the following photo:\n'
+                    '{0}\n\n'
+                    'Is the photo verified?\n\n'
+                    'Yes: Please reply "/verified"\n'
+                    'No: Please reply "/not-verified"'.format(Latest_photo_url)
+                )
+                await ctx.message.reply(body=msg)
+            else:
+                msg = (
+                    'Welcome to the Hala Systems verification system.'
+                    ' You are not yet registered as a user.\n\n'
+                    'Would you like to register?\n\n'
+                    'Please reply "/register" to start.'
+                )
+                await ctx.message.reply(body=msg)
+        elif cmd == '/verified':
+            # verified and agree authenticity of the photo for verification
+            if ctx.message.source.number in Verifiers:
+                msg = (
+                    'Thank you.\n\n'
+                    'This photo is marked as "verified".\n'
+                    'CID: {0}'.format(
+                        os.path.basename(Latest_photo_url)
+                    )
+                )
+                await ctx.message.reply(body=msg)
+
+                # send MobileCoin as rewards
+                msg = 'Payment has been sent to you and content creator.'
                 await ctx.message.reply(body=msg)
             else:
                 msg = 'You are not a verifier. Send "/register" to be a verifier'
                 await ctx.message.reply(body=msg)
-        elif cmd == '/agree':
+        elif cmd == '/not-verified':
+            # verified and disagree authenticity of the photo for verification
             if ctx.message.source.number in Verifiers:
-                agreement = ctx.message.data_message.body.split(' ')[1].lower()
-                msg = 'Verification agreement by {0}: {1}'.format(ctx.message.source.number, agreement)
+                msg = (
+                    'Thank you.\n\n'
+                    'This photo is marked as "not verified".\n'
+                    'CID: {0}'.format(
+                        os.path.basename(Latest_photo_url)
+                    )
+                )
                 await ctx.message.reply(body=msg)
 
-                msg = 'Both you and the photo sender will get MOBs as rewards'
+                # send MobileCoin as rewards
+                msg = 'Payment has been sent to you.'
                 await ctx.message.reply(body=msg)
             else:
                 msg = 'You are not a verifier. Send "/register" to be a verifier'
