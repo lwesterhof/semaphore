@@ -39,6 +39,9 @@ Latest_photo = ''
 # IPFS URL of the latest received photo
 Latest_photo_url = 'https://ipfs.io./ipfs/defaultcid'
 
+# Sender's phone number of the latest received photo
+Latest_photo_source_number = ''
+
 # Verifier list. All the verifiers will get notifications to verify photos.
 # The list contains verifiers' phone numbers.
 Verifiers = []
@@ -69,6 +72,7 @@ def ipfs_add(filepath, cid_version=1):
 async def ipfs(ctx: ChatContext) -> None:
     global Latest_photo
     global Latest_photo_url
+    global Latest_photo_source_number
     global Verifiers
 
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
@@ -100,6 +104,7 @@ async def ipfs(ctx: ChatContext) -> None:
                 cid = ipfs_add(Latest_photo)
                 Latest_photo = ''
                 Latest_photo_url = 'https://ipfs.io/ipfs/' + cid
+                Latest_photo_source_number = ctx.message.source.number
                 await ctx.message.reply(body="The photo has been archived to IPFS\n\nhttps://ipfs.io/ipfs/" + cid)
 
             elif ctx.message.data_message.body.lower() in ['n', 'no']:
@@ -147,6 +152,9 @@ async def ipfs(ctx: ChatContext) -> None:
                 # send MobileCoin as rewards
                 msg = 'Payment has been sent to you and content creator.'
                 await ctx.message.reply(body=msg)
+
+                print('Verifier number:', ctx.message.source.number)
+                print('Content creator number:', Latest_photo_source_number)
             else:
                 msg = 'You are not a verifier. Send "/register" to be a verifier'
                 await ctx.message.reply(body=msg)
@@ -165,6 +173,8 @@ async def ipfs(ctx: ChatContext) -> None:
                 # send MobileCoin as rewards
                 msg = 'Payment has been sent to you.'
                 await ctx.message.reply(body=msg)
+
+                print('Verifier number:', ctx.message.source.number)
             else:
                 msg = 'You are not a verifier. Send "/register" to be a verifier'
                 await ctx.message.reply(body=msg)
