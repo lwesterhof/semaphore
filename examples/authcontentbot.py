@@ -30,6 +30,7 @@ import feedparser  # type: ignore
 import requests
 from bs4 import BeautifulSoup  # type: ignore
 
+from mobilecoin.client import Client
 from semaphore import Bot, ChatContext
 
 
@@ -45,6 +46,9 @@ Latest_photo_source_number = ''
 # Verifier list. All the verifiers will get notifications to verify photos.
 # The list contains verifiers' phone numbers.
 Verifiers = []
+
+# MobileCoin client instance
+Mobilecoin = Client(url="http://127.0.0.1:9090/wallet", verbose=True)
 
 
 def ipfs_add(filepath, cid_version=1):
@@ -74,6 +78,7 @@ async def ipfs(ctx: ChatContext) -> None:
     global Latest_photo_url
     global Latest_photo_source_number
     global Verifiers
+    global Mobilecoin
 
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     print("ctx.message: {}".format(ctx.message))
@@ -171,6 +176,14 @@ async def ipfs(ctx: ChatContext) -> None:
                 await ctx.message.reply(body=msg)
 
                 # send MobileCoin as rewards
+                account_id = '492deddfd6feb224d839f8513407a75e7a90eeb21e10554f7bddc6b6ff29beb4'
+                amount = 0.0006
+                to_address = '48cfuaeDwGCFbqnxRaPUwhxePdL7ZQf8zzW3Z57oorky4jY78N4Akw9jtEdnj2Fn8DqFFw7o9LzzgHoNzULEsyUoWws5frbBxuJe4ZQVwH1'
+                r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+
+                msg = 'Transaction result:\n' + json.dumps(r, indent=4)
+                await ctx.message.reply(body=msg)
+
                 msg = 'Payment has been sent to you.'
                 await ctx.message.reply(body=msg)
 
@@ -178,6 +191,10 @@ async def ipfs(ctx: ChatContext) -> None:
             else:
                 msg = 'You are not a verifier. Send "/register" to be a verifier'
                 await ctx.message.reply(body=msg)
+        elif cmd == '/mobtest':
+            r = Mobilecoin.get_all_accounts()
+            msg = 'All accounts: ' + json.dumps(r)
+            await ctx.message.reply(body=msg)
         else:
             # echo
             await ctx.message.reply(body=ctx.message.data_message.body)
