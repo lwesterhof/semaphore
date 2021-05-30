@@ -97,8 +97,10 @@ class MessageSender:
             "username": self._username,
             "messageBody": body
         }
-
-        if re.search(r"\+\d*", receiver):
+        
+        if receiver[-1] == "=":
+            bot_message["recipientGroupId"] = receiver
+        elif re.search(r"\+\d*", receiver):
             bot_message["recipientAddress"] = {"number": receiver}
         else:
             bot_message["recipientAddress"] = {"uuid": receiver}
