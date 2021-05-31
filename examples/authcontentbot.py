@@ -178,7 +178,8 @@ async def ipfs(ctx: ChatContext) -> None:
                 # send MobileCoin as rewards
                 account_id = '492deddfd6feb224d839f8513407a75e7a90eeb21e10554f7bddc6b6ff29beb4'
                 amount = 0.0006
-                to_address = '48cfuaeDwGCFbqnxRaPUwhxePdL7ZQf8zzW3Z57oorky4jY78N4Akw9jtEdnj2Fn8DqFFw7o9LzzgHoNzULEsyUoWws5frbBxuJe4ZQVwH1'
+                #to_address = '48cfuaeDwGCFbqnxRaPUwhxePdL7ZQf8zzW3Z57oorky4jY78N4Akw9jtEdnj2Fn8DqFFw7o9LzzgHoNzULEsyUoWws5frbBxuJe4ZQVwH1'
+                to_address = '3ZvFiT6ud8Y33Cm9QRWdC8V8Lu5ea9RZwTdtABWNmrU8aPAs5k7CS46ejroJLDCHZhuUX5uq4CpQR5VYGC3HRvPRDFAbbXFxUPTCS1JpVghaH5uZvGY4NZdfPadqFt5zNzXtP9g3C9o6pKGExsf6uxnbWiDqyH9QTQiBP5G2Xdp3K2ypTL52GZRc5eLeWVGAki1XSc6VDSxGrgvCst624sVXqfWvepK7Ud95anGNjdgv61BXg'
                 r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
 
                 msg = 'Transaction result:\n' + json.dumps(r, indent=4)
