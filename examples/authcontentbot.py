@@ -50,6 +50,30 @@ Verifiers = []
 # MobileCoin client instance
 Mobilecoin = Client(url="http://127.0.0.1:9090/wallet", verbose=True)
 
+# Content Creator Whitelist
+Creator_whitelist = {
+    # Zion
+    '+447828564625': {
+        'address': '3r7jnGv5tX9YhNajYPKczASHRbAn8xhvvy2KCAior8nK5AgAqBLYJEiUK7g56qweYytTxXAdvLCPgNwHdNjQFN2YojaDEYYr6uCPZVS8ffnGrzjbW7YxBXjsaCEotMEuo5MexEpGnxmVYJ49vgXBq8BzWR27u2FN6hSsu8LqbjLHqi3GRdhBDiHWAJt4q8ZsEWrx89JkU4dCMFTv7RkFRoCywZZjNjRkSmQuL8rEuLNr2d3F4'
+    },
+}
+
+# Content Verifier Whitelist
+Verifier_whitelist = {
+    # Bofu
+    '+447380317516': {
+        'address': '3ZvFiT6ud8Y33Cm9QRWdC8V8Lu5ea9RZwTdtABWNmrU8aPAs5k7CS46ejroJLDCHZhuUX5uq4CpQR5VYGC3HRvPRDFAbbXFxUPTCS1JpVghaH5uZvGY4NZdfPadqFt5zNzXtP9g3C9o6pKGExsf6uxnbWiDqyH9QTQiBP5G2Xdp3K2ypTL52GZRc5eLeWVGAki1XSc6VDSxGrgvCst624sVXqfWvepK7Ud95anGNjdgv61BXg'
+    },
+    # Jonathan, 2nd
+    '+447723466379': {
+        'address': '4E3quhtzVCEki1QRA6cYrCBczNcsvhQffNNDWmZsLC8KmRnLe6D3vDn1WZGyG2QRvWGSJgvEkcdfMd5AH168tLp4FGDWQBqNCKxqAgWTAiTJizddjKxraLCcyR6HDhMwQ5x2cdEUBtRB3wCMaC9gFHZKe6Hf6d2Ba9exvTgUVL3eXrHzS1zpvvP6ZXdUo7esPwoBG4JMnYeQtAn9MN6C4XUBnomXFmdUJLKBVBGgnYhABt7zJ'
+    },
+    # Rachel
+    '+447578889560': {
+        'address': '4ZgRSK4pJGuZHQutS2u8G4tEwrRUkdEuCZsbqh9AMyGM4fsKxyoGNFtLsWPzMbCKkNw2zrkP88LSRZVL5f3EJg76ANd9he6K6dpNfpUiKFDSHkjtuzASaG19cAaNvWFTACgHbK4TvdvkFf7Tm9JGuvN3yW3uXZLE5372BceJP9rvBA8YJ7uvzztAneQL4E7NXX98yMsAajxH9EZRKrjM6EQTHbFuFKeeU9jAh5j5GM4dFm276'
+    },
+}
+
 
 def ipfs_add(filepath, cid_version=1):
     """ Add file to IPFS via infura API """
@@ -112,7 +136,7 @@ async def ipfs(ctx: ChatContext) -> None:
                 Latest_photo_source_number = ctx.message.source.number
                 await ctx.message.reply(body="The photo has been archived to IPFS\n\nhttps://ipfs.io/ipfs/" + cid)
 
-            elif ctx.message.data_message.body.lower() in ['n', 'no']:
+            else:
                 Latest_photo = ''
                 await ctx.message.reply(body="I will not archive the uploaded photo to IPFS")
         elif cmd == '/register':
@@ -155,6 +179,21 @@ async def ipfs(ctx: ChatContext) -> None:
                 await ctx.message.reply(body=msg)
 
                 # send MobileCoin as rewards
+                account_id = '492deddfd6feb224d839f8513407a75e7a90eeb21e10554f7bddc6b6ff29beb4'
+                amount = 0.0006
+                to_address = Verifier_whitelist[ctx.message.source.number]['address']
+                r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+
+                if Latest_photo_source_number in Creator_whitelist.keys():
+                    print('Creator is in whitelist')
+                    # WORKAROUND: use two wallets to prevent Txos error (issue #3)
+                    account_id = 'f259dfdcd070e56315fb8fb0b528f3961a9c17247dcaa3aa8bba943ee1ffcf86'
+                    amount = 0.0006
+                    to_address = Creator_whitelist[Latest_photo_source_number]['address']
+                    r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+                else:
+                    print('Creator is not in whitelist')
+
                 msg = 'Payment has been sent to you and content creator.'
                 await ctx.message.reply(body=msg)
 
@@ -178,12 +217,11 @@ async def ipfs(ctx: ChatContext) -> None:
                 # send MobileCoin as rewards
                 account_id = '492deddfd6feb224d839f8513407a75e7a90eeb21e10554f7bddc6b6ff29beb4'
                 amount = 0.0006
-                #to_address = '48cfuaeDwGCFbqnxRaPUwhxePdL7ZQf8zzW3Z57oorky4jY78N4Akw9jtEdnj2Fn8DqFFw7o9LzzgHoNzULEsyUoWws5frbBxuJe4ZQVwH1'
-                to_address = '3ZvFiT6ud8Y33Cm9QRWdC8V8Lu5ea9RZwTdtABWNmrU8aPAs5k7CS46ejroJLDCHZhuUX5uq4CpQR5VYGC3HRvPRDFAbbXFxUPTCS1JpVghaH5uZvGY4NZdfPadqFt5zNzXtP9g3C9o6pKGExsf6uxnbWiDqyH9QTQiBP5G2Xdp3K2ypTL52GZRc5eLeWVGAki1XSc6VDSxGrgvCst624sVXqfWvepK7Ud95anGNjdgv61BXg'
+                to_address = Verifier_whitelist[ctx.message.source.number]['address']
                 r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
 
-                msg = 'Transaction result:\n' + json.dumps(r, indent=4)
-                await ctx.message.reply(body=msg)
+                #msg = 'Transaction result:\n' + json.dumps(r, indent=4)
+                #await ctx.message.reply(body=msg)
 
                 msg = 'Payment has been sent to you.'
                 await ctx.message.reply(body=msg)
