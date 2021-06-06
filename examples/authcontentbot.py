@@ -56,6 +56,10 @@ Creator_whitelist = {
     '+447828564625': {
         'address': '3r7jnGv5tX9YhNajYPKczASHRbAn8xhvvy2KCAior8nK5AgAqBLYJEiUK7g56qweYytTxXAdvLCPgNwHdNjQFN2YojaDEYYr6uCPZVS8ffnGrzjbW7YxBXjsaCEotMEuo5MexEpGnxmVYJ49vgXBq8BzWR27u2FN6hSsu8LqbjLHqi3GRdhBDiHWAJt4q8ZsEWrx89JkU4dCMFTv7RkFRoCywZZjNjRkSmQuL8rEuLNr2d3F4'
     },
+    # Rachel
+    '+447578889560': {
+        'address': '4ZgRSK4pJGuZHQutS2u8G4tEwrRUkdEuCZsbqh9AMyGM4fsKxyoGNFtLsWPzMbCKkNw2zrkP88LSRZVL5f3EJg76ANd9he6K6dpNfpUiKFDSHkjtuzASaG19cAaNvWFTACgHbK4TvdvkFf7Tm9JGuvN3yW3uXZLE5372BceJP9rvBA8YJ7uvzztAneQL4E7NXX98yMsAajxH9EZRKrjM6EQTHbFuFKeeU9jAh5j5GM4dFm276'
+    },
 }
 
 # Content Verifier Whitelist
@@ -67,10 +71,6 @@ Verifier_whitelist = {
     # Jonathan, 2nd
     '+447723466379': {
         'address': '4E3quhtzVCEki1QRA6cYrCBczNcsvhQffNNDWmZsLC8KmRnLe6D3vDn1WZGyG2QRvWGSJgvEkcdfMd5AH168tLp4FGDWQBqNCKxqAgWTAiTJizddjKxraLCcyR6HDhMwQ5x2cdEUBtRB3wCMaC9gFHZKe6Hf6d2Ba9exvTgUVL3eXrHzS1zpvvP6ZXdUo7esPwoBG4JMnYeQtAn9MN6C4XUBnomXFmdUJLKBVBGgnYhABt7zJ'
-    },
-    # Rachel
-    '+447578889560': {
-        'address': '4ZgRSK4pJGuZHQutS2u8G4tEwrRUkdEuCZsbqh9AMyGM4fsKxyoGNFtLsWPzMbCKkNw2zrkP88LSRZVL5f3EJg76ANd9he6K6dpNfpUiKFDSHkjtuzASaG19cAaNvWFTACgHbK4TvdvkFf7Tm9JGuvN3yW3uXZLE5372BceJP9rvBA8YJ7uvzztAneQL4E7NXX98yMsAajxH9EZRKrjM6EQTHbFuFKeeU9jAh5j5GM4dFm276'
     },
 }
 
@@ -194,7 +194,7 @@ async def ipfs(ctx: ChatContext) -> None:
                 else:
                     print('Creator is not in whitelist')
 
-                msg = 'Payment has been sent to you and content creator.'
+                msg = 'Payment has been sent to you and the documentor.'
                 await ctx.message.reply(body=msg)
 
                 print('Verifier number:', ctx.message.source.number)
