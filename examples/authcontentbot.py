@@ -68,7 +68,7 @@ Creator_whitelist = {
 
 # Content Verifier Whitelist
 Verifier_whitelist = {
-    # Bofu
+    # Yui
     '+447380317516': {
         'address': '3ZvFiT6ud8Y33Cm9QRWdC8V8Lu5ea9RZwTdtABWNmrU8aPAs5k7CS46ejroJLDCHZhuUX5uq4CpQR5VYGC3HRvPRDFAbbXFxUPTCS1JpVghaH5uZvGY4NZdfPadqFt5zNzXtP9g3C9o6pKGExsf6uxnbWiDqyH9QTQiBP5G2Xdp3K2ypTL52GZRc5eLeWVGAki1XSc6VDSxGrgvCst624sVXqfWvepK7Ud95anGNjdgv61BXg'
     },
@@ -205,16 +205,32 @@ async def ipfs(ctx: ChatContext) -> None:
                 # send MobileCoin as rewards
                 account_id = '492deddfd6feb224d839f8513407a75e7a90eeb21e10554f7bddc6b6ff29beb4'
                 amount = 0.0006
-                to_address = Verifier_whitelist[ctx.message.source.number]['address']
-                r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+
+                try:
+                    to_address = Verifier_whitelist[ctx.message.source.number]['address']
+                except Exception as e:
+                    print('Number is not in Verifier whitelist:', ctx.message.source.number)
+
+                try:
+                    r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+                except Exception as e:
+                    print('Fail to send MOB to verifier.')
 
                 if Latest_photo_source_number in Creator_whitelist.keys():
                     print('Creator is in whitelist')
                     # WORKAROUND: use two wallets to prevent Txos error (issue #3)
                     account_id = 'f259dfdcd070e56315fb8fb0b528f3961a9c17247dcaa3aa8bba943ee1ffcf86'
                     amount = 0.0006
-                    to_address = Creator_whitelist[Latest_photo_source_number]['address']
-                    r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+
+                    try:
+                        to_address = Creator_whitelist[Latest_photo_source_number]['address']
+                    except Exception as e:
+                        print('Number is not in Creator whitelist:', Latest_photo_source_number)
+
+                    try:
+                        r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+                    except Exception as e:
+                        print('Fail to send MOB to documentor.')
                 else:
                     print('Creator is not in whitelist')
 
@@ -241,8 +257,16 @@ async def ipfs(ctx: ChatContext) -> None:
                 # send MobileCoin as rewards
                 account_id = '492deddfd6feb224d839f8513407a75e7a90eeb21e10554f7bddc6b6ff29beb4'
                 amount = 0.0006
-                to_address = Verifier_whitelist[ctx.message.source.number]['address']
-                r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+
+                try:
+                    to_address = Verifier_whitelist[ctx.message.source.number]['address']
+                except Exception as e:
+                    print('Number is not in Verifier whitelist:', ctx.message.source.number)
+
+                try:
+                    r = Mobilecoin.build_and_submit_transaction(account_id, amount, to_address)
+                except Exception as e:
+                    print('Fail to send MOB to verifier.')
 
                 #msg = 'Transaction result:\n' + json.dumps(r, indent=4)
                 #await ctx.message.reply(body=msg)
