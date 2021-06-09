@@ -43,6 +43,10 @@ Latest_photo_url = 'https://ipfs.io./ipfs/defaultcid'
 # Sender's phone number of the latest received photo
 Latest_photo_source_number = ''
 
+# When user send a message containing attachment and text,
+# text will be treat as caption.
+Latest_photo_caption = ''
+
 # Verifier list. All the verifiers will get notifications to verify photos.
 # The list contains verifiers' phone numbers.
 Verifiers = []
@@ -56,9 +60,9 @@ Creator_whitelist = {
     '+447828564625': {
         'address': '3r7jnGv5tX9YhNajYPKczASHRbAn8xhvvy2KCAior8nK5AgAqBLYJEiUK7g56qweYytTxXAdvLCPgNwHdNjQFN2YojaDEYYr6uCPZVS8ffnGrzjbW7YxBXjsaCEotMEuo5MexEpGnxmVYJ49vgXBq8BzWR27u2FN6hSsu8LqbjLHqi3GRdhBDiHWAJt4q8ZsEWrx89JkU4dCMFTv7RkFRoCywZZjNjRkSmQuL8rEuLNr2d3F4'
     },
-    # Rachel
-    '+447578889560': {
-        'address': '4ZgRSK4pJGuZHQutS2u8G4tEwrRUkdEuCZsbqh9AMyGM4fsKxyoGNFtLsWPzMbCKkNw2zrkP88LSRZVL5f3EJg76ANd9he6K6dpNfpUiKFDSHkjtuzASaG19cAaNvWFTACgHbK4TvdvkFf7Tm9JGuvN3yW3uXZLE5372BceJP9rvBA8YJ7uvzztAneQL4E7NXX98yMsAajxH9EZRKrjM6EQTHbFuFKeeU9jAh5j5GM4dFm276'
+    # In-field 1
+    '+447723327398': {
+        'address': '52nJkToTAf4w8CeK6WZv3UxgnWWYZtcDmBwGmyT1LUiSsBXNL2DPYNENB9dbejajNMaZ8Kw5JCwBQPc9gFYVk21VEiJAzgF7dtd6czukcwou7uxdKyBB5xBk9FYv2gLth4Kw9ayKhc9P6aafaAsifqLK9xR7JNrdjH5Qu4GijS82swDoiJZrhczBL1bXQbKyNeiVbEntMjvjeWiKD8C8anakyf21CQxD8K9FGctMCZMaae15g'
     },
 }
 
@@ -71,6 +75,14 @@ Verifier_whitelist = {
     # Jonathan, 2nd
     '+447723466379': {
         'address': '4E3quhtzVCEki1QRA6cYrCBczNcsvhQffNNDWmZsLC8KmRnLe6D3vDn1WZGyG2QRvWGSJgvEkcdfMd5AH168tLp4FGDWQBqNCKxqAgWTAiTJizddjKxraLCcyR6HDhMwQ5x2cdEUBtRB3wCMaC9gFHZKe6Hf6d2Ba9exvTgUVL3eXrHzS1zpvvP6ZXdUo7esPwoBG4JMnYeQtAn9MN6C4XUBnomXFmdUJLKBVBGgnYhABt7zJ'
+    },
+    # Rachel
+    '+447578889560': {
+        'address': '4ZgRSK4pJGuZHQutS2u8G4tEwrRUkdEuCZsbqh9AMyGM4fsKxyoGNFtLsWPzMbCKkNw2zrkP88LSRZVL5f3EJg76ANd9he6K6dpNfpUiKFDSHkjtuzASaG19cAaNvWFTACgHbK4TvdvkFf7Tm9JGuvN3yW3uXZLE5372BceJP9rvBA8YJ7uvzztAneQL4E7NXX98yMsAajxH9EZRKrjM6EQTHbFuFKeeU9jAh5j5GM4dFm276'
+    },
+    # Jihad
+    '+447446258175': {
+        'address': '4gBfa4fLxZWaA8zp8TjdSdqyJ87aRWY9AHUwdSFfvov6JL3d6iJf9pvXT7L7n81vJUwdz9tffWPd7rfWimyj4Vgsi4Qgk8NDadASEFjYPrQf3dsTDujZrL9Mof6Mi2d21h1UgeU3JUAEHwWT5BK4cGDwitgydNZuZk5F8hrqxkZqi4uWdJhmiKNE56uioL3uFB5jnTXR4zQozmxNN7XvwQmKmCuuUt1A2Du6XoABxgd1AQc5L'
     },
 }
 
@@ -101,6 +113,7 @@ async def ipfs(ctx: ChatContext) -> None:
     global Latest_photo
     global Latest_photo_url
     global Latest_photo_source_number
+    global Latest_photo_caption
     global Verifiers
     global Mobilecoin
 
@@ -110,12 +123,20 @@ async def ipfs(ctx: ChatContext) -> None:
     print("message source number: {}".format(ctx.message.source.number))
     print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 
-    if len(ctx.message.data_message.body) == 0 and len(ctx.message.data_message.attachments) > 0:
+    #if len(ctx.message.data_message.body) == 0 and len(ctx.message.data_message.attachments) > 0:
+    if len(ctx.message.data_message.attachments) > 0:
+        Latest_photo_caption = ctx.message.data_message.body
+        print('Attachment caption:', Latest_photo_caption)
+
         # Case: The bot receives a photo
         for attachment in ctx.message.data_message.attachments:
-            if attachment.content_type in ["image/png", "image/jpeg"]:
-                print("Get PNG/JPEG stored at {}".format(attachment.stored_filename))
+            print('Attachment type:', attachment.content_type)
+            if attachment.content_type in ["image/png", "image/jpeg", "application/zip"]:
+                print("Get PNG/JPEG/Zip stored at {}".format(attachment.stored_filename))
                 Latest_photo = attachment.stored_filename
+            else:
+                print('Unknown type', attachment.content_type)
+                return
         # TODO: We only handle the latest photo currently.
         await ctx.message.reply(body="Do you want to archive the photo to IPFS? (y/n): ")
     elif len(ctx.message.data_message.body) > 0:
@@ -153,9 +174,12 @@ async def ipfs(ctx: ChatContext) -> None:
                 msg = (
                     'Please review the following photo:\n'
                     '{0}\n\n'
+                    'Caption: {1}\n\n'
                     'Is the photo verified?\n\n'
                     'Yes: Please reply "/verified"\n'
-                    'No: Please reply "/not-verified"'.format(Latest_photo_url)
+                    'No: Please reply "/not-verified"'.format(
+                        Latest_photo_url,
+                        Latest_photo_caption)
                 )
                 await ctx.message.reply(body=msg)
             else:
