@@ -75,13 +75,13 @@ class Message:
                 return self.data_message.group.group_id
         return None
 
-    async def reply(self, *args, **kwargs) -> None:
+    async def reply(self, *args, **kwargs) -> bool:
         """Send a reply to the message.
 
         :param *args:    The body of the reply
         :param **kwargs: Keyword arguments of the Reply constructor
         """
-        await self._sender.reply_message(self, Reply(*args, **kwargs))
+        return await self._sender.reply_message(self, Reply(*args, **kwargs))
 
     async def typing_started(self) -> None:
         """Send a typing started message."""

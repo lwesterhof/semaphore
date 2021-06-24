@@ -16,6 +16,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains a class that handles sending bot messages."""
+import asyncio
+import json
+import logging
 import re
 from typing import Any, Dict
 
@@ -26,22 +29,69 @@ from .socket import Socket
 
 class MessageSender:
     """This class handles sending bot messages."""
+    signald_message_id: int = 0
 
     def __init__(self, username: str, socket: Socket):
         """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
+        self._socket_lock = asyncio.Lock()
+        self.log = logging.getLogger(__name__)
 
-    async def _send(self, message: Dict) -> None:
-        await self._socket.send(message)
+    async def _send(self, message: Dict) -> bool:
+        if message['type'] == 'send':
+            self.signald_message_id += 1
+            message['id'] = str(self.signald_message_id)
 
-    async def send_message(self, receiver, body, attachments=None):
+        async with self._socket_lock:
+            await self._socket.send(message)
+            if not message.get('id'):
+                return True
+
+            self.log.debug(f"Waiting for success of {message['id']}")
+
+            # Wait for success response
+            async for line in self._socket.read():
+                self.log.debug(f"Socket of sender received: {line.decode()}")
+
+                # Load Signal message wrapper
+                try:
+                    response_wrapper = json.loads(line)
+                except json.JSONDecodeError as e:
+                    self.log.error("Could not decode signald response", exc_info=e)
+                    continue
+
+                # Skip everything but response for our message
+                if 'id' not in response_wrapper:
+                    continue
+
+                if response_wrapper['id'] != message['id']:
+                    self.log.warning("Received message response for another id")
+                    continue
+
+                if response_wrapper.get("error") is not None:
+                    self.log.warning(f"Could not send message:"
+                                     f"{response_wrapper}")
+                    return False
+
+                response = response_wrapper['data']
+                results = response.get("results")
+
+                if results:
+                    if results[0].get('success'):
+                        return True
+                return False
+
+
+    async def send_message(self, receiver, body, attachments=None) -> bool:
         """
         Send a message.
 
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
+        :return: Returns whether sending is successful
+        :rtype: bool
         """
         bot_message = {
             "type": "send",
@@ -59,9 +109,9 @@ class MessageSender:
         if attachments:
             bot_message["attachments"] = attachments
 
-        await self._send(bot_message)
+        return await self._send(bot_message)
 
-    async def reply_message(self, message: Message, reply: Reply) -> None:
+    async def reply_message(self, message: Message, reply: Reply) -> bool:
         """
         Send the bot message.
 
@@ -110,7 +160,7 @@ class MessageSender:
         else:
             bot_message["recipientAddress"] = {"uuid": message.source.uuid}
 
-        await self._send(bot_message)
+        return await self._send(bot_message)
 
     async def typing_started(self, message: Message) -> None:
         """
