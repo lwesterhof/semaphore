@@ -46,6 +46,7 @@ setup(
         'flake8-import-order',
         'darglint',
         'mypy',
+        'types-python-dateutil',
         'sphinx',
         'sphinx_rtd_theme',
     ]},

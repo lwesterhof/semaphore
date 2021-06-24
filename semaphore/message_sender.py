@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains a class that handles sending bot messages."""
+import asyncio
 import json
 import logging
 import re
@@ -34,52 +35,53 @@ class MessageSender:
         """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
+        self._socket_lock = asyncio.Lock()
         self.log = logging.getLogger(__name__)
 
     async def _send(self, message: Dict) -> bool:
-        """
-        Send a message wrapper to socket
+        if message['type'] == 'send':
+            self.signald_message_id += 1
+            message['id'] = str(self.signald_message_id)
 
-        :param message: MessageWrapper
-        :return: Returns whether sending is successful
-        """
-        self.signald_message_id += 1
-        message['id'] = str(self.signald_message_id)
+        async with self._socket_lock:
+            await self._socket.send(message)
+            if not message.get('id'):
+                return True
 
-        await self._socket.send(message)
+            self.log.debug(f"Waiting for success of {message['id']}")
 
-        # Wait for success response
-        async for line in self._socket.read():
-            self.log.debug(f"Socket of sender received: {line.decode()}")
+            # Wait for success response
+            async for line in self._socket.read():
+                self.log.debug(f"Socket of sender received: {line.decode()}")
 
-            # Load Signal message wrapper
-            try:
-                response_wrapper = json.loads(line)
-            except json.JSONDecodeError as e:
-                self.log.error("Could not decode signald response", exc_info=e)
-                continue
+                # Load Signal message wrapper
+                try:
+                    response_wrapper = json.loads(line)
+                except json.JSONDecodeError as e:
+                    self.log.error("Could not decode signald response", exc_info=e)
+                    continue
 
-            # Skip everything but response for our message
-            if 'id' not in response_wrapper:
-                continue
+                # Skip everything but response for our message
+                if 'id' not in response_wrapper:
+                    continue
 
-            if response_wrapper['id'] != message['id']:
-                self.log.warning("Received message response for another id")
-                continue
+                if response_wrapper['id'] != message['id']:
+                    self.log.warning("Received message response for another id")
+                    continue
 
-            if response_wrapper.get("error"):
-                self.log.warning(f"Could not send message:"
-                                 f"{response_wrapper['error'].get('message')}")
+                if response_wrapper.get("error") is not None:
+                    self.log.warning(f"Could not send message:"
+                                     f"{response_wrapper}")
+                    return False
+
+                response = response_wrapper['data']
+                results = response.get("results")
+
+                if results:
+                    if results[0].get('success'):
+                        return True
                 return False
-
-            response = response_wrapper['data']
-            results = response.get("results")
-
-            if results:
-                if results[0].get('success'):
-                    return True
             return False
-        return False
 
     async def send_message(self, receiver, body, attachments=None) -> bool:
         """
@@ -88,7 +90,8 @@ class MessageSender:
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
-        :return: Returns whether sending is successful
+
+        :return: Returns whether sending is successful.
         :rtype: bool
         """
         bot_message = {
@@ -117,7 +120,10 @@ class MessageSender:
 
         :param message: The original message replying to.
         :param reply:   The reply to send.
-        :return: Returns whether reply was sent successfully
+
+
+        :return: Returns whether replying is successful.
+        :rtype: bool
         """
         # Mark message as read before replying.
         if reply.mark_read:

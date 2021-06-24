@@ -18,7 +18,7 @@
 """This module contains an object that represents a Signal message queue."""
 import json
 import logging
-from typing import AsyncIterable, Optional
+from typing import AsyncIterable, Dict, Optional
 
 from .address import Address
 from .attachment import Attachment
@@ -49,9 +49,19 @@ class MessageReceiver:
 
             # Load Signal message wrapper
             try:
+                message_wrapper: Dict
                 message_wrapper = json.loads(line)
             except json.JSONDecodeError:
                 continue
+
+            # Handle Errors
+            if message_wrapper.get("exception"):
+                self.log.warning(f"Signald an exception for: {message_wrapper}")
+
+            # Handle listen_stopped
+            if message_wrapper["type"] == "listen_stopped":
+                self.log.warning(f"Signald won't deliver new messages: {message_wrapper}")
+                raise ValueError("Signald: listen stopped")
 
             # Only handle messages.
             if message_wrapper["type"] != "message":
