@@ -221,7 +221,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Message.reply">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/semaphore/message.html#Message.reply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Message.reply" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/semaphore/message.html#Message.reply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Message.reply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a reply to the message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -231,6 +231,12 @@
 <li><p><strong>**kwargs</strong> – <p>Keyword arguments of the Reply constructor</p>
 </p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns whether replying is successful.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
