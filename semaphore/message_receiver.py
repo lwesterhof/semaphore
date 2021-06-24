@@ -18,7 +18,7 @@
 """This module contains an object that represents a Signal message queue."""
 import json
 import logging
-from typing import AsyncIterable, Optional, Dict
+from typing import AsyncIterable, Dict, Optional
 
 from .address import Address
 from .attachment import Attachment

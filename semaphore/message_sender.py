@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -82,7 +82,6 @@ class MessageSender:
                         return True
                 return False
 
-
     async def send_message(self, receiver, body, attachments=None) -> bool:
         """
         Send a message.
@@ -90,7 +89,8 @@ class MessageSender:
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
-        :return: Returns whether sending is successful
+
+        :return: Returns whether sending is successful.
         :rtype: bool
         """
         bot_message = {
@@ -117,6 +117,10 @@ class MessageSender:
 
         :param message: The original message replying to.
         :param reply:   The reply to send.
+
+
+        :return: Returns whether replying is successful.
+        :rtype: bool
         """
         # Mark message as read before replying.
         if reply.mark_read:
