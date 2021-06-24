@@ -97,7 +97,7 @@ class MessageSender:
             "username": self._username,
             "messageBody": body
         }
-        
+
         if receiver[-1] == "=":
             bot_message["recipientGroupId"] = receiver
         elif re.search(r"\+\d*", receiver):
