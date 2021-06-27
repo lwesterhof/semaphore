@@ -224,6 +224,8 @@ def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, metadata=None):
         f.write(photo_bytes)
     print('CAI file:', fpath)
 
+    return fpath
+
 
 async def ipfs(ctx: ChatContext) -> None:
     global Latest_photo
@@ -260,7 +262,7 @@ async def ipfs(ctx: ChatContext) -> None:
 
                 # CAI injection
                 photo_bytes = parse_proofmode_zip_to_photo(attachment.stored_filename)
-                cai_injection(photo_bytes, Latest_photo, photo_bytes, metadata=None)
+                Latest_photo = cai_injection(photo_bytes, Latest_photo, photo_bytes, metadata=None)
             else:
                 print('Unknown type', attachment.content_type)
                 return
