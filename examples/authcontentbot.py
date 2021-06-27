@@ -18,10 +18,13 @@
 """
 Signal Bot example, get reward by sending photo to IPFS or verify the photo.
 """
+import csv
+import io
 import json
 import mimetypes
 import logging
 import os
+import zipfile
 from pathlib import Path
 
 import anyio
@@ -30,6 +33,8 @@ import feedparser  # type: ignore
 import requests
 from bs4 import BeautifulSoup  # type: ignore
 
+from cai.jumbf import json_to_bytes
+from cai.starling import Starling
 from mobilecoin.client import Client
 from semaphore import Bot, ChatContext
 
@@ -109,6 +114,117 @@ def ipfs_add(filepath, cid_version=1):
     return ipfs_cid
 
 
+def parse_proofmode_zip_to_json(zipfilepath):
+    with zipfile.ZipFile(zipfilepath) as myzip:
+        for fname in myzip.namelist():
+            # pick *.proof.csv
+            if fname.endswith(".proof.csv"):
+                with myzip.open(fname, mode="r") as csvfile:
+                    csvdata = csvfile.read()
+                    df = io.StringIO(csvdata.decode("utf-8"))
+                    rows = csv.reader(df)
+
+                    # Get headerRow and lastRow
+                    headerRow = None
+                    lastRow = None
+                    for i in rows:
+                        if (headerRow is None):
+                            headerRow = i
+                        if (len(headerRow) == len(i)):
+                            lastRow = i
+
+                    # Prepare dictionary to store json data
+                    dict1 = {}
+                    for i in range(len(headerRow)):
+                        k = headerRow[i].strip()
+                        k = k.replace(" ","")
+                        if (not k):
+                            continue
+                        k = "proofmode:"+k
+                        v = lastRow[i].strip()
+
+                        dict1[k]=v
+
+                    # Output json data
+                    jsonData = json.dumps(dict1, indent=4)
+                    return jsonData
+            else:
+                continue
+
+
+def parse_proofmode_zip_to_photo(zipfilepath):
+    with zipfile.ZipFile(zipfilepath) as myzip:
+        for fname in myzip.namelist():
+            # pick *.jpg
+            if fname.endswith(".jpg"):
+                with myzip.open(fname, mode="r") as f:
+                    return f.read()
+            else:
+                continue
+
+
+def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, metadata=None):
+    metadata = {
+        'claim': {
+            'store_label': 'cb.Authmedia_1',
+            'recorder': '851b7b53-a987-4a2c-af3f-f3221028cca9',
+        },
+        'assertions': {
+            'adobe.asset.info': {
+                'type': '.json',
+                'data_bytes': json_to_bytes({
+                    'title': photo_filename
+                })
+            },
+            'cai.location.broad': {
+                'type': '.json',
+                'data_bytes': json_to_bytes({
+                    'location': 'Okura Garden Hotel, Shanghai'
+                })
+            },
+            'cai.rights': {
+                'type': '.json',
+                'data_bytes': json_to_bytes({
+                    'copyright': 'Wing Shya'
+                })
+            },
+            'cai.claim.thumbnail.jpg.jpg': {
+                'type': '.jpg',
+                'data_bytes': thumbnail_bytes
+            },
+            'cai.acquisition.thumbnail.jpg.jpg': {
+                'type': '.jpg',
+                'data_bytes': thumbnail_bytes
+            },
+            'starling.integrity.json': {
+                'type': '.json',
+                'data_bytes': json_to_bytes({
+                    'starling:PublicKey': 'fake-public-key',
+                    'starling:MediaHash': 'd3554e727696c9c0a116491b4dc2006752361ad478d2fa742158ec2cd823b56e',
+                    'starling:MediaKey': 'd3554e7276_1608464410000',
+                    'starling:CaptureTimestamp': '2020-12-20T11:40:10Z'
+                })
+            }
+        }
+    }
+
+    starling = Starling(photo_bytes,
+                        photo_filename,
+                        metadata['assertions'],
+                        metadata['claim']['store_label'],
+                        metadata['claim']['recorder'],
+                        '',
+                        '')
+    photo_bytes = starling.cai_injection()
+
+    # Save to file
+    fname, fext = os.path.splitext('/tmp/cai-debug.jpg')
+    fpath = fname + '-cai-cai-cai' + fext
+    with open(fpath, 'wb') as f:
+        f.write(photo_bytes)
+    print('CAI file:', fpath)
+
+
 async def ipfs(ctx: ChatContext) -> None:
     global Latest_photo
     global Latest_photo_url
@@ -131,9 +247,20 @@ async def ipfs(ctx: ChatContext) -> None:
         # Case: The bot receives a photo
         for attachment in ctx.message.data_message.attachments:
             print('Attachment type:', attachment.content_type)
-            if attachment.content_type in ["image/png", "image/jpeg", "application/zip"]:
-                print("Get PNG/JPEG/Zip stored at {}".format(attachment.stored_filename))
+            if attachment.content_type in ["image/png", "image/jpeg"]:
+                print("Get PNG/JPEG stored at {}".format(attachment.stored_filename))
                 Latest_photo = attachment.stored_filename
+            elif attachment.content_type in ["application/zip"]:
+                # Receive ProofMode, do CAI injection
+                print("Get Zip stored at {}".format(attachment.stored_filename))
+                proofmode_json = parse_proofmode_zip_to_json(attachment.stored_filename)
+                print('ProofMode JSON', proofmode_json)
+
+                Latest_photo = attachment.stored_filename
+
+                # CAI injection
+                photo_bytes = parse_proofmode_zip_to_photo(attachment.stored_filename)
+                cai_injection(photo_bytes, Latest_photo, photo_bytes, metadata=None)
             else:
                 print('Unknown type', attachment.content_type)
                 return
