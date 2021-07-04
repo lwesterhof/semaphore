@@ -207,7 +207,7 @@ def cai_injection(photo_bytes,
             'cai.location.broad': {
                 'type': '.json',
                 'data_bytes': json_to_bytes({
-                    'location': 'Okura Garden Hotel, Shanghai'
+                    'location': proofmode_json["proofmode:IPv4"]
                 })
             },
             'cai.rights': {
