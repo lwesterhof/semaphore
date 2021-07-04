@@ -163,6 +163,26 @@ def parse_proofmode_zip_to_photo(zipfilepath):
                 continue
 
 
+def resize_image(image_bytes, scale=0.3):
+    '''Resize image bytes by the given scale.
+    '''
+    im = Image.open(io.BytesIO(image_bytes))
+    image_format = im.format
+    print('format:', image_format)
+
+    width, height = im.size
+
+    resize_scale = scale
+    width, height = list(map(lambda n: int(n * resize_scale), [width, height]))
+
+    resized_im = im.resize((width, height))
+
+    bytes_io = io.BytesIO()
+    resized_im.save(bytes_io, format=image_format)
+
+    return bytes_io.getvalue()
+
+
 def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, metadata=None):
     metadata = {
         'claim': {
@@ -262,7 +282,10 @@ async def ipfs(ctx: ChatContext) -> None:
 
                 # CAI injection
                 photo_bytes = parse_proofmode_zip_to_photo(attachment.stored_filename)
-                Latest_photo = cai_injection(photo_bytes, Latest_photo, photo_bytes, metadata=None)
+                Latest_photo = cai_injection(photo_bytes,
+                                             Latest_photo,
+                                             resize_image(photo_bytes),
+                                             metadata=None)
             else:
                 print('Unknown type', attachment.content_type)
                 return
