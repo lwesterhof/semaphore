@@ -187,7 +187,7 @@ def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, metadata=None):
     metadata = {
         'claim': {
             'store_label': 'cb.Authmedia_1',
-            'recorder': '851b7b53-a987-4a2c-af3f-f3221028cca9',
+            'recorder': 'Numbers Protocol',
         },
         'assertions': {
             'adobe.asset.info': {
@@ -205,7 +205,7 @@ def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, metadata=None):
             'cai.rights': {
                 'type': '.json',
                 'data_bytes': json_to_bytes({
-                    'copyright': 'Wing Shya'
+                    'copyright': 'Photo Sender'
                 })
             },
             'cai.claim.thumbnail.jpg.jpg': {
