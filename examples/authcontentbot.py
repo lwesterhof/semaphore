@@ -189,8 +189,8 @@ def resize_image(image_bytes, scale=0.3):
 def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, proofmode_json, metadata=None):
     metadata = {
         'claim': {
-            'store_label': 'cb.Authmedia_1',
-            'recorder': 'Numbers Protocol',
+            'store_label': 'cb.NumbersProtocol_1',
+            'recorder': 'ProofMode',
         },
         'assertions': {
             'adobe.asset.info': {
