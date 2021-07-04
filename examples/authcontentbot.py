@@ -186,7 +186,12 @@ def resize_image(image_bytes, scale=0.3):
     return bytes_io.getvalue()
 
 
-def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, proofmode_json, metadata=None):
+def cai_injection(photo_bytes,
+                  photo_filename,
+                  thumbnail_bytes,
+                  proofmode_json,
+                  metadata=None,
+                  right_owner=''):
     metadata = {
         'claim': {
             'store_label': 'cb.NumbersProtocol_1',
@@ -208,7 +213,7 @@ def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, proofmode_json, 
             'cai.rights': {
                 'type': '.json',
                 'data_bytes': json_to_bytes({
-                    'copyright': 'Photo Sender'
+                    'copyright': right_owner
                 })
             },
             'cai.claim.thumbnail.jpg.jpg': {
@@ -284,7 +289,8 @@ async def ipfs(ctx: ChatContext) -> None:
                                              Latest_photo,
                                              resize_image(photo_bytes),
                                              proofmode_json,
-                                             metadata=None)
+                                             metadata=None,
+                                             right_owner=ctx.message.source.number)
             else:
                 print('Unknown type', attachment.content_type)
                 return
