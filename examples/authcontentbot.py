@@ -36,6 +36,7 @@ from bs4 import BeautifulSoup  # type: ignore
 from cai.jumbf import json_to_bytes
 from cai.starling import Starling
 from mobilecoin.client import Client
+from PIL import Image
 from semaphore import Bot, ChatContext
 
 
