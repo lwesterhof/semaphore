@@ -113,8 +113,7 @@ def ipfs_add(filepath, cid_version=1):
     ipfs_cid = json.loads(response.text)['Hash']
     return ipfs_cid
 
-
-def parse_proofmode_zip_to_json(zipfilepath):
+def parse_proofmode_zip_to_json_dict(zipfilepath):
     with zipfile.ZipFile(zipfilepath) as myzip:
         for fname in myzip.namelist():
             # pick *.proof.csv
@@ -146,11 +145,14 @@ def parse_proofmode_zip_to_json(zipfilepath):
                         dict1[k]=v
 
                     # Output json data
-                    jsonData = json.dumps(dict1, indent=4)
-                    return jsonData
+                    return dict1
             else:
                 continue
 
+def parse_proofmode_zip_to_json(zipfilepath):
+    dict1 = parse_proofmode_zip_to_json_dict(zipfilepath)
+    jsonData = json.dumps(dict1, indent=4)
+    return jsonData
 
 def parse_proofmode_zip_to_photo(zipfilepath):
     with zipfile.ZipFile(zipfilepath) as myzip:
@@ -183,7 +185,7 @@ def resize_image(image_bytes, scale=0.3):
     return bytes_io.getvalue()
 
 
-def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, metadata=None):
+def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, proofmode_json, metadata=None):
     metadata = {
         'claim': {
             'store_label': 'cb.Authmedia_1',
@@ -218,12 +220,7 @@ def cai_injection(photo_bytes, photo_filename, thumbnail_bytes, metadata=None):
             },
             'starling.integrity.json': {
                 'type': '.json',
-                'data_bytes': json_to_bytes({
-                    'starling:PublicKey': 'fake-public-key',
-                    'starling:MediaHash': 'd3554e727696c9c0a116491b4dc2006752361ad478d2fa742158ec2cd823b56e',
-                    'starling:MediaKey': 'd3554e7276_1608464410000',
-                    'starling:CaptureTimestamp': '2020-12-20T11:40:10Z'
-                })
+                'data_bytes': json_to_bytes(proofmode_json)
             }
         }
     }
@@ -275,8 +272,8 @@ async def ipfs(ctx: ChatContext) -> None:
             elif attachment.content_type in ["application/zip"]:
                 # Receive ProofMode, do CAI injection
                 print("Get Zip stored at {}".format(attachment.stored_filename))
-                proofmode_json = parse_proofmode_zip_to_json(attachment.stored_filename)
-                print('ProofMode JSON', proofmode_json)
+                proofmode_json = parse_proofmode_zip_to_json_dict(attachment.stored_filename)
+                print('ProofMode JSON', json.dumps(proofmode_json, indent=4))
 
                 Latest_photo = attachment.stored_filename
 
@@ -285,6 +282,7 @@ async def ipfs(ctx: ChatContext) -> None:
                 Latest_photo = cai_injection(photo_bytes,
                                              Latest_photo,
                                              resize_image(photo_bytes),
+                                             proofmode_json,
                                              metadata=None)
             else:
                 print('Unknown type', attachment.content_type)
