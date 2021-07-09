@@ -179,14 +179,13 @@ class MessageSender:
         typing_message: Dict[str, Any] = {"type": "typing",
                                           "version": "v1",
                                           "typing": True,
-                                          "account": self._username,
-                                          "address": {
-                                              "uuid": message.source.uuid
-                                          }}
+                                          "account": self._username}
 
-        # Add group id.
+        # Add group id or address.
         if message.get_group_id():
             typing_message["group"] = message.get_group_id()
+        else:
+            typing_message["address"] = {"uuid": message.source.uuid}
 
         await self._send(typing_message)
 
@@ -200,29 +199,15 @@ class MessageSender:
         typing_message: Dict[str, Any] = {"type": "typing",
                                           "version": "v1",
                                           "typing": False,
-                                          "account": self._username,
-                                          "address": {
-                                              "uuid": message.source.uuid
-                                          }}
+                                          "account": self._username}
 
-        # Add group id.
+        # Add group id or address.
         if message.get_group_id():
             typing_message["group"] = message.get_group_id()
+        else:
+            typing_message["address"] = {"uuid": message.source.uuid}
 
         await self._send(typing_message)
-
-    async def mark_delivered(self, message: Message) -> None:
-        """
-        Mark a Signal message you received as delivered.
-
-        :param message: The Signal message you received.
-        """
-        await self._send({
-            "type": "mark_delivered",
-            "username": self._username,
-            "recipientAddress": {"uuid": message.source.uuid},
-            "timestamps": [message.timestamp],
-        })
 
     async def mark_read(self, message: Message) -> None:
         """

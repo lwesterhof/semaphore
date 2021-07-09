@@ -94,10 +94,6 @@ class Message:
         """Send a typing stopped message."""
         await self._sender.typing_stopped(self)
 
-    async def mark_delivered(self) -> None:
-        """Mark the message as delivered."""
-        await self._sender.mark_delivered(self)
-
     async def mark_read(self) -> None:
         """Mark the message as read."""
         await self._sender.mark_read(self)

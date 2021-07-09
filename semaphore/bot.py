@@ -123,8 +123,6 @@ class Bot:
         """Match an incoming message against a handler."""
         message_id = id(message)
 
-        # Mark message as delivered.
-        await message.mark_delivered()
         self.log.debug(f"Message ({message_id}) received from {message.source.uuid}")
         self.log.debug(str(message))
 
