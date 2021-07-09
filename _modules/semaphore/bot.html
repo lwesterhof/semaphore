@@ -278,8 +278,6 @@
         <span class="sd">&quot;&quot;&quot;Match an incoming message against a handler.&quot;&quot;&quot;</span>
         <span class="n">message_id</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
-        <span class="c1"># Mark message as delivered.</span>
-        <span class="k">await</span> <span class="n">message</span><span class="o">.</span><span class="n">mark_delivered</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message (</span><span class="si">{</span><span class="n">message_id</span><span class="si">}</span><span class="s2">) received from </span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
 
