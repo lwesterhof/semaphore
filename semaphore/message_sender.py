@@ -223,12 +223,14 @@ class MessageSender:
             "timestamps": [message.timestamp],
         })
 
-    async def set_profile(self, profile_name: str, profile_avatar: str = None) -> None:
+    async def set_profile(self, profile_name: str, profile_avatar: str = None, profile_emoji: str = None, profile_about: str = None) -> None:
         """
         Set Signal profile.
 
         :param profile_name:   New profile name, empty string for no profile name.
         :param profile_avatar: Path to profile avatar file.
+        :param profile_emoji:  Emoji character visible in profile.
+        :param profile_about:  Description text visible in profile.
         """
         profile_message = {"type": "set_profile",
                            "version": "v1",
@@ -237,5 +239,11 @@ class MessageSender:
 
         if profile_avatar:
             profile_message["avatarFile"] = profile_avatar
+
+        if profile_emoji:
+            profile_message["emoji"] = profile_emoji
+
+        if profile_about:
+            profile_message["about"] = profile_about
 
         await self._send(profile_message)

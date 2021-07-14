@@ -40,12 +40,16 @@ class Bot:
                  username: str,
                  profile_name=None,
                  profile_picture=None,
+                 profile_emoji=None,
+                 profile_about=None,
                  logging_level=logging.INFO,
                  socket_path="/var/run/signald/signald.sock"):
         """Initialize bot."""
         self._username: str = username
         self._profile_name: str = profile_name
         self._profile_picture: str = profile_picture
+        self._profile_emoji: str = profile_emoji
+        self._profile_about: str = profile_about
         self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
@@ -166,7 +170,7 @@ class Bot:
         self._receiver = MessageReceiver(self._receive_socket, self._sender)
 
         if self._profile_name:
-            await self.set_profile(self._profile_name, self._profile_picture)
+            await self.set_profile(self._profile_name, self._profile_picture, self._profile_emoji, self._profile_about)
 
         async with anyio.create_task_group() as tg:
             self._job_queue = JobQueue(self._sender)
@@ -189,11 +193,13 @@ class Bot:
         """
         return await self._sender.send_message(receiver, body, attachments)
 
-    async def set_profile(self, profile_name: str, profile_avatar: str = None) -> None:
+    async def set_profile(self, profile_name: str, profile_avatar: str = None, profile_emoji: str = None, profile_about: str = None) -> None:
         """
         Set Signal profile.
 
         :param profile_name:   New profile name, empty string for no profile name.
         :param profile_avatar: Path to profile avatar file.
+        :param profile_emoji:  Emoji character visible in profile.
+        :param profile_about:  Description text visible in profile.
         """
-        await self._sender.set_profile(profile_name, profile_avatar)
+        await self._sender.set_profile(profile_name, profile_avatar, profile_emoji, profile_about)
