@@ -223,7 +223,11 @@ class MessageSender:
             "timestamps": [message.timestamp],
         })
 
-    async def set_profile(self, profile_name: str, profile_avatar: str = None, profile_emoji: str = None, profile_about: str = None) -> None:
+    async def set_profile(self,
+                          profile_name: str,
+                          profile_avatar: str = None,
+                          profile_emoji: str = None,
+                          profile_about: str = None) -> None:
         """
         Set Signal profile.
 

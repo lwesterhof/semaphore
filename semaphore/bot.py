@@ -170,7 +170,10 @@ class Bot:
         self._receiver = MessageReceiver(self._receive_socket, self._sender)
 
         if self._profile_name:
-            await self.set_profile(self._profile_name, self._profile_picture, self._profile_emoji, self._profile_about)
+            await self.set_profile(self._profile_name,
+                                   self._profile_picture,
+                                   self._profile_emoji,
+                                   self._profile_about)
 
         async with anyio.create_task_group() as tg:
             self._job_queue = JobQueue(self._sender)
@@ -193,7 +196,11 @@ class Bot:
         """
         return await self._sender.send_message(receiver, body, attachments)
 
-    async def set_profile(self, profile_name: str, profile_avatar: str = None, profile_emoji: str = None, profile_about: str = None) -> None:
+    async def set_profile(self,
+                          profile_name: str,
+                          profile_avatar: str = None,
+                          profile_emoji: str = None,
+                          profile_about: str = None) -> None:
         """
         Set Signal profile.
 
@@ -202,4 +209,7 @@ class Bot:
         :param profile_emoji:  Emoji character visible in profile.
         :param profile_about:  Description text visible in profile.
         """
-        await self._sender.set_profile(profile_name, profile_avatar, profile_emoji, profile_about)
+        await self._sender.set_profile(profile_name,
+                                       profile_avatar,
+                                       profile_emoji,
+                                       profile_about)
