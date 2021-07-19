@@ -378,12 +378,14 @@
             <span class="s2">&quot;timestamps&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">timestamp</span><span class="p">],</span>
         <span class="p">})</span></div>
 
-<div class="viewcode-block" id="MessageSender.set_profile"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.set_profile">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile_avatar</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MessageSender.set_profile"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.set_profile">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profile_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">profile_avatar</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">profile_emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">profile_about</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set Signal profile.</span>
 
 <span class="sd">        :param profile_name:   New profile name, empty string for no profile name.</span>
 <span class="sd">        :param profile_avatar: Path to profile avatar file.</span>
+<span class="sd">        :param profile_emoji:  Emoji character visible in profile.</span>
+<span class="sd">        :param profile_about:  Description text visible in profile.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">profile_message</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;set_profile&quot;</span><span class="p">,</span>
                            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
@@ -392,6 +394,12 @@
 
         <span class="k">if</span> <span class="n">profile_avatar</span><span class="p">:</span>
             <span class="n">profile_message</span><span class="p">[</span><span class="s2">&quot;avatarFile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_avatar</span>
+
+        <span class="k">if</span> <span class="n">profile_emoji</span><span class="p">:</span>
+            <span class="n">profile_message</span><span class="p">[</span><span class="s2">&quot;emoji&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_emoji</span>
+
+        <span class="k">if</span> <span class="n">profile_about</span><span class="p">:</span>
+            <span class="n">profile_message</span><span class="p">[</span><span class="s2">&quot;about&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_about</span>
 
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">profile_message</span><span class="p">)</span></div></div>
 </pre></div>
