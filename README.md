@@ -63,39 +63,34 @@ Please note that this library is unofficial, unapproved and not nearly as secure
     nc -U /var/run/signald/signald.sock
     ```
 
-3. Register phone number with Signal by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number)
+3. Register phone number with Signal by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number). Sometimes Signal requires completion of a [captcha](https://signald.org/articles/captcha/) to register.
     ```json
-    {"type": "register", "username": "+xxxxxxxxxxx"}
+    {"type": "register", "version": "v1", "account": "+xxxxxxxxxxx"}
     ```
 
-4. Verify phone number with SMS verification code by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number and `zzz-zzz` with verification code)
+4. Verify phone number with SMS verification code by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number and `zzzzzz` with verification code)
     ```json
-    {"type": "verify", "username": "+xxxxxxxxxxx", "code": "zzz-zzz"}
+    {"type": "verify", "version": "v1", "account": "+xxxxxxxxxxx", "code": "zzzzzz"}
     ```
 
 5. Verify Signal is working by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number and `+yyyyyyyyyyy` with your Signal number)
     ```json
-    {"type": "send", "username": "+xxxxxxxxxxx", "recipientAddress": {"number": "+yyyyyyyyyyy"}, "messageBody": "Hello world"}
+    {"type": "send", "version": "v1", "username": "+xxxxxxxxxxx", "recipientAddress": {"number": "+yyyyyyyyyyy"}, "messageBody": "Hello world"}
     ```
 
-6. Subscribe to receive messages for the bot by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number)
-    ```json
-    {"type": "subscribe", "username": "+xxxxxxxxxxx"}
-    ```
-
-7. Open a new terminal and set the `SIGNAL_PHONE_NUMBER` environment variable to your phone number:
+6. Open a new terminal and set the `SIGNAL_PHONE_NUMBER` environment variable to your phone number:
     ```bash
     $ export SIGNAL_PHONE_NUMBER=+xxxxxxxxxxx
     ```
 
-8. Start the example echo bot
+7. Start the example echo bot
     ```bash
     $ python examples/echobot.py
     ```
 
-9. Send message to Signal bot running on `+xxxxxxxxxxx` and wait for an echo
+8. Send message to Signal bot running on `+xxxxxxxxxxx` and wait for an echo
 
-10. Now you can start writing your own bot for [Signal](https://signal.org/) Private Messenger!
+9. Now you can start writing your own bot for [Signal](https://signal.org/) Private Messenger!
 
 ## Code example
 ```python
