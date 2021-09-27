@@ -1,73 +1,34 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>semaphore.Bot &mdash; Semaphore  documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="semaphore.ChatContext" href="semaphore.chat_context.html" />
     <link rel="prev" title="semaphore.Attachment" href="semaphore.attachment.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> Semaphore
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,18 +36,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="semaphore.html">semaphore package</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="semaphore.attachment.html">semaphore.Attachment</a></li>
@@ -109,95 +59,53 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Semaphore</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="semaphore.html">semaphore package</a> &raquo;</li>
-        
       <li>semaphore.Bot</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/semaphore.bot.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="semaphore-bot">
-<h1>semaphore.Bot<a class="headerlink" href="#semaphore-bot" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="semaphore-bot">
+<h1>semaphore.Bot<a class="headerlink" href="#semaphore-bot" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="semaphore.Bot">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">semaphore.</span></span><span class="sig-name descname"><span class="pre">Bot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_picture</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_emoji</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_about</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/var/run/signald/signald.sock'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/bot.html#Bot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">semaphore.</span></span><span class="sig-name descname"><span class="pre">Bot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_picture</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_emoji</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_about</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/bot.html#Bot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object represents a simple (rule-based) Signal Private Messenger bot.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Bot.handler">
-<span class="sig-name descname"><span class="pre">handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.handler" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.handler" title="Permalink to this definition"></a></dt>
 <dd><p>Decorator to register handlers.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Bot.register_handler">
-<span class="sig-name descname"><span class="pre">register_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.register_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.register_handler" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.register_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.register_handler" title="Permalink to this definition"></a></dt>
 <dd><p>Register a chat handler with a regex.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Bot.send_message">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">send_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.send_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.send_message" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">send_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.send_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.send_message" title="Permalink to this definition"></a></dt>
 <dd><p>Send a message.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -218,7 +126,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Bot.set_profile">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">set_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_avatar</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_emoji</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_about</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.set_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.set_profile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">set_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_avatar</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_emoji</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_about</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.set_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.set_profile" title="Permalink to this definition"></a></dt>
 <dd><p>Set Signal profile.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -234,60 +142,43 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Bot.start">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.start" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.start" title="Permalink to this definition"></a></dt>
 <dd><p>Start the bot event loop.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="semaphore.chat_context.html" class="btn btn-neutral float-right" title="semaphore.ChatContext" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="semaphore.attachment.html" class="btn btn-neutral float-left" title="semaphore.Attachment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="semaphore.chat_context.html" class="btn btn-neutral float-right" title="semaphore.ChatContext" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020-2021, Lazlo Westerhof.
-
-    </p>
+    <p>&#169; Copyright 2020-2021, Lazlo Westerhof.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
