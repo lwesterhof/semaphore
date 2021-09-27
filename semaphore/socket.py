@@ -29,7 +29,7 @@ class Socket:
 
     def __init__(self,
                  username: str,
-                 socket_path: str = "/var/run/signald/signald.sock",
+                 socket_path: str,
                  subscribe: bool = False):
         """Initialize socket."""
         self._username: str = username
@@ -41,8 +41,24 @@ class Socket:
 
     async def __aenter__(self) -> 'Socket':
         """Connect to the socket."""
-        self._socket = await (await anyio.connect_unix(self._socket_path)).__aenter__()
-        self.log.info(f"Connected to socket ({self._socket_path})")
+        sockets = ["/var/run/signald/signald.sock",
+                   "$XDG_RUNTIME_DIR/signald/signald.sock"]
+        if self._socket_path:
+            sockets.append(self._socket_path)
+
+        for i in reversed(range(len(sockets))):
+            try:
+                self._socket = await (await anyio.connect_unix(sockets[i])).__aenter__()
+                self.log.info(f"Connected to socket ({sockets[i]})")
+            except FileNotFoundError:
+                if i:
+                    self.log.debug(
+                        f"Could not connect to socket ({sockets[i]}), using fallback"
+                    )
+                    continue
+                else:
+                    self.log.error(f"Could not connect to socket ({sockets[i]})")
+                    raise ConnectionError("Could not connect to socket")
 
         if self._subscribe:
             await self.send({"type": "subscribe", "username": self._username})

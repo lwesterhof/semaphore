@@ -43,7 +43,7 @@ class Bot:
                  profile_emoji=None,
                  profile_about=None,
                  logging_level=logging.INFO,
-                 socket_path="/var/run/signald/signald.sock"):
+                 socket_path=None):
         """Initialize bot."""
         self._username: str = username
         self._profile_name: str = profile_name
