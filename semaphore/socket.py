@@ -50,6 +50,7 @@ class Socket:
             try:
                 self._socket = await (await anyio.connect_unix(sockets[i])).__aenter__()
                 self.log.info(f"Connected to socket ({sockets[i]})")
+                break
             except FileNotFoundError:
                 if i:
                     self.log.debug(
