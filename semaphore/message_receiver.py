@@ -59,9 +59,12 @@ class MessageReceiver:
                 self.log.warning(f"Signald an exception for: {message_wrapper}")
 
             # Handle listen_stopped
-            if message_wrapper["type"] == "listen_stopped":
-                self.log.warning(f"Signald won't deliver new messages: {message_wrapper}")
-                raise ValueError("Signald: listen stopped")
+            if message_wrapper["type"] == "ListenerState":
+                data = message_wrapper.get("data")
+                if data and not data.get("connected"):
+                    self.log.warning(f"Signald won't deliver new messages: "
+                                     f"{message_wrapper}")
+                    raise ValueError("Signald: listen stopped")
 
             # Only handle messages.
             if message_wrapper["type"] != "IncomingMessage":
