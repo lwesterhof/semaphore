@@ -16,7 +16,99 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains exceptions for Semaphore."""
+from typing import List
 
 
 class StopPropagation(Exception):
     """Raise this to prevent further handlers from running on this message."""
+
+
+class SignaldError(Exception):
+    """This is the base class for Signald Errors"""
+    IDENTIFIER: str
+    pass
+
+
+class NoSuchAccountError(SignaldError):
+    IDENTIFIER = "NoSuchAccountError"
+
+    account: str
+    message: str
+
+
+class SeverNotFoundError(SignaldError):
+    IDENTIFIER = "SeverNotFoundError"
+
+    message: str
+    uuid: str
+
+
+class InvalidProxyError(SignaldError):
+    IDENTIFIER = "InvalidProxyError"
+
+    message: str
+
+
+class NoSendPermissionError(SignaldError):
+    IDENTIFIER = "NoSendPermissionError"
+
+    message: str
+
+
+class InvalidAttachmentError(SignaldError):
+    IDENTIFIER = "InvalidAttachmentError"
+
+    filename: str
+    message: str
+
+
+class InternalError(SignaldError):
+    IDENTIFIER = "InternalError"
+
+    exceptions: List[str]
+    message: str
+
+
+class IllegalArgumentException(SignaldError):
+    IDENTIFIER = "IllegalArgumentException"
+
+    message: str
+    stackTraceDepth: int
+
+
+class InvalidRequestError(SignaldError):
+    IDENTIFIER = "InvalidRequestError"
+
+    message: str
+
+
+class UnknownGroupError(SignaldError):
+    IDENTIFIER = "UnknownGroupError"
+
+    message: str
+
+
+class RateLimitError(SignaldError):
+    IDENTIFIER = "RateLimitError"
+
+    message: str
+
+
+class InvalidRecipientError(SignaldError):
+    IDENTIFIER = "InvalidRecipientError"
+
+    message: str
+
+
+class UnknownError(SignaldError):
+    """Exception raised if send did return an error that is
+    not implemented in semaphore"""
+
+    def __init__(self, error_object):
+        self.error_object = error_object
+
+
+SIGNALD_ERRORS = [NoSuchAccountError, SeverNotFoundError, InvalidProxyError,
+                  NoSendPermissionError, InvalidAttachmentError, InternalError,
+                  IllegalArgumentException, InvalidRequestError, UnknownGroupError,
+                  RateLimitError, InvalidRecipientError]

@@ -22,6 +22,7 @@ import logging
 import re
 from typing import Any, Dict
 
+from .exceptions import UnknownError, SIGNALD_ERRORS
 from .message import Message
 from .reply import Reply
 from .socket import Socket
@@ -72,7 +73,20 @@ class MessageSender:
                 if response_wrapper.get("error") is not None:
                     self.log.warning(f"Could not send message:"
                                      f"{response_wrapper}")
-                    return False
+                    # Match error
+                    for error_class in SIGNALD_ERRORS:
+                        if error_class.IDENTIFIER == response_wrapper.get("error_type"):
+                            error_dict = response_wrapper.get("error")
+                            if not error_dict:
+                                break
+
+                            error = error_class()
+                            for k in error_dict.keys():
+                                setattr(error, k, error_dict.get(k))
+
+                            raise error
+
+                    raise UnknownError(response_wrapper.get("error"))
 
                 response = response_wrapper['data']
                 results = response.get("results")
