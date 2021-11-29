@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains exceptions for Semaphore."""
-from typing import List
+from typing import List, Dict, Optional
 
 
 class StopPropagation(Exception):
@@ -25,7 +25,6 @@ class StopPropagation(Exception):
 
 class SignaldError(Exception):
     """This is the base class for Signald Errors"""
-    IDENTIFIER: str
     pass
 
 
@@ -103,12 +102,16 @@ class InvalidRecipientError(SignaldError):
 class UnknownError(SignaldError):
     """Exception raised if send did return an error that is
     not implemented in semaphore"""
+    error: Optional[Dict]
+    error_type: str
 
-    def __init__(self, error_object):
-        self.error_object = error_object
+    def __init__(self, error_type: str, error_object: Optional[Dict]):
+        self.error_type = error_type
+        self.error = error_object
 
 
-SIGNALD_ERRORS = [NoSuchAccountError, SeverNotFoundError, InvalidProxyError,
-                  NoSendPermissionError, InvalidAttachmentError, InternalError,
-                  IllegalArgumentException, InvalidRequestError, UnknownGroupError,
-                  RateLimitError, InvalidRecipientError]
+IDENTIFIABLE_SIGNALD_ERRORS = [NoSuchAccountError, SeverNotFoundError, InvalidProxyError,
+                               NoSendPermissionError, InvalidAttachmentError,
+                               InternalError, IllegalArgumentException,
+                               InvalidRequestError, UnknownGroupError, RateLimitError,
+                               InvalidRecipientError]

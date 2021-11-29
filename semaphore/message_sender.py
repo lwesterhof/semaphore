@@ -22,7 +22,7 @@ import logging
 import re
 from typing import Any, Dict
 
-from .exceptions import SIGNALD_ERRORS, UnknownError
+from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
 from .message import Message
 from .reply import Reply
 from .socket import Socket
@@ -79,7 +79,7 @@ class MessageSender:
                         return False
 
                     # Match error
-                    for error_class in SIGNALD_ERRORS:
+                    for error_class in IDENTIFIABLE_SIGNALD_ERRORS:
                         if error_class.IDENTIFIER == response_wrapper.get("error_type"):
                             error_dict = response_wrapper.get("error")
                             if not error_dict:
@@ -91,7 +91,8 @@ class MessageSender:
 
                             raise error
 
-                    raise UnknownError(response_wrapper.get("error"))
+                    raise UnknownError(response_wrapper.get("error_type"),
+                                       response_wrapper.get("error"))
 
                 response = response_wrapper['data']
                 results = response.get("results")
