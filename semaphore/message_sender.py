@@ -22,7 +22,7 @@ import logging
 import re
 from typing import Any, Dict
 
-from .exceptions import UnknownError, SIGNALD_ERRORS
+from .exceptions import SIGNALD_ERRORS, UnknownError
 from .message import Message
 from .reply import Reply
 from .socket import Socket
