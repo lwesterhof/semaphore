@@ -32,10 +32,11 @@ class MessageSender:
     """This class handles sending bot messages."""
     signald_message_id: int = 0
 
-    def __init__(self, username: str, socket: Socket):
+    def __init__(self, username: str, socket: Socket, raise_errors: bool = False):
         """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
+        self._raise_signald_errors = raise_errors
         self._socket_lock = asyncio.Lock()
         self.log = logging.getLogger(__name__)
 
@@ -73,6 +74,10 @@ class MessageSender:
                 if response_wrapper.get("error") is not None:
                     self.log.warning(f"Could not send message:"
                                      f"{response_wrapper}")
+
+                    if not self._raise_signald_errors:
+                        return False
+
                     # Match error
                     for error_class in SIGNALD_ERRORS:
                         if error_class.IDENTIFIER == response_wrapper.get("error_type"):
