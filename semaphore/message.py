@@ -36,11 +36,9 @@ class Message:
     source: Address
     envelope_type: int
     timestamp: int
-    timestamp_iso: str
     server_timestamp: int
     _sender: 'MessageSender'
     source_device: int = attr.ib(default=0)
-    uuid: str = attr.ib(default=None)
     relay: str = attr.ib(default=None)
     has_legacy_message: bool = attr.ib(default=False)
     has_content: bool = attr.ib(default=False)
