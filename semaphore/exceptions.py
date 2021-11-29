@@ -25,6 +25,8 @@ class StopPropagation(Exception):
 
 class SignaldError(Exception):
     """This is the base class for Signald Errors"""
+    IDENTIFIER: str
+
     pass
 
 
