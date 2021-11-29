@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains exceptions for Semaphore."""
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 
 class StopPropagation(Exception):
