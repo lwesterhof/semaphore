@@ -61,14 +61,14 @@ class Socket:
                     raise ConnectionError("Could not connect to socket")
 
         if self._subscribe:
-            await self.send({"type": "subscribe", "username": self._username,
+            await self.send({"type": "subscribe", "account": self._username,
                              "version": "v1"})
             self.log.info(f"Bot attempted to subscribe to +********{self._username[-3:]}")
         return self
 
     async def __aexit__(self, *excinfo):
         """Disconnect from the internal socket."""
-        await self.send({"type": "unsubscribe", "username": self._username,
+        await self.send({"type": "unsubscribe", "account": self._username,
                          "version": "v1"})
         self.log.info(f"Bot attempted to unsubscribe to +********{self._username[-3:]}")
         return await self._socket.__aexit__(*excinfo)
