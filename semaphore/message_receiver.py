@@ -133,7 +133,6 @@ class MessageReceiver:
                     relay=message.get("relay"),
                     has_legacy_message=message.get("has_legacy_message"),
                     is_unidentified_sender=message.get("unidentified_sender"),
-                    is_receipt=message.get("type") is "RECEIPT",
                     data_message=data_message,
                     sender=self._sender,
                 )

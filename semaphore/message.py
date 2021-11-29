@@ -42,7 +42,6 @@ class Message:
     relay: str = attr.ib(default=None)
     has_legacy_message: bool = attr.ib(default=False)
     has_content: bool = attr.ib(default=False)
-    is_receipt: bool = attr.ib(default=False)
     data_message: Optional[DataMessage] = attr.ib(default=None)
     is_unidentified_sender: bool = attr.ib(default=False)
 
