@@ -81,10 +81,107 @@
 <span class="c1"># You should have received a copy of the GNU Affero General Public License</span>
 <span class="c1"># along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">&quot;&quot;&quot;This module contains exceptions for Semaphore.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 
 <div class="viewcode-block" id="StopPropagation"><a class="viewcode-back" href="../../semaphore.exceptions.html#semaphore.StopPropagation">[docs]</a><span class="k">class</span> <span class="nc">StopPropagation</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raise this to prevent further handlers from running on this message.&quot;&quot;&quot;</span></div>
+
+
+<span class="k">class</span> <span class="nc">SignaldError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This is the base class for Signald Errors&quot;&quot;&quot;</span>
+    <span class="n">IDENTIFIER</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">NoSuchAccountError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;NoSuchAccountError&quot;</span>
+
+    <span class="n">account</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">SeverNotFoundError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;SeverNotFoundError&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidProxyError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;InvalidProxyError&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">NoSendPermissionError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;NoSendPermissionError&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidAttachmentError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;InvalidAttachmentError&quot;</span>
+
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">InternalError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;InternalError&quot;</span>
+
+    <span class="n">exceptions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">IllegalArgumentException</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;IllegalArgumentException&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">stackTraceDepth</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidRequestError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;InvalidRequestError&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">UnknownGroupError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;UnknownGroupError&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">RateLimitError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;RateLimitError&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidRecipientError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="n">IDENTIFIER</span> <span class="o">=</span> <span class="s2">&quot;InvalidRecipientError&quot;</span>
+
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">UnknownError</span><span class="p">(</span><span class="n">SignaldError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Exception raised if send did return an error that is</span>
+<span class="sd">    not implemented in semaphore&quot;&quot;&quot;</span>
+    <span class="n">error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>
+    <span class="n">error_type</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">error_object</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_type</span> <span class="o">=</span> <span class="n">error_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error_object</span>
+
+
+<span class="n">IDENTIFIABLE_SIGNALD_ERRORS</span> <span class="o">=</span> <span class="p">[</span><span class="n">NoSuchAccountError</span><span class="p">,</span> <span class="n">SeverNotFoundError</span><span class="p">,</span> <span class="n">InvalidProxyError</span><span class="p">,</span>
+                               <span class="n">NoSendPermissionError</span><span class="p">,</span> <span class="n">InvalidAttachmentError</span><span class="p">,</span>
+                               <span class="n">InternalError</span><span class="p">,</span> <span class="n">IllegalArgumentException</span><span class="p">,</span>
+                               <span class="n">InvalidRequestError</span><span class="p">,</span> <span class="n">UnknownGroupError</span><span class="p">,</span> <span class="n">RateLimitError</span><span class="p">,</span>
+                               <span class="n">InvalidRecipientError</span><span class="p">]</span>
 </pre></div>
 
            </div>

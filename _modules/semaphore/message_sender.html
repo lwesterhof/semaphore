@@ -87,6 +87,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
 
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">IDENTIFIABLE_SIGNALD_ERRORS</span><span class="p">,</span> <span class="n">UnknownError</span>
 <span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Message</span>
 <span class="kn">from</span> <span class="nn">.reply</span> <span class="kn">import</span> <span class="n">Reply</span>
 <span class="kn">from</span> <span class="nn">.socket</span> <span class="kn">import</span> <span class="n">Socket</span>
@@ -96,10 +97,11 @@
     <span class="sd">&quot;&quot;&quot;This class handles sending bot messages.&quot;&quot;&quot;</span>
     <span class="n">signald_message_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">socket</span><span class="p">:</span> <span class="n">Socket</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">socket</span><span class="p">:</span> <span class="n">Socket</span><span class="p">,</span> <span class="n">raise_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize message sender.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_socket</span><span class="p">:</span> <span class="n">Socket</span> <span class="o">=</span> <span class="n">socket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raise_signald_errors</span> <span class="o">=</span> <span class="n">raise_errors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_socket_lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -137,7 +139,25 @@
                 <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not send message:&quot;</span>
                                      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response_wrapper</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="kc">False</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raise_signald_errors</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+
+                    <span class="c1"># Match error</span>
+                    <span class="k">for</span> <span class="n">error_class</span> <span class="ow">in</span> <span class="n">IDENTIFIABLE_SIGNALD_ERRORS</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">error_class</span><span class="o">.</span><span class="n">IDENTIFIER</span> <span class="o">==</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error_type&quot;</span><span class="p">):</span>
+                            <span class="n">error_dict</span> <span class="o">=</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">error_dict</span><span class="p">:</span>
+                                <span class="k">break</span>
+
+                            <span class="n">error</span> <span class="o">=</span> <span class="n">error_class</span><span class="p">()</span>
+                            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">error_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                <span class="nb">setattr</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">error_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+
+                            <span class="k">raise</span> <span class="n">error</span>
+
+                    <span class="k">raise</span> <span class="n">UnknownError</span><span class="p">(</span><span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error_type&quot;</span><span class="p">),</span>
+                                       <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">))</span>
 
                 <span class="n">response</span> <span class="o">=</span> <span class="n">response_wrapper</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">)</span>
