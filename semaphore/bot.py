@@ -43,7 +43,8 @@ class Bot:
                  profile_emoji=None,
                  profile_about=None,
                  logging_level=logging.INFO,
-                 socket_path=None):
+                 socket_path=None,
+                 raise_errors=False):
         """Initialize bot."""
         self._username: str = username
         self._profile_name: str = profile_name
@@ -60,6 +61,7 @@ class Bot:
         self._chat_context: Dict[str, ChatContext] = {}
         self._exception_handler: Optional[Callable[[Exception, ChatContext],
                                                    Awaitable[None]]]
+        self._raise_errors = raise_errors
 
         threading.current_thread().name = 'bot'
         logging.basicConfig(
@@ -152,7 +154,8 @@ class Bot:
         self._send_socket = await Socket(self._username,
                                          self._socket_path,
                                          False).__aenter__()
-        self._sender = MessageSender(self._username, self._send_socket)
+        self._sender = MessageSender(self._username, self._send_socket,
+                                     self._raise_errors)
         return self
 
     async def __aexit__(self, *excinfo):

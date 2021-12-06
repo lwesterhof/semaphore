@@ -22,6 +22,7 @@ import logging
 import re
 from typing import Any, Dict
 
+from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
 from .message import Message
 from .reply import Reply
 from .socket import Socket
@@ -31,10 +32,11 @@ class MessageSender:
     """This class handles sending bot messages."""
     signald_message_id: int = 0
 
-    def __init__(self, username: str, socket: Socket):
+    def __init__(self, username: str, socket: Socket, raise_errors: bool = False):
         """Initialize message sender."""
         self._username: str = username
         self._socket: Socket = socket
+        self._raise_signald_errors = raise_errors
         self._socket_lock = asyncio.Lock()
         self.log = logging.getLogger(__name__)
 
@@ -72,7 +74,25 @@ class MessageSender:
                 if response_wrapper.get("error") is not None:
                     self.log.warning(f"Could not send message:"
                                      f"{response_wrapper}")
-                    return False
+
+                    if not self._raise_signald_errors:
+                        return False
+
+                    # Match error
+                    for error_class in IDENTIFIABLE_SIGNALD_ERRORS:
+                        if error_class.IDENTIFIER == response_wrapper.get("error_type"):
+                            error_dict = response_wrapper.get("error")
+                            if not error_dict:
+                                break
+
+                            error = error_class()
+                            for k in error_dict.keys():
+                                setattr(error, k, error_dict.get(k))
+
+                            raise error
+
+                    raise UnknownError(response_wrapper.get("error_type"),
+                                       response_wrapper.get("error"))
 
                 response = response_wrapper['data']
                 results = response.get("results")
