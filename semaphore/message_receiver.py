@@ -59,18 +59,21 @@ class MessageReceiver:
                 self.log.warning(f"Signald an exception for: {message_wrapper}")
 
             # Handle listen_stopped
-            if message_wrapper["type"] == "listen_stopped":
-                self.log.warning(f"Signald won't deliver new messages: {message_wrapper}")
-                raise ValueError("Signald: listen stopped")
+            if message_wrapper["type"] == "ListenerState":
+                data = message_wrapper.get("data")
+                if data and not data.get("connected"):
+                    self.log.warning(f"Signald won't deliver new messages: "
+                                     f"{message_wrapper}")
+                    raise ValueError("Signald: listen stopped")
 
             # Only handle messages.
-            if message_wrapper["type"] != "message":
+            if message_wrapper["type"] != "IncomingMessage":
                 continue
 
             try:
                 message = message_wrapper["data"]
                 data_message: Optional[DataMessage] = None
-                data = message.get("dataMessage")
+                data = message.get("data_message")
                 if data:
                     group: Optional[Group] = None
                     groupV2: Optional[GroupV2] = None
@@ -118,21 +121,18 @@ class MessageReceiver:
                     )
 
                 yield Message(
-                    username=message["username"],
+                    username=message["account"],
                     source=Address(
                         uuid=message["source"].get("uuid"),
                         number=message["source"].get("number"),
                     ),
                     envelope_type=message["type"],
                     timestamp=message["timestamp"],
-                    timestamp_iso=message["timestampISO"],
-                    server_timestamp=message["serverDeliveredTimestamp"],
-                    source_device=message.get("sourceDevice"),
-                    uuid=message.get("uuid"),
+                    server_timestamp=message["server_receiver_timestamp"],
+                    source_device=message.get("source_device"),
                     relay=message.get("relay"),
-                    has_legacy_message=message.get("hasLegacyMessage"),
-                    is_receipt=message.get("isReceipt"),
-                    is_unidentified_sender=message.get("isUnidentifiedSender"),
+                    has_legacy_message=message.get("has_legacy_message"),
+                    is_unidentified_sender=message.get("unidentified_sender"),
                     data_message=data_message,
                     sender=self._sender,
                 )
