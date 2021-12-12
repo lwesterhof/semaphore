@@ -26,6 +26,7 @@ import logging
 import os
 import zipfile
 from pathlib import Path
+import shutil
 
 import anyio
 import asks  # type: ignore
@@ -165,6 +166,14 @@ def parse_proofmode_zip_to_photo(zipfilepath):
             else:
                 continue
 
+def add_photo_to_zip(zipfilepath, photofilepath):
+    fname, fext = os.path.splitext(zipfilepath)
+    fpath = fname + '-cai-cai-cai' + fext
+    shutil.copyfile(zipfilepath, fpath)
+    z = zipfile.ZipFile(fpath, "a")
+    z.write(photofilepath)
+    z.close()
+    return fpath
 
 def resize_image(image_bytes, scale=0.3):
     '''Resize image bytes by the given scale.
@@ -291,6 +300,7 @@ async def ipfs(ctx: ChatContext) -> None:
                                              proofmode_json,
                                              metadata=None,
                                              right_owner=ctx.message.source.number)
+                Latest_photo = add_photo_to_zip(attachment.stored_filename, Latest_photo)
             else:
                 print('Unknown type', attachment.content_type)
                 return
