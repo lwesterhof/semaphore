@@ -19,7 +19,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/signald/signald) [0.14.0](https://gitlab.com/signald/signald/-/tags/0.14.0) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) [0.15.0](https://gitlab.com/signald/signald/-/tags/0.15.0) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
@@ -131,6 +131,11 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.12.0**
+* Compatibility with signald 0.15.0+
+* Add support for emoji and about to in profile (thanks @EsEnZeT)
+* Add option to throw signals errors on send (thanks @eknoes)
+
 **v0.11.0**
 * Compatibility with signald 0.14.0+ (signald protocol v1)
 * Add support for waiting on signald send confirmation (thanks @eknoes)
