@@ -110,6 +110,7 @@ class MessageReceiver:
                                 id=attachment["id"],
                                 size=attachment["size"],
                                 stored_filename=attachment["storedFilename"],
+                                custom_filename=attachment["customFilename"],
                                 width=attachment["width"],
                                 height=attachment["height"],
                             )

@@ -20,8 +20,10 @@ import asyncio
 import json
 import logging
 import re
-from typing import Any, Dict
+from typing import Any, Dict, Optional, List
 
+
+from .attachment import Attachment
 from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
 from .message import Message
 from .reply import Reply
@@ -103,7 +105,7 @@ class MessageSender:
                 return False
             return False
 
-    async def send_message(self, receiver, body, attachments=None) -> bool:
+    async def send_message(self, receiver, body, attachments: Optional[List[Attachment]] = None) -> bool:
         """
         Send a message.
 
@@ -130,7 +132,7 @@ class MessageSender:
 
         # Add attachments to message.
         if attachments:
-            bot_message["attachments"] = attachments
+            bot_message["attachments"] = [attachment.to_send_dict() for attachment in attachments]
 
         return await self._send(bot_message)
 
@@ -172,7 +174,7 @@ class MessageSender:
 
             # Add attachments to message.
             if reply.attachments:
-                bot_message["attachments"] = reply.attachments
+                bot_message["attachments"] = [attachment.to_send_dict() for attachment in reply.attachments]
 
             # Add quote to message.
             if reply.quote:

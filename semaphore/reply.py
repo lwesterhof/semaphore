@@ -17,6 +17,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a bot reply."""
 import attr
+from typing import List
+
+from .attachment import Attachment
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -24,7 +27,7 @@ class Reply:
     """This object represents a Bot reply."""
 
     body: str
-    attachments: list = attr.ib(default=[])
+    attachments: List[Attachment] = attr.ib(default=[])
     quote: bool = attr.ib(default=False)
     reaction: bool = attr.ib(default=False)
     mark_read: bool = attr.ib(default=True)
