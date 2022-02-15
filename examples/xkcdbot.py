@@ -26,7 +26,7 @@ import asks  # type: ignore
 import feedparser  # type: ignore
 from bs4 import BeautifulSoup  # type: ignore
 
-from signalblast.semaphore import Bot, ChatContext, Attachment
+from semaphore import Bot, ChatContext, Attachment
 
 
 async def xkcd(ctx: ChatContext) -> None:
