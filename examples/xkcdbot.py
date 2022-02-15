@@ -26,7 +26,7 @@ import asks  # type: ignore
 import feedparser  # type: ignore
 from bs4 import BeautifulSoup  # type: ignore
 
-from semaphore import Bot, ChatContext
+from signalblast.semaphore import Bot, ChatContext, Attachment
 
 
 async def xkcd(ctx: ChatContext) -> None:
@@ -46,9 +46,7 @@ async def xkcd(ctx: ChatContext) -> None:
             await f.write(chunk)
 
     message = f"{pointer.title} - {description} ({pointer.link})"
-    attachment = {"filename": str(path),
-                  "width": "100",
-                  "height": "100"}
+    attachment = Attachment(str(path), width=100, height=100)
 
     await ctx.message.reply(body=message, attachments=[attachment])
 
