@@ -105,15 +105,7 @@ class MessageReceiver:
                         body=data.get("body", ""),
                         expires_in_seconds=data.get("expiresInSeconds"),
                         attachments=[
-                            Attachment(
-                                content_type=attachment["contentType"],
-                                id=attachment["id"],
-                                size=attachment["size"],
-                                stored_filename=attachment["storedFilename"],
-                                custom_filename=attachment["customFilename"],
-                                width=attachment["width"],
-                                height=attachment["height"],
-                            )
+                            Attachment.create_from_receive_dict(attachment)
                             for attachment in data.get("attachments", [])
                         ],
                         group=group,
