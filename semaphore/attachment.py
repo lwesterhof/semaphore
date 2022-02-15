@@ -22,7 +22,6 @@ import logging
 import re
 
 
-
 @attr.s(auto_attribs=True)
 class Attachment:
     """This object represents a Signal message attachment.
