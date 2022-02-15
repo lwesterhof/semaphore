@@ -271,3 +271,24 @@ class MessageSender:
             profile_message["about"] = profile_about
 
         await self._send(profile_message)
+
+    async def set_expiration(self, receiver, time: int) -> None:
+        """
+        Set the expiration time of a chat with a receiver.
+
+        :param receiver: The receiver for which to set the expiration time.
+        :param time:     The time in seconds for the expiration of messages, set to 0 to disable.
+        """
+        expiration_message = {"type": "set_expiration",
+                              "version": "v1",
+                              "account": self._username,
+                              "expiration": str(time)}
+
+        if receiver[-1] == "=":
+            expiration_message["address"] = receiver
+        elif re.search(r"\+\d*", receiver):
+            expiration_message["address"] = {"number": receiver}
+        else:
+            expiration_message["address"] = {"uuid": receiver}
+
+        await self._send(expiration_message)
