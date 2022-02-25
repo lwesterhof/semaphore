@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a Signal message attachment."""
-from __future__ import annotations
-
 import logging
 import re
 
@@ -66,7 +64,7 @@ class Attachment:
         return send_data
 
     @staticmethod
-    def create_from_receive_dict(data: dict) -> Attachment:
+    def create_from_receive_dict(data: dict) -> 'Attachment':
         log = logging.getLogger(__name__)
 
         attachment = Attachment(None)
