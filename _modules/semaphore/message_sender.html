@@ -66,7 +66,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#</span>
 <span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
-<span class="c1"># Copyright (C) 2020-2021 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1"># Copyright (C) 2020-2022 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># This program is free software: you can redistribute it and/or modify</span>
 <span class="c1"># it under the terms of the GNU Affero General Public License as</span>
@@ -85,8 +85,10 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
+
+<span class="kn">from</span> <span class="nn">.attachment</span> <span class="kn">import</span> <span class="n">Attachment</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">IDENTIFIABLE_SIGNALD_ERRORS</span><span class="p">,</span> <span class="n">UnknownError</span>
 <span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Message</span>
 <span class="kn">from</span> <span class="nn">.reply</span> <span class="kn">import</span> <span class="n">Reply</span>
@@ -168,7 +170,8 @@
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="MessageSender.send_message"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.send_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="MessageSender.send_message"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.send_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span>
+                           <span class="n">attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Attachment</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a message.</span>
 
@@ -195,7 +198,9 @@
 
         <span class="c1"># Add attachments to message.</span>
         <span class="k">if</span> <span class="n">attachments</span><span class="p">:</span>
-            <span class="n">bot_message</span><span class="p">[</span><span class="s2">&quot;attachments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attachments</span>
+            <span class="n">bot_message</span><span class="p">[</span><span class="s2">&quot;attachments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">attachment</span><span class="o">.</span><span class="n">to_send_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">attachment</span> <span class="ow">in</span> <span class="n">attachments</span>
+            <span class="p">]</span>
 
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">bot_message</span><span class="p">)</span></div>
 
@@ -237,7 +242,9 @@
 
             <span class="c1"># Add attachments to message.</span>
             <span class="k">if</span> <span class="n">reply</span><span class="o">.</span><span class="n">attachments</span><span class="p">:</span>
-                <span class="n">bot_message</span><span class="p">[</span><span class="s2">&quot;attachments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reply</span><span class="o">.</span><span class="n">attachments</span>
+                <span class="n">bot_message</span><span class="p">[</span><span class="s2">&quot;attachments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">attachment</span><span class="o">.</span><span class="n">to_send_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">attachment</span> <span class="ow">in</span> <span class="n">reply</span><span class="o">.</span><span class="n">attachments</span>
+                <span class="p">]</span>
 
             <span class="c1"># Add quote to message.</span>
             <span class="k">if</span> <span class="n">reply</span><span class="o">.</span><span class="n">quote</span><span class="p">:</span>
