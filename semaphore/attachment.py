@@ -67,7 +67,7 @@ class Attachment:
     def create_from_receive_dict(data: dict) -> 'Attachment':
         log = logging.getLogger(__name__)
 
-        attachment = Attachment(None)
+        attachment = Attachment("")
         attachment_attr_names = attr.asdict(attachment)
 
         processed_data_attrs = set()
