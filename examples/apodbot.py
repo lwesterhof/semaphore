@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -26,7 +26,7 @@ import asks  # type: ignore
 import feedparser  # type: ignore
 from bs4 import BeautifulSoup  # type: ignore
 
-from semaphore import Bot, ChatContext
+from semaphore import Attachment, Bot, ChatContext
 
 
 async def apod(ctx: ChatContext) -> None:
@@ -46,9 +46,7 @@ async def apod(ctx: ChatContext) -> None:
             await f.write(chunk)
 
     message = f"{pointer.title} - {description} (https://apod.nasa.gov/apod/)"
-    attachment = {"filename": str(path),
-                  "width": "100",
-                  "height": "100"}
+    attachment = Attachment(str(path), width=100, height=100)
 
     await ctx.message.reply(body=message, attachments=[attachment])
 
