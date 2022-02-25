@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -17,14 +17,17 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a Signal message attachment."""
 from __future__ import annotations
-import attr
+
 import logging
 import re
+
+import attr
 
 
 @attr.s(auto_attribs=True)
 class Attachment:
     """This object represents a Signal message attachment.
+
     The attributes have a 1 to 1 correspondance to the signald JsonAttachment class
     https://signald.org/protocol/structures/v1/JsonAttachment/
     """
@@ -38,7 +41,7 @@ class Attachment:
     height: int = attr.ib(default=None)
     id: str = attr.ib(default=None)
     key: str = attr.ib(default=None)
-    stored_filename:  str = attr.ib(default=None)
+    stored_filename: str = attr.ib(default=None)
     size: int = attr.ib(default=None)
     voice_note: bool = attr.ib(default=None)
     width: int = attr.ib(default=None)
@@ -57,7 +60,7 @@ class Attachment:
 
         if self.filename is None:
             if self.stored_filename is None:
-                raise ValueError("filename or stored_filename must be provided, found None")
+                raise ValueError("Filename or stored_filename must be provided.")
             send_data["filename"] = self.stored_filename
 
         return send_data
