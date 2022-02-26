@@ -222,6 +222,7 @@ class Bot:
         Set the expiration time of a chat with a receiver.
 
         :param receiver: The receiver for which to set the expiration time.
-        :param time:     The time in seconds for the expiration of messages, set to 0 to disable.
+        :param time:     The time in seconds for the expiration of messages,
+                         set to 0 to disable.
         """
         await self._sender.set_expiration(receiver, time)
