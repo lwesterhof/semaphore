@@ -25,6 +25,7 @@ from .attachment import Attachment
 from .data_message import DataMessage
 from .group import Group
 from .groupV2 import GroupV2
+from .link_preview import LinkPreview
 from .message import Message
 from .message_sender import MessageSender
 from .socket import Socket
@@ -107,6 +108,10 @@ class MessageReceiver:
                         attachments=[
                             Attachment.create_from_receive_dict(attachment)
                             for attachment in data.get("attachments", [])
+                        ],
+                        previews=[
+                            LinkPreview.create_from_receive_dict(link_preview)
+                            for link_preview in data.get("previews", [])
                         ],
                         group=group,
                         groupV2=groupV2,

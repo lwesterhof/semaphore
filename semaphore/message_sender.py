@@ -28,6 +28,7 @@ from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
 from .message import Message
 from .reply import Reply
 from .socket import Socket
+from .link_preview import LinkPreview
 
 
 class MessageSender:
@@ -106,7 +107,8 @@ class MessageSender:
             return False
 
     async def send_message(self, receiver, body,
-                           attachments: Optional[List[Attachment]] = None) -> bool:
+                           attachments: Optional[List[Attachment]] = None,
+                           link_previews: Optional[List[LinkPreview]] = None) -> bool:
         """
         Send a message.
 
@@ -135,6 +137,11 @@ class MessageSender:
         if attachments:
             bot_message["attachments"] = [
                 attachment.to_send_dict() for attachment in attachments
+            ]
+
+        if link_previews:
+            bot_message["previews"] = [
+                link_preview.to_send_dict() for link_preview in link_previews
             ]
 
         return await self._send(bot_message)
@@ -179,6 +186,11 @@ class MessageSender:
             if reply.attachments:
                 bot_message["attachments"] = [
                     attachment.to_send_dict() for attachment in reply.attachments
+                ]
+
+            if reply.link_previews:
+                bot_message["previews"] = [
+                    link_preview.to_send_dict() for link_preview in reply.link_previews
                 ]
 
             # Add quote to message.
