@@ -42,6 +42,9 @@ class LinkPreview:
         send_data = attr.asdict(self)
         if self.attachment is not None:
             send_data['attachment'] = self.attachment.to_send_dict()
+            # TODO Find a better fix than deleting the image because for now it's broken
+            # when sending
+            del send_data['attachment']
         return send_data
 
     @staticmethod
@@ -50,5 +53,8 @@ class LinkPreview:
         if 'attachment' in processed_data:
             attachment = Attachment.create_from_receive_dict(data['attachment'])
             processed_data['attachment'] = attachment
+            if attachment.stored_filename is None:
+                # Work around for bug in signald where the preview image is not downloaded
+                del processed_data['attachment']
 
         return LinkPreview(**processed_data)
