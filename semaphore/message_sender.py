@@ -283,10 +283,10 @@ class MessageSender:
         expiration_message = {"type": "set_expiration",
                               "version": "v1",
                               "account": self._username,
-                              "expiration": str(time)}
+                              "expiration": time}
 
         if receiver[-1] == "=":
-            expiration_message["address"] = receiver
+            expiration_message["group"] = receiver
         elif re.search(r"\+\d*", receiver):
             expiration_message["address"] = {"number": receiver}
         else:
