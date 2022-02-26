@@ -23,8 +23,8 @@ import attr
 from .attachment import Attachment
 from .group import Group
 from .groupV2 import GroupV2
-from .sticker import Sticker
 from .link_preview import LinkPreview
+from .sticker import Sticker
 
 
 @attr.s(auto_attribs=True, frozen=True)

@@ -195,6 +195,7 @@ class Bot:
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
+        :param link_previews: Optional link previews for the message.
         :return: Returns whether sending is successful
         :rtype: bool
         """
