@@ -280,7 +280,17 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">set_profile</span><span class="p">(</span><span class="n">profile_name</span><span class="p">,</span>
                                        <span class="n">profile_avatar</span><span class="p">,</span>
                                        <span class="n">profile_emoji</span><span class="p">,</span>
-                                       <span class="n">profile_about</span><span class="p">)</span></div></div>
+                                       <span class="n">profile_about</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bot.set_expiration"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.set_expiration">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the expiration time of a chat with a receiver.</span>
+
+<span class="sd">        :param receiver: The receiver for which to set the expiration time.</span>
+<span class="sd">        :param time:     The time in seconds for the expiration of messages,</span>
+<span class="sd">                         set to 0 to disable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">set_expiration</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
