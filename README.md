@@ -1,9 +1,9 @@
 # Semaphore
 
 [![PyPI](https://img.shields.io/pypi/v/semaphore-bot)](https://pypi.org/project/semaphore-bot/)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore)
-![License](https://img.shields.io/github/license/lwesterhof/semaphore)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python)](https://github.com/lwesterhof/semaphore/actions)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore)](https://github.com/lwesterhof/semaphore/tags)
+[![License](https://img.shields.io/github/license/lwesterhof/semaphore)](https://github.com/lwesterhof/semaphore/blob/main/LICENSE.txt)
 
 A simple (rule-based) bot library for [Signal](https://signal.org/) Private Messenger in Python.
 Please note that this library is unofficial, unapproved and not nearly as secure as the real Signal clients.
@@ -19,7 +19,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/signald/signald) [0.15.0](https://gitlab.com/signald/signald/-/tags/0.15.0) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) [0.17.0](https://gitlab.com/signald/signald/-/tags/0.17.0) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
@@ -123,6 +123,7 @@ The following example bots can be found in [examples](examples):
 - [btcbot](examples/btcbot.py), sends notification when BTC price drops below a set price
 - [echobot](examples/echobot.py), repeats received messages
 - [exceptionbot](examples/exceptionbot.py), with custom exception handler
+- [expirationbot](examples/expirationbot.py), sets the message expiration timer for a chat to random value
 - [lovebot](examples/lovebot.py), loves everything you say!
 - [spongebot](examples/spongebot.py), repeats received messages in sPOngEbOb sqUArepAnTs text
 - [stickerbot](examples/stickerbot.py), links to the sticker pack for received stickers
@@ -131,6 +132,11 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.13.0**
+* Compatibility with signald 0.17.0+
+* Add method to set expiration timer of chat (thanks @Era-Dorta)
+* Example expiration timer bot
+
 **v0.12.0**
 * Compatibility with signald 0.15.0+
 * Add support for emoji and about to in profile (thanks @EsEnZeT)
