@@ -344,13 +344,12 @@
 
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">profile_message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MessageSender.set_expiration"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.set_expiration">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MessageSender.set_expiration"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.set_expiration">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the expiration time of a chat with a receiver.</span>
+<span class="sd">        Set the message expiration timer for a chat.</span>
 
 <span class="sd">        :param receiver: The receiver for which to set the expiration time.</span>
-<span class="sd">        :param time:     The time in seconds for the expiration of messages,</span>
-<span class="sd">                         set to 0 to disable.</span>
+<span class="sd">        :param time:     Time must be specified in seconds, set to 0 to disable timer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">expiration_message</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;set_expiration&quot;</span><span class="p">,</span>
                               <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
