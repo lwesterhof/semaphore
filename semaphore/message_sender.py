@@ -279,13 +279,12 @@ class MessageSender:
 
         await self._send(profile_message)
 
-    async def set_expiration(self, receiver, time: int) -> None:
+    async def set_expiration(self, receiver: str, time: int) -> None:
         """
-        Set the expiration time of a chat with a receiver.
+        Set the message expiration timer for a chat.
 
         :param receiver: The receiver for which to set the expiration time.
-        :param time:     The time in seconds for the expiration of messages,
-                         set to 0 to disable.
+        :param time:     Time must be specified in seconds, set to 0 to disable timer.
         """
         expiration_message = {"type": "set_expiration",
                               "version": "v1",
