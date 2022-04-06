@@ -51,7 +51,7 @@ Deploy bot container local or to Heroku.
     ```
 
 ## Register Signal account and start the bot
-1. Download Signal Captcha Helper and complete Signal captcha on local machine
+1. Download [Signal Captcha Helper](https://gitlab.com/signald/captcha-helper) and complete Signal captcha on local machine
     ```bash
     wget -O signal-captcha-helper https://gitlab.com/api/v4/projects/27947268/jobs/artifacts/main/raw/signal-captcha-helper?job=build%3Aamd64
     chmod +x signal-captcha-helper
