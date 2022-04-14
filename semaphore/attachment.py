@@ -56,10 +56,9 @@ class Attachment:
             if value is not None and attr_name != 'stored_filename':
                 send_data[self._snake_to_camel(attr_name)] = value
 
-        if self.filename is None:
-            if self.stored_filename is None:
-                raise ValueError("Filename or stored_filename must be provided.")
-            send_data["filename"] = self.stored_filename
+        if self.stored_filename is None:
+            raise ValueError("Stored_filename must be provided.")
+        send_data["filename"] = self.stored_filename
 
         return send_data
 

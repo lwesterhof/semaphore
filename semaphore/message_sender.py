@@ -252,9 +252,9 @@ class MessageSender:
 
     async def set_profile(self,
                           profile_name: str,
-                          profile_avatar: str = None,
-                          profile_emoji: str = None,
-                          profile_about: str = None) -> None:
+                          profile_avatar: Optional[str] = None,
+                          profile_emoji: Optional[str] = None,
+                          profile_about: Optional[str] = None) -> None:
         """
         Set Signal profile.
 

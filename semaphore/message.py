@@ -54,14 +54,17 @@ class Message:
 
     def get_body(self):
         """Check if the message is not empty."""
-        if self.empty():
-            return ""
-        else:
+        if not self.empty() and self.data_message is not None:
             return self.data_message.body
+        else:
+            return ""
 
     def get_sticker(self):
         """Return the message's sticker if there is one."""
-        return self.data_message.sticker
+        if self.data_message is None:
+            return None
+        else:
+            return self.data_message.sticker
 
     def get_group_id(self) -> Optional[str]:
         """Get group id if message is a group message."""

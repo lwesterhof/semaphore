@@ -20,7 +20,9 @@ import logging
 import re
 import threading
 from datetime import datetime
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Pattern, TYPE_CHECKING
+from typing import (
+    Any, Awaitable, Callable, Dict, List, Optional, Pattern, TYPE_CHECKING, Union
+)
 
 import anyio
 
@@ -70,7 +72,7 @@ class Bot:
         )
         self.log = logging.getLogger(__name__)
 
-    def register_handler(self, regex: Pattern, func: Callable) -> None:
+    def register_handler(self, regex: Union[str, Pattern], func: Callable) -> None:
         """Register a chat handler with a regex."""
         if not isinstance(regex, type(re.compile(""))):
             regex = re.compile(regex, re.UNICODE)
@@ -162,7 +164,8 @@ class Bot:
         """Disconnect from the bot's internal socket."""
         if self._receive_socket:
             await self._receive_socket.__aexit__(*excinfo)
-        await self._send_socket.__aexit__(*excinfo)
+        if self._send_socket:
+            await self._send_socket.__aexit__(*excinfo)
 
     async def start(self) -> None:
         """Start the bot event loop."""
@@ -201,9 +204,9 @@ class Bot:
 
     async def set_profile(self,
                           profile_name: str,
-                          profile_avatar: str = None,
-                          profile_emoji: str = None,
-                          profile_about: str = None) -> None:
+                          profile_avatar: Optional[str] = None,
+                          profile_emoji: Optional[str] = None,
+                          profile_about: Optional[str] = None) -> None:
         """
         Set Signal profile.
 
