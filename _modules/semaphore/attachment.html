@@ -118,13 +118,8 @@
         <span class="n">attachment_data</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">send_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attachment_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">attr_name</span> <span class="o">!=</span> <span class="s1">&#39;stored_filename&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">send_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_snake_to_camel</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stored_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Filename or stored_filename must be provided.&quot;</span><span class="p">)</span>
-            <span class="n">send_data</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stored_filename</span>
 
         <span class="k">return</span> <span class="n">send_data</span>
 
