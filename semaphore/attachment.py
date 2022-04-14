@@ -53,12 +53,8 @@ class Attachment:
         attachment_data = attr.asdict(self)
         send_data = {}
         for attr_name, value in attachment_data.items():
-            if value is not None and attr_name != 'stored_filename':
+            if value is not None:
                 send_data[self._snake_to_camel(attr_name)] = value
-
-        if self.stored_filename is None:
-            raise ValueError("Stored_filename must be provided.")
-        send_data["filename"] = self.stored_filename
 
         return send_data
 
