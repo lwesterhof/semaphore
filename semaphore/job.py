@@ -29,7 +29,12 @@ from .reply import Reply
 class Job(object):
     """This object represents a bot job."""
 
-    def __init__(self, handler, context, repeat=False, monthly=False, interval=None):
+    def __init__(self,
+                 handler,
+                 context,
+                 repeat=False,
+                 monthly=False,
+                 interval=None) -> None:
         """Initialize job."""
         self._handler = handler
         self._context = context

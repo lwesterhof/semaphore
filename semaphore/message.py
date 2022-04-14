@@ -23,6 +23,7 @@ import attr
 from .address import Address
 from .data_message import DataMessage
 from .reply import Reply
+from .sticker import Sticker
 if TYPE_CHECKING:
     # resolve circular imports
     from .message_sender import MessageSender
@@ -52,14 +53,14 @@ class Message:
                 return False
         return True
 
-    def get_body(self):
+    def get_body(self) -> str:
         """Check if the message is not empty."""
         if not self.empty() and self.data_message is not None:
             return self.data_message.body
         else:
             return ""
 
-    def get_sticker(self):
+    def get_sticker(self) -> Optional[Sticker]:
         """Return the message's sticker if there is one."""
         if self.data_message is None:
             return None

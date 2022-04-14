@@ -51,7 +51,7 @@ async def apod(ctx: ChatContext) -> None:
     await ctx.message.reply(body=message, attachments=[attachment])
 
 
-async def main():
+async def main() -> None:
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:

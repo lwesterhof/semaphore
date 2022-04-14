@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -32,7 +32,7 @@ async def spongebob(ctx: ChatContext) -> None:
     await ctx.message.reply(''.join(choice((ch.lower, ch.upper))() for ch in orig))
 
 
-async def main():
+async def main() -> None:
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:

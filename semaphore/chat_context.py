@@ -21,7 +21,6 @@ from typing import Any, Dict, Match, TYPE_CHECKING
 from .job_queue import JobQueue
 from .message import Message
 
-
 # Resolve circular import.
 if TYPE_CHECKING:
     from .bot import Bot
@@ -30,7 +29,11 @@ if TYPE_CHECKING:
 class ChatContext(object):
     """This object represents the context of a chat."""
 
-    def __init__(self, message, match, job_queue, bot):
+    def __init__(self,
+                 message: Message,
+                 match: Match,
+                 job_queue: JobQueue,
+                 bot: 'Bot') -> None:
         self.message: Message = message
         self.match: Match = match
         self.job_queue: JobQueue = job_queue

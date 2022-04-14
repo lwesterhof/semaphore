@@ -35,7 +35,7 @@ async def expiration(ctx: ChatContext) -> None:
         await ctx.bot.set_expiration(receiver, random.randint(0, 59))
 
 
-async def main():
+async def main() -> None:
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
