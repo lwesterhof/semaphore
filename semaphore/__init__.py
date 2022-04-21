@@ -27,6 +27,7 @@ from .group import Group
 from .groupV2 import GroupV2
 from .job import Job
 from .job_queue import JobQueue
+from .link_preview import LinkPreview
 from .message import Message
 from .message_receiver import MessageReceiver
 from .message_sender import MessageSender

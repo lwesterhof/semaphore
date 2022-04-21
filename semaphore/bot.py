@@ -190,17 +190,19 @@ class Bot:
                 if message.data_message is not None:
                     await tg.spawn(self._match_message, message)
 
-    async def send_message(self, receiver, body, attachments=None) -> bool:
+    async def send_message(self, receiver, body, attachments=None,
+                           link_previews=None) -> bool:
         """
         Send a message.
 
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
+        :param link_previews: Optional link previews for the message.
         :return: Returns whether sending is successful
         :rtype: bool
         """
-        return await self._sender.send_message(receiver, body, attachments)
+        return await self._sender.send_message(receiver, body, attachments, link_previews)
 
     async def set_profile(self,
                           profile_name: str,

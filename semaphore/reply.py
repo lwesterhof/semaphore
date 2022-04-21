@@ -21,6 +21,7 @@ from typing import List
 import attr
 
 from .attachment import Attachment
+from .link_preview import LinkPreview
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -32,3 +33,4 @@ class Reply:
     quote: bool = attr.ib(default=False)
     reaction: bool = attr.ib(default=False)
     mark_read: bool = attr.ib(default=True)
+    link_previews: List[LinkPreview] = attr.ib(default=[])
