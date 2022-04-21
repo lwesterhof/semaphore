@@ -26,18 +26,6 @@ import feedparser  # type: ignore
 
 from semaphore import Bot, ChatContext
 
-
-async def bbc_info(ctx: ChatContext) -> None:
-    info = """BBC News Bot
-
-!bbc world    - BBC World news
-!bbc business - BBC Business news
-!bbc politics - BBC Politics news
-!bbc tech     - BBC Technology news"""
-
-    await ctx.message.reply(body=info)
-
-
 FEEDS = {
     "world": "http://feeds.bbci.co.uk/news/world/rss.xml",
     "politics": "http://feeds.bbci.co.uk/news/politics/rss.xml",
@@ -50,30 +38,42 @@ DEFAULT_FEED = "http://feeds.bbci.co.uk/news/rss.xml"
 
 async def bbc_feed(ctx: ChatContext) -> None:
     # Find out which news feed to parse.
-    news = ctx.match.group(1)
-    feed = FEEDS.get(news, DEFAULT_FEED)
+    try:
+        news = ctx.match.group(1).strip()
+    except IndexError:
+        news = DEFAULT_FEED
 
-    # Parse news feed.
-    Feed = feedparser.parse((await asks.get(feed)).text)
+    if news == "info":
+        info = """BBC News Bot
 
-    # Create message with 3 latest headlines.
-    reply = []
-    for x in range(3):
-        pointer = Feed.entries[x]
-        reply.append(f"{pointer.title} ({pointer.link})")
-        if x < 2:
-            reply.append("\n")
+               !bbc          - BBC News
+               !bbc world    - BBC World News
+               !bbc business - BBC Business News
+               !bbc politics - BBC Politics News
+               !bbc tech     - BBC Technology News"""
+        await ctx.message.reply(body=info)
+    else:
+        feed = FEEDS.get(news, DEFAULT_FEED)
 
-    await ctx.message.reply("\n".join(reply))
+        # Parse news feed.
+        Feed = feedparser.parse((await asks.get(feed)).text)
+
+        # Create message with 3 latest headlines.
+        reply = []
+        for x in range(3):
+            pointer = Feed.entries[x]
+            reply.append(f"{pointer.title} ({pointer.link})")
+            if x < 2:
+                reply.append("\n")
+
+        await ctx.message.reply("\n".join(reply))
 
 
 async def main() -> None:
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
-        bot.register_handler("!bbc info", bbc_info)
-        bot.register_handler(re.compile("!bbc (.*)"), bbc_feed)
-        bot.register_handler("!bbc", bbc_feed)
+        bot.register_handler(re.compile("!bbc(.*)"), bbc_feed)
 
         # Run the bot until you press Ctrl-C.
         await bot.start()
