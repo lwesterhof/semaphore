@@ -25,6 +25,7 @@ from typing import Any, Dict, List, Optional
 
 from .attachment import Attachment
 from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
+from .link_preview import LinkPreview
 from .message import Message
 from .reply import Reply
 from .socket import Socket
@@ -106,13 +107,15 @@ class MessageSender:
             return False
 
     async def send_message(self, receiver, body,
-                           attachments: Optional[List[Attachment]] = None) -> bool:
+                           attachments: Optional[List[Attachment]] = None,
+                           link_previews: Optional[List[LinkPreview]] = None) -> bool:
         """
         Send a message.
 
         :param receiver:    The receiver of the message (uuid or number).
         :param body:        The body of the message.
         :param attachments: Optional attachments to the message.
+        :param link_previews: Optional link previews for the message.
 
         :return: Returns whether sending is successful.
         :rtype: bool
@@ -135,6 +138,11 @@ class MessageSender:
         if attachments:
             bot_message["attachments"] = [
                 attachment.to_send_dict() for attachment in attachments
+            ]
+
+        if link_previews:
+            bot_message["previews"] = [
+                link_preview.to_send_dict() for link_preview in link_previews
             ]
 
         return await self._send(bot_message)
@@ -179,6 +187,11 @@ class MessageSender:
             if reply.attachments:
                 bot_message["attachments"] = [
                     attachment.to_send_dict() for attachment in reply.attachments
+                ]
+
+            if reply.link_previews:
+                bot_message["previews"] = [
+                    link_preview.to_send_dict() for link_preview in reply.link_previews
                 ]
 
             # Add quote to message.

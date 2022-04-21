@@ -23,6 +23,7 @@ import attr
 from .attachment import Attachment
 from .group import Group
 from .groupV2 import GroupV2
+from .link_preview import LinkPreview
 from .sticker import Sticker
 
 
@@ -37,3 +38,4 @@ class DataMessage:
     group: Optional[Group] = attr.ib(default=None)
     groupV2: Optional[GroupV2] = attr.ib(default=None)
     sticker: Optional[Sticker] = attr.ib(default=None)
+    previews: List[LinkPreview] = attr.ib(factory=list)
