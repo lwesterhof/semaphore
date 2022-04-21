@@ -46,9 +46,8 @@ Please note that this library is unofficial, unapproved and not nearly as secure
     ```bash
     $ git clone https://github.com/lwesterhof/semaphore.git
     $ cd semaphore
-    $ python -m pip install .
-    $ python setup.py sdist bdist_wheel
-    $ python -m pip install dist/semaphore-*.tar.gz
+    $ make build
+    $ make install
     ```
 
 ## Quick start
@@ -60,7 +59,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 2. Open a new terminal and connect to signald control socket
     ```bash
-    nc -U /var/run/signald/signald.sock
+    $ nc -U /var/run/signald/signald.sock
     ```
 
 3. Register phone number with Signal by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number). Sometimes Signal requires completion of a [captcha](https://signald.org/articles/captcha/) to register.

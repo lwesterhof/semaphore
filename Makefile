@@ -1,9 +1,8 @@
 .DEFAULT_GOAL := help
-.PHONY: clean pep257 pep8 mypy build install
+.PHONY: clean flake8 mypy build install
 
 PYTHON          := python
-PEP257          := pep257
-PEP8            := flake8
+FLAKE8          := flake8
 MYPY            := mypy
 PIP             := pip
 
@@ -17,17 +16,14 @@ clean:
 	find examples/tmp/ -name "*.png" -exec rm {} \;
 	find examples/tmp/ -name "*.jpg" -exec rm {} \;
 
-pep257:
-	$(PEP257) semaphore examples
-
-pep8:
-	$(PEP8) --statistics
+flake8:
+	$(PYTHON) -m $(FLAKE8) --statistics
 
 mypy:
-	$(MYPY) semaphore examples
+	$(PYTHON) -m $(MYPY) semaphore examples
 
 build:
-	$(PYTHON) -m $(PIP) install -r requirements.txt
+	$(PYTHON) -m $(PIP) install .
 	$(PYTHON) setup.py sdist bdist_wheel
 
 install:
@@ -36,14 +32,13 @@ install:
 help:
 	@echo "Available targets:"
 	@echo "- clean       Clean up the source directory"
-	@echo "- pep257      Check docstring style with pep257"
-	@echo "- pep8        Check code style with flake8"
+	@echo "- flake8      Check code style with flake8"
 	@echo "- mypy        Check static typing with Mypy"
 	@echo "- build       Build package"
 	@echo "- install     Install package"
 	@echo
 	@echo "Available variables:"
-	@echo "- PEP257      default: $(PEP257)"
-	@echo "- PEP8        default: $(PEP8)"
+	@echo "- PYTHON      default: $(PYTHON)"
+	@echo "- FLAKE8      default: $(FLAKE8)"
 	@echo "- MYPY        default: $(MYPY)"
 	@echo "- PIP         default: $(PIP)"
