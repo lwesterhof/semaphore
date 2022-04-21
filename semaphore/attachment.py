@@ -18,6 +18,7 @@
 """This module contains an object that represents a Signal message attachment."""
 import logging
 import re
+from typing import Optional
 
 import attr
 
@@ -29,8 +30,7 @@ class Attachment:
     The attributes have a 1 to 1 correspondance to the signald JsonAttachment class
     https://signald.org/protocol/structures/v1/JsonAttachment/
     """
-
-    filename: str = attr.ib()
+    filename: Optional[str] = attr.ib()
     blurhash: str = attr.ib(default=None)
     caption: str = attr.ib(default=None)
     content_type: str = attr.ib(default=None)
@@ -53,8 +53,15 @@ class Attachment:
         attachment_data = attr.asdict(self)
         send_data = {}
         for attr_name, value in attachment_data.items():
-            if value is not None:
+            if value is not None and attr_name != "stored_filename":
                 send_data[self._snake_to_camel(attr_name)] = value
+
+        # Make sure the filename field is populated,
+        # because the received attachment don't have the filename field.
+        if self.filename is None:
+            if self.stored_filename is None:
+                raise ValueError("Filename or stored_filename must be provided.")
+            send_data["filename"] = self.stored_filename
 
         return send_data
 
