@@ -86,6 +86,7 @@
 <span class="kn">import</span> <span class="nn">attr</span>
 
 <span class="kn">from</span> <span class="nn">.attachment</span> <span class="kn">import</span> <span class="n">Attachment</span>
+<span class="kn">from</span> <span class="nn">.link_preview</span> <span class="kn">import</span> <span class="n">LinkPreview</span>
 
 
 <div class="viewcode-block" id="Reply"><a class="viewcode-back" href="../../semaphore.reply.html#semaphore.Reply">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">auto_attribs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -96,7 +97,8 @@
     <span class="n">attachments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Attachment</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">[])</span>
     <span class="n">quote</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">reaction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">mark_read</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+    <span class="n">mark_read</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">link_previews</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LinkPreview</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">[])</span></div>
 </pre></div>
 
            </div>
