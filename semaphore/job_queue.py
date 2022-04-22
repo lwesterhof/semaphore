@@ -28,7 +28,7 @@ from .queue import PriorityQueue
 
 
 class JobQueue:
-    """"This object represents a bot job queue."""
+    """This object represents a bot job queue."""
 
     def __init__(self, sender) -> None:
         """Initialize job queue."""
