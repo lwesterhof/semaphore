@@ -19,7 +19,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 ## Requirements
 - ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/semaphore-bot)
-- [signald](https://gitlab.com/signald/signald) [0.17.0](https://gitlab.com/signald/signald/-/tags/0.17.0) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
+- [signald](https://gitlab.com/signald/signald) [0.18.0](https://gitlab.com/signald/signald/-/tags/0.18.0) or later, a daemon that facilitates communication over [Signal](https://signal.org/)
 
 ## Installation
 1. Install signald or build from source
@@ -131,6 +131,12 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.14.0**
+* Compatibility with signald 0.18.0+
+* Migrate to latest version of anyio (3.5.0)
+* Add Dockerfile to run Signal bot in container
+* Add support for link previews (thanks @Era-Dorta)
+
 **v0.13.0**
 * Compatibility with signald 0.17.0+
 * Add method to set expiration timer of chat (thanks @Era-Dorta)
