@@ -3,4 +3,4 @@
 __author__ = 'Lazlo Westerhof'
 __email__ = 'semaphore@lazlo.me'
 __license__ = 'AGPLv3+'
-__version__ = '0.13.0'
+__version__ = '0.14.0'
