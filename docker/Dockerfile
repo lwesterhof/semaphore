@@ -1,23 +1,16 @@
-# Grab signald image.
-FROM signald/signald:0.17.0
+# Grab Python image.
+FROM python:3.9.12-slim-bullseye
 
-WORKDIR /root
+WORKDIR /semaphore
 
-# Update and install pip.
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y python3-pip
+# Upgrade pip.
+RUN pip install --upgrade pip
 
-# Install Semaphore library.
-RUN pip install --no-cache-dir semaphore-bot==v0.13.0
+# Install Semaphore.
+RUN pip install --no-cache-dir semaphore-bot==v0.14.0
 
-# Set socket path for signald.
-RUN mkdir /var/run/signald
-RUN echo "socketpath: /var/run/signald/signald.sock" >> /root/.config/signaldctl.yaml
+# Copy bot script.
+COPY bot.py bot.py
 
-# Copy bot and start script.
-COPY bot.py /root
-COPY start_bot.sh /root
-
-# Start signald.
-CMD signald --trust-new-keys > /var/log/signald.log
+# Start the bot.
+CMD ["python", "bot.py"]

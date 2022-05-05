@@ -38,7 +38,8 @@ async def docker(ctx: ChatContext) -> None:
 async def main():
     """Start the bot."""
     # Connect the bot to number.
-    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"],
+                   socket_path="/signald/signald.sock") as bot:
         bot.register_handler("", docker)
 
         # Run the bot until you press Ctrl-C.

@@ -1,84 +1,62 @@
 # Run a Signal Bot in a Docker container
 This document describes the steps to run a Signal Bot written with Semaphore in a Docker container.
+The example will deploy a [demo bot](bot.py), you can change this bot or copy another bot in the [Dockerfile](Dockerfile).
 
 ## Dependencies
 * [git](https://git-scm.com/)
 * [Docker](https://www.docker.com/)
-* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) (when deploying to Heroku)
+* [Docker Compose](https://github.com/docker/compose)
 
-## Clone Semaphore repository
-Clone the Semaphore repository and change directory to the docker directory.
-```bash
-git clone https://github.com/lwesterhof/semaphore.git
-cd semaphore/docker/
-```
-
-## Deploy bot container
-Deploy bot container local or to Heroku.
-
-### Local
-1. Build Docker container
+## Deploy the bot
+1. Clone the Semaphore repository and change directory to the docker directory.
     ```bash
-    docker build -t semaphore-bot .
+    git clone https://github.com/lwesterhof/semaphore.git
+    cd semaphore/docker/
     ```
 
-2.  Run Docker container (replace `<container_name>` with container name)
+2. Set phone number of the bot (replace +xxxxxxxxxxx with phone number).
     ```bash
-    docker run -d --name <container_name> semaphore-bot
+    export SIGNAL_PHONE_NUMBER=+xxxxxxxxxxx
     ```
 
-3. Attach to container (replace `<container_name>` with container name)
+3. Deploy Docker container with signald.
     ```bash
-    docker exec -it <container_name> bash
+    docker-compose up -d signald
     ```
 
-### Heroku
-1. Create Heroku app (replace `<app_name>` with app name)
-    ```bash
-    heroku container:login
-    heroku create <app_name>
-    ```
-
-2.  Push and release container (replace `<app_name>` with app name)
-    ```bash
-    heroku container:push worker --app <app_name>
-    heroku container:release worker --app <app_name>
-    ```
-
-3. Attach to container (replace `<app_name>` with app name)
-    ```bash
-    heroku run bash -a <app_name>
-    ```
-
-## Register Signal account and start the bot
-1. Download [Signal Captcha Helper](https://gitlab.com/signald/captcha-helper) and complete Signal captcha on local machine
+4. Download [Signal Captcha Helper](https://gitlab.com/signald/captcha-helper) and complete Signal captcha on local machine.
     ```bash
     wget -O signal-captcha-helper https://gitlab.com/api/v4/projects/27947268/jobs/artifacts/main/raw/signal-captcha-helper?job=build%3Aamd64
     chmod +x signal-captcha-helper
     ./signal-captcha-helper
     ```
 
-2. Register account with captcha (replace `+xxxxxxxxxxx` with bot Signal number and `<captcha>` with captcha from previous step)
+5. Attach to container running signald.
+    ```bash
+    docker exec -it signald bash
+    ```
+
+6. Register account with captcha (replace `+xxxxxxxxxxx` with phone number and `<captcha>` with captcha from step 4).
     ```bash
     signaldctl account register +xxxxxxxxxxx --captcha <captcha>
     ```
 
-3. Verify account with verfication code (replace `+xxxxxxxxxxx` with bot Signal number and `<verfication_code>` with received Signal verfication code)
+7. Verify account with verfication code (replace `+xxxxxxxxxxx` with bot Signal number and `<verfication_code>` with received Signal verfication code).
     ```bash
     signaldctl account verify +xxxxxxxxxxx <verfication_code>
     ```
 
-4. Check that account is registered
+8. Check that account is registered.
     ```bash
     signaldctl account list
     ```
 
-5. Start the bot (replace `+xxxxxxxxxxx` with bot Signal number)
+9. Exit signald Docker container.
     ```bash
-    /usr/bin/bash /root/start_bot.sh +xxxxxxxxxxx &> /var/log/semaphore.log &
+    exit
     ```
 
-6. Check if bot is running
+10. Deploy Docker container with the bot and start the bot.
     ```bash
-    tail -f /var/log/semaphore.log
+    docker-compose up
     ```

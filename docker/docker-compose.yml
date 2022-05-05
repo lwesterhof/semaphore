@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  signald:
+    container_name: signald
+    image: signald/signald:0.18.0
+    restart: unless-stopped
+    volumes:
+      - ./signald:/signald
+
+  semaphore-bot:
+    container_name: semaphore-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - SIGNAL_PHONE_NUMBER
+    volumes:
+      - ./signald:/signald
+    depends_on:
+      - signald
