@@ -59,8 +59,9 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 2. Open a new terminal and connect to signald control socket
     ```bash
-    $ nc -U /var/run/signald/signald.sock
+    $ nc -U $XDG_RUNTIME_DIR/signald/signald.sock
     ```
+    (or `/var/run/signald/signald.sock` for older versions of signald, [see signald docs](https://signald.org/articles/protocol/#socket-file-location))
 
 3. Register phone number with Signal by sending following message on the control socket (replace `+xxxxxxxxxxx` with bot Signal number). Sometimes Signal requires completion of a [captcha](https://signald.org/articles/captcha/) to register.
     ```json
