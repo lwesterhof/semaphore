@@ -131,6 +131,25 @@ The following example bots can be found in [examples](examples):
 - [quotebot](examples/quotebot.py), quotes and repeats received messages
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
+## Joining groups
+
+Newer versions of Signal require that users accept invitations to join groups.
+If you are running your bot using `signald`, it may not be immediately clear how to do this.
+However, the `signaldctl` CLI tool can make this easier.
+Download the tool from the [`signaldctl` GitLab](https://gitlab.com/signald/signald-go/-/tree/main/cmd/signaldctl).
+Then to accept the invitation to join a given group, run:
+
+```bash
+./signaldctl --account $SIGNAL_PHONE_NUMBER group accept [group_id]
+```
+
+You can find the `[group_id]` in the log of `signald`, e.g.:
+```
+11:17:46.142 [**********************************90-receiver] INFO  io.finn.signald.Groups - New group [group_id]; use only latest state
+```
+
+For more information regarding `signaldctl`, refer to [its documentation](https://signald.org/signaldctl/reference/signaldctl/).
+
 ## Changelog
 **v0.14.0**
 * Compatibility with signald 0.18.0+
