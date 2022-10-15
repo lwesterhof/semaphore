@@ -68,7 +68,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#</span>
 <span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
-<span class="c1"># Copyright (C) 2020-2021 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1"># Copyright (C) 2020-2022 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># This program is free software: you can redistribute it and/or modify</span>
 <span class="c1"># it under the terms of the GNU Affero General Public License as</span>
@@ -111,6 +111,7 @@
                  <span class="n">profile_picture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">profile_emoji</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">profile_about</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">group_auto_accept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
                  <span class="n">socket_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">raise_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -120,6 +121,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_profile_picture</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_picture</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_profile_emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_emoji</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_profile_about</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_about</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_group_auto_accept</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">group_auto_accept</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_socket_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">socket_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_receiver</span><span class="p">:</span> <span class="n">MessageReceiver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="p">:</span> <span class="n">MessageSender</span>
@@ -164,8 +166,11 @@
         <span class="n">message_id</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
         <span class="c1"># Get context id.</span>
-        <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">():</span>
-            <span class="n">context_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">()</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">group_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get_group_id</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">group_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">context_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group_id</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">message</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_auto_accept</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">accept_invitation</span><span class="p">(</span><span class="n">group_id</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">context_id</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uuid</span>
 
@@ -296,7 +301,15 @@
 <span class="sd">        :param receiver: The receiver for which to set the expiration time.</span>
 <span class="sd">        :param time:     Time must be specified in seconds, set to 0 to disable timer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">set_expiration</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div></div>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">set_expiration</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bot.accept_invitation"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.accept_invitation">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accept_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accept a v2 group invitation.</span>
+
+<span class="sd">        :param group_id: Group id to accept invitation from.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">accept_invitation</span><span class="p">(</span><span class="n">group_id</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
