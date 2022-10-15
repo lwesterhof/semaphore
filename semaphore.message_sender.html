@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,7 +53,19 @@
 <li class="toctree-l2"><a class="reference internal" href="semaphore.job.html">semaphore.Job</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.link_preview.html">semaphore.LinkPreview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.message_receiver.html">semaphore.MessageReceiver</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.MessageSender</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.MessageSender</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#semaphore.MessageSender"><code class="docutils literal notranslate"><span class="pre">MessageSender</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.mark_read"><code class="docutils literal notranslate"><span class="pre">MessageSender.mark_read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.reply_message"><code class="docutils literal notranslate"><span class="pre">MessageSender.reply_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.send_message"><code class="docutils literal notranslate"><span class="pre">MessageSender.send_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.set_expiration"><code class="docutils literal notranslate"><span class="pre">MessageSender.set_expiration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.set_profile"><code class="docutils literal notranslate"><span class="pre">MessageSender.set_profile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.typing_started"><code class="docutils literal notranslate"><span class="pre">MessageSender.typing_started()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.typing_stopped"><code class="docutils literal notranslate"><span class="pre">MessageSender.typing_stopped()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.message.html">semaphore.Message</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.reply.html">semaphore.Reply</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.socket.html">semaphore.Socket</a></li>

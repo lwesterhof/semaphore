@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -78,24 +79,130 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="semaphore.html">semaphore package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.address.html">semaphore.Address</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.attachment.html">semaphore.Attachment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.bot.html">semaphore.Bot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.chat_context.html">semaphore.ChatContext</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.data_message.html">semaphore.DataMessage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.exceptions.html">semaphore.Exceptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.group.html">semaphore.Group</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.groupV2.html">semaphore.GroupV2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.job_queue.html">semaphore.JobQueue</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.job.html">semaphore.Job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.link_preview.html">semaphore.LinkPreview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.message_receiver.html">semaphore.MessageReceiver</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.message_sender.html">semaphore.MessageSender</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.message.html">semaphore.Message</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.reply.html">semaphore.Reply</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.socket.html">semaphore.Socket</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.sticker_pack.html">semaphore.StickerPack</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.sticker.html">semaphore.Sticker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.address.html">semaphore.Address</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.address.html#semaphore.Address"><code class="docutils literal notranslate"><span class="pre">Address</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.attachment.html">semaphore.Attachment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.attachment.html#semaphore.Attachment"><code class="docutils literal notranslate"><span class="pre">Attachment</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.bot.html">semaphore.Bot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot"><code class="docutils literal notranslate"><span class="pre">Bot</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot.handler"><code class="docutils literal notranslate"><span class="pre">Bot.handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot.register_handler"><code class="docutils literal notranslate"><span class="pre">Bot.register_handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot.send_message"><code class="docutils literal notranslate"><span class="pre">Bot.send_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot.set_expiration"><code class="docutils literal notranslate"><span class="pre">Bot.set_expiration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot.set_profile"><code class="docutils literal notranslate"><span class="pre">Bot.set_profile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot.start"><code class="docutils literal notranslate"><span class="pre">Bot.start()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.chat_context.html">semaphore.ChatContext</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.chat_context.html#semaphore.ChatContext"><code class="docutils literal notranslate"><span class="pre">ChatContext</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.data_message.html">semaphore.DataMessage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.data_message.html#semaphore.DataMessage"><code class="docutils literal notranslate"><span class="pre">DataMessage</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.exceptions.html">semaphore.Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.exceptions.html#semaphore.StopPropagation"><code class="docutils literal notranslate"><span class="pre">StopPropagation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.group.html">semaphore.Group</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.group.html#semaphore.Group"><code class="docutils literal notranslate"><span class="pre">Group</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.groupV2.html">semaphore.GroupV2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2"><code class="docutils literal notranslate"><span class="pre">GroupV2</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.job_queue.html">semaphore.JobQueue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.job_queue.html#semaphore.JobQueue"><code class="docutils literal notranslate"><span class="pre">JobQueue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job_queue.html#semaphore.JobQueue.run_daily"><code class="docutils literal notranslate"><span class="pre">JobQueue.run_daily()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job_queue.html#semaphore.JobQueue.run_monthly"><code class="docutils literal notranslate"><span class="pre">JobQueue.run_monthly()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job_queue.html#semaphore.JobQueue.run_once"><code class="docutils literal notranslate"><span class="pre">JobQueue.run_once()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job_queue.html#semaphore.JobQueue.run_repeating"><code class="docutils literal notranslate"><span class="pre">JobQueue.run_repeating()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job_queue.html#semaphore.JobQueue.start"><code class="docutils literal notranslate"><span class="pre">JobQueue.start()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.job.html">semaphore.Job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.job.html#semaphore.Job"><code class="docutils literal notranslate"><span class="pre">Job</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job.html#semaphore.Job.get_interval"><code class="docutils literal notranslate"><span class="pre">Job.get_interval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job.html#semaphore.Job.get_message"><code class="docutils literal notranslate"><span class="pre">Job.get_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job.html#semaphore.Job.is_repeating"><code class="docutils literal notranslate"><span class="pre">Job.is_repeating()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job.html#semaphore.Job.remove"><code class="docutils literal notranslate"><span class="pre">Job.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job.html#semaphore.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.job.html#semaphore.Job.schedule_removal"><code class="docutils literal notranslate"><span class="pre">Job.schedule_removal()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.link_preview.html">semaphore.LinkPreview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.link_preview.html#semaphore.LinkPreview"><code class="docutils literal notranslate"><span class="pre">LinkPreview</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.message_receiver.html">semaphore.MessageReceiver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.message_receiver.html#semaphore.MessageReceiver"><code class="docutils literal notranslate"><span class="pre">MessageReceiver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_receiver.html#semaphore.MessageReceiver.receive"><code class="docutils literal notranslate"><span class="pre">MessageReceiver.receive()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.message_sender.html">semaphore.MessageSender</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender"><code class="docutils literal notranslate"><span class="pre">MessageSender</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender.mark_read"><code class="docutils literal notranslate"><span class="pre">MessageSender.mark_read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender.reply_message"><code class="docutils literal notranslate"><span class="pre">MessageSender.reply_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender.send_message"><code class="docutils literal notranslate"><span class="pre">MessageSender.send_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender.set_expiration"><code class="docutils literal notranslate"><span class="pre">MessageSender.set_expiration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender.set_profile"><code class="docutils literal notranslate"><span class="pre">MessageSender.set_profile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender.typing_started"><code class="docutils literal notranslate"><span class="pre">MessageSender.typing_started()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message_sender.html#semaphore.MessageSender.typing_stopped"><code class="docutils literal notranslate"><span class="pre">MessageSender.typing_stopped()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.message.html">semaphore.Message</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.message.html#semaphore.Message"><code class="docutils literal notranslate"><span class="pre">Message</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.empty"><code class="docutils literal notranslate"><span class="pre">Message.empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.get_body"><code class="docutils literal notranslate"><span class="pre">Message.get_body()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.get_group_id"><code class="docutils literal notranslate"><span class="pre">Message.get_group_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.get_sticker"><code class="docutils literal notranslate"><span class="pre">Message.get_sticker()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.mark_read"><code class="docutils literal notranslate"><span class="pre">Message.mark_read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.reply"><code class="docutils literal notranslate"><span class="pre">Message.reply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.typing_started"><code class="docutils literal notranslate"><span class="pre">Message.typing_started()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.message.html#semaphore.Message.typing_stopped"><code class="docutils literal notranslate"><span class="pre">Message.typing_stopped()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.reply.html">semaphore.Reply</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.reply.html#semaphore.Reply"><code class="docutils literal notranslate"><span class="pre">Reply</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.socket.html">semaphore.Socket</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.socket.html#semaphore.Socket"><code class="docutils literal notranslate"><span class="pre">Socket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.socket.html#semaphore.Socket.read"><code class="docutils literal notranslate"><span class="pre">Socket.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.socket.html#semaphore.Socket.send"><code class="docutils literal notranslate"><span class="pre">Socket.send()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.sticker_pack.html">semaphore.StickerPack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.sticker_pack.html#semaphore.StickerPack"><code class="docutils literal notranslate"><span class="pre">StickerPack</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="semaphore.sticker_pack.html#semaphore.StickerPack.url"><code class="docutils literal notranslate"><span class="pre">StickerPack.url</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.sticker.html">semaphore.Sticker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="semaphore.sticker.html#semaphore.Sticker"><code class="docutils literal notranslate"><span class="pre">Sticker</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
