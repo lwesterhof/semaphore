@@ -312,3 +312,16 @@ class MessageSender:
             expiration_message["address"] = {"uuid": receiver}
 
         await self._send(expiration_message)
+
+    async def accept_invitation(self, group_id: str) -> None:
+        """
+        Accept a v2 group invitation.
+
+        :param group_id: Group id to accept invitation from.
+        """
+        await self._send({
+            "type": "accept_invitation",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+        })

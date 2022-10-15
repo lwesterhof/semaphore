@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -44,6 +44,7 @@ class Bot:
                  profile_picture=None,
                  profile_emoji=None,
                  profile_about=None,
+                 group_auto_accept=True,
                  logging_level=logging.INFO,
                  socket_path=None,
                  raise_errors=False):
@@ -53,6 +54,7 @@ class Bot:
         self._profile_picture: str = profile_picture
         self._profile_emoji: str = profile_emoji
         self._profile_about: str = profile_about
+        self._group_auto_accept: bool = group_auto_accept
         self._socket_path: str = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
@@ -97,8 +99,11 @@ class Bot:
         message_id = id(message)
 
         # Get context id.
-        if message.get_group_id():
-            context_id = f"{message.get_group_id()}+{message.source.uuid}"
+        group_id: Optional[str] = message.get_group_id()
+        if group_id is not None:
+            context_id = f"{group_id}+{message.source.uuid}"
+            if self._group_auto_accept:
+                await self.accept_invitation(group_id)
         else:
             context_id = message.source.uuid
 
@@ -230,3 +235,11 @@ class Bot:
         :param time:     Time must be specified in seconds, set to 0 to disable timer.
         """
         await self._sender.set_expiration(receiver, time)
+
+    async def accept_invitation(self, group_id: str) -> None:
+        """
+        Accept a v2 group invitation.
+
+        :param group_id: Group id to accept invitation from.
+        """
+        await self._sender.accept_invitation(group_id)
