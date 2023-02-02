@@ -3,7 +3,7 @@ version: "3.7"
 services:
   signald:
     container_name: signald
-    image: signald/signald:0.22.2
+    image: signald/signald:0.23.2
     restart: unless-stopped
     volumes:
       - ./signald:/signald
