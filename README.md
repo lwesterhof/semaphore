@@ -1,7 +1,7 @@
 # Semaphore
 
 [![PyPI](https://img.shields.io/pypi/v/semaphore-bot)](https://pypi.org/project/semaphore-bot/)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lwesterhof/semaphore/Python)](https://github.com/lwesterhof/semaphore/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/lwesterhof/semaphore/python.yml)](https://github.com/lwesterhof/semaphore/actions)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lwesterhof/semaphore)](https://github.com/lwesterhof/semaphore/tags)
 [![License](https://img.shields.io/github/license/lwesterhof/semaphore)](https://github.com/lwesterhof/semaphore/blob/main/LICENSE.txt)
 
