@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -16,7 +16,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a Signal message."""
-from typing import Optional, TYPE_CHECKING
+from __future__ import annotations
+
+from typing import List, Optional, TYPE_CHECKING
 
 import attr
 
@@ -24,9 +26,11 @@ from .address import Address
 from .data_message import DataMessage
 from .reply import Reply
 from .sticker import Sticker
+
 if TYPE_CHECKING:
-    # resolve circular imports
+    from .attachment import Attachment
     from .message_sender import MessageSender
+    from .link_preview import LinkPreview
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -38,7 +42,7 @@ class Message:
     envelope_type: int
     timestamp: int
     server_timestamp: int
-    _sender: 'MessageSender'
+    _sender: MessageSender
     source_device: int = attr.ib(default=0)
     relay: str = attr.ib(default=None)
     has_legacy_message: bool = attr.ib(default=False)
@@ -76,16 +80,28 @@ class Message:
                 return self.data_message.group.group_id
         return None
 
-    async def reply(self, *args, **kwargs) -> bool:
+    async def reply(self,
+                    body: str,
+                    attachments: List[Attachment] = [],
+                    quote: bool = False,
+                    reaction: bool = False,
+                    mark_read: bool = True,
+                    link_previews: List[LinkPreview] = []) -> bool:
         """Send a reply to the message.
 
-        :param *args:    The body of the reply
-        :param **kwargs: Keyword arguments of the Reply constructor
+        :param body:          The body of the reply
+        :param attachments:   Optional attachments to the message.
+        :param quote:         Indicates if reply is quoting a message.
+        :param reaction:      Indicates if reply is a reaction to message.
+        :param mark_read:     Indicates if message replying to should be marked read.
+        :param link_previews: Optional link previews for the message.
 
         :return: Returns whether reply was sent successfully
         :rtype: bool
         """
-        return await self._sender.reply_message(self, Reply(*args, **kwargs))
+        return await self._sender.reply_message(self, Reply(body, attachments,
+                                                            quote, reaction,
+                                                            mark_read, link_previews))
 
     async def typing_started(self) -> None:
         """Send a typing started message."""

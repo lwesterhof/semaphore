@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -16,12 +16,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a bot reply."""
-from typing import List
+from __future__ import annotations
+
+from typing import List, TYPE_CHECKING
 
 import attr
 
-from .attachment import Attachment
-from .link_preview import LinkPreview
+if TYPE_CHECKING:
+    from .attachment import Attachment
+    from .link_preview import LinkPreview
 
 
 @attr.s(auto_attribs=True, frozen=True)

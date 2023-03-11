@@ -169,7 +169,7 @@ class Bot:
                                      self._raise_errors)
         return self
 
-    async def __aexit__(self, *excinfo) -> None:
+    async def __aexit__(self, *excinfo: Any) -> None:
         """Disconnect from the bot's internal socket."""
         if self._receive_socket:
             await self._receive_socket.__aexit__(*excinfo)
@@ -205,10 +205,11 @@ class Bot:
         """
         Send a message.
 
-        :param receiver:    The receiver of the message (uuid or number).
-        :param body:        The body of the message.
-        :param attachments: Optional attachments to the message.
+        :param receiver:      The receiver of the message (uuid or number).
+        :param body:          The body of the message.
+        :param attachments:   Optional attachments to the message.
         :param link_previews: Optional link previews for the message.
+
         :return: Returns whether sending is successful
         :rtype: bool
         """

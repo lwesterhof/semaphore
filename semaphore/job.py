@@ -16,14 +16,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a bot job."""
+from __future__ import annotations
 
 from datetime import datetime
-from typing import Callable, Optional
+from typing import Callable, Optional, TYPE_CHECKING
 
 from dateutil.relativedelta import relativedelta
 
 from .message import Message
 from .reply import Reply
+
+if TYPE_CHECKING:
+    from .chat_context import ChatContext
 
 
 class Job(object):
@@ -31,7 +35,7 @@ class Job(object):
 
     def __init__(self,
                  handler: Callable,
-                 context,
+                 context: ChatContext,
                  repeat: bool = False,
                  monthly: bool = False,
                  interval: Optional[int] = None) -> None:

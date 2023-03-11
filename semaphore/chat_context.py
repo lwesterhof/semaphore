@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -16,12 +16,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents the context of a chat."""
+from __future__ import annotations
+
 from typing import Any, Dict, Match, TYPE_CHECKING
 
 from .job_queue import JobQueue
 from .message import Message
 
-# Resolve circular import.
 if TYPE_CHECKING:
     from .bot import Bot
 
@@ -33,9 +34,9 @@ class ChatContext(object):
                  message: Message,
                  match: Match,
                  job_queue: JobQueue,
-                 bot: 'Bot') -> None:
+                 bot: Bot) -> None:
         self.message: Message = message
         self.match: Match = match
         self.job_queue: JobQueue = job_queue
-        self.bot: 'Bot' = bot
+        self.bot: Bot = bot
         self.data: Dict[str, Any] = {}

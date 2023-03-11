@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,7 +18,7 @@
 """This module contains an object that represents a Signal message link preview."""
 import logging
 import re
-from typing import Optional
+from typing import Dict, Optional
 
 import attr
 
@@ -38,7 +38,7 @@ class LinkPreview:
     title: str = attr.ib(default=None)
     url: str = attr.ib(default=None)
 
-    def to_send_dict(self) -> dict:
+    def to_send_dict(self) -> Dict:
         send_data = attr.asdict(self)
         if self.attachment is not None:
             send_data['attachment'] = self.attachment.to_send_dict()

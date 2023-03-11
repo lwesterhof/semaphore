@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -16,19 +16,22 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains a class that handles sending bot messages."""
+from __future__ import annotations
+
 import asyncio
 import json
 import logging
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
 
-
-from .attachment import Attachment
 from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
-from .link_preview import LinkPreview
 from .message import Message
 from .reply import Reply
 from .socket import Socket
+
+if TYPE_CHECKING:
+    from .attachment import Attachment
+    from .link_preview import LinkPreview
 
 
 class MessageSender:
@@ -106,21 +109,21 @@ class MessageSender:
                 return False
             return False
 
-    async def send_message(self, receiver, body,
+    async def send_message(self, receiver: str, body: str,
                            attachments: Optional[List[Attachment]] = None,
                            link_previews: Optional[List[LinkPreview]] = None) -> bool:
         """
         Send a message.
 
-        :param receiver:    The receiver of the message (uuid or number).
-        :param body:        The body of the message.
-        :param attachments: Optional attachments to the message.
+        :param receiver:      The receiver of the message (uuid or number).
+        :param body:          The body of the message.
+        :param attachments:   Optional attachments to the message.
         :param link_previews: Optional link previews for the message.
 
         :return: Returns whether sending is successful.
         :rtype: bool
         """
-        bot_message = {
+        bot_message: Dict[str, Union[str, Dict[str, str], List[Dict[str, str]]]] = {
             "type": "send",
             "version": "v1",
             "username": self._username,
@@ -153,7 +156,6 @@ class MessageSender:
 
         :param message: The original message replying to.
         :param reply:   The reply to send.
-
 
         :return: Returns whether replying is successful.
         :rtype: bool

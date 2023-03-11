@@ -18,7 +18,7 @@
 """This module contains an object that represents a signald socket."""
 import json
 import logging
-from typing import AsyncIterable, List, Optional
+from typing import Any, AsyncIterable, List, Optional
 
 import anyio
 import anyio.abc
@@ -67,7 +67,7 @@ class Socket:
             self.log.info(f"Bot attempted to subscribe to +********{self._username[-3:]}")
         return self
 
-    async def __aexit__(self, *excinfo) -> None:
+    async def __aexit__(self, *excinfo: Any) -> None:
         """Disconnect from the internal socket."""
         await self.send({"type": "unsubscribe", "account": self._username,
                          "version": "v1"})

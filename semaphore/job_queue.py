@@ -16,9 +16,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a bot job queue."""
+from __future__ import annotations
+
 import logging
 from time import time
-from typing import Callable
+from typing import Callable, TYPE_CHECKING
 
 from anyio import sleep, WouldBlock
 
@@ -26,6 +28,9 @@ from .exceptions import StopPropagation
 from .job import Job
 from .message_sender import MessageSender
 from .queue import PriorityQueue
+
+if TYPE_CHECKING:
+    from .chat_context import ChatContext
 
 
 class JobQueue:
@@ -42,7 +47,7 @@ class JobQueue:
         self,
         timestamp: float,
         callback: Callable,
-        context,
+        context: ChatContext,
     ) -> Job:
         """Add a job to the queue that runs once."""
         job = Job(callback, context)
@@ -53,7 +58,7 @@ class JobQueue:
     async def run_repeating(self,
                             timestamp: float,
                             callback: Callable,
-                            context,
+                            context: ChatContext,
                             interval: int) -> Job:
         """Add a job to the queue that runs repeating."""
         job = Job(callback, context, repeat=True, interval=interval)
@@ -64,7 +69,7 @@ class JobQueue:
     async def run_daily(self,
                         timestamp: float,
                         callback: Callable,
-                        context) -> Job:
+                        context: ChatContext) -> Job:
         """Add a job to the queue that runs daily."""
         interval = 60 * 60 * 24  # Day
         job = Job(callback, context, repeat=True, interval=interval)
@@ -75,7 +80,7 @@ class JobQueue:
     async def run_monthly(self,
                           timestamp: float,
                           callback: Callable,
-                          context) -> Job:
+                          context: ChatContext) -> Job:
         """Add a job to the queue that runs monthly."""
         job = Job(callback, context, repeat=True, monthly=True)
         await self._queue.put_nowait(timestamp, job)
