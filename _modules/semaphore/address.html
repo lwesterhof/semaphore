@@ -70,7 +70,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#</span>
 <span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
-<span class="c1"># Copyright (C) 2020-2021 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1"># Copyright (C) 2020-2023 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># This program is free software: you can redistribute it and/or modify</span>
 <span class="c1"># it under the terms of the GNU Affero General Public License as</span>
@@ -90,10 +90,17 @@
 
 <div class="viewcode-block" id="Address"><a class="viewcode-back" href="../../semaphore.address.html#semaphore.Address">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">auto_attribs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Address</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This object represents a Signal address.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This object represents a Signal address.</span>
 
+<span class="sd">    The attributes have a 1 to 1 correspondance to the signald JsonAddress class</span>
+<span class="sd">    https://signald.org/protocol/structures/v1/JsonAddress/</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">number</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+    <span class="n">number</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create_from_receive_dict</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Address&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Address</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

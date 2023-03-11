@@ -95,6 +95,7 @@
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">IDENTIFIABLE_SIGNALD_ERRORS</span><span class="p">,</span> <span class="n">UnknownError</span>
 <span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">.profile</span> <span class="kn">import</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">.reply</span> <span class="kn">import</span> <span class="n">Reply</span>
 <span class="kn">from</span> <span class="nn">.socket</span> <span class="kn">import</span> <span class="n">Socket</span>
 
@@ -115,30 +116,42 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_socket_lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">message</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;send&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">signald_message_id</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">message</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signald_message_id</span><span class="p">)</span>
 
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_socket_lock</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+
+            <span class="c1"># Wait on response for our message.</span>
+            <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting for success of </span><span class="si">{</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Wait on response for get_profile.</span>
+            <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;get_profile&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for get_profile response&quot;</span><span class="p">)</span>
+            <span class="c1"># Skip everything else.</span>
+            <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting for success of </span><span class="si">{</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="c1"># Wait for success response</span>
+            <span class="c1"># Wait for response.</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_socket</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Socket of sender received: </span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-                <span class="c1"># Load Signal message wrapper</span>
+                <span class="c1"># Load Signal message wrapper.</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">response_wrapper</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not decode signald response&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
                     <span class="k">continue</span>
 
-                <span class="c1"># Skip everything but response for our message</span>
+                <span class="c1"># Return get_profile response.</span>
+                <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;get_profile&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
+                        <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># Skip everything but response for our message.</span>
                 <span class="k">if</span> <span class="s1">&#39;id&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">response_wrapper</span><span class="p">:</span>
                     <span class="k">continue</span>
 
@@ -153,7 +166,7 @@
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raise_signald_errors</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">False</span>
 
-                    <span class="c1"># Match error</span>
+                    <span class="c1"># Match error.</span>
                     <span class="k">for</span> <span class="n">error_class</span> <span class="ow">in</span> <span class="n">IDENTIFIABLE_SIGNALD_ERRORS</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">error_class</span><span class="o">.</span><span class="n">IDENTIFIER</span> <span class="o">==</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error_type&quot;</span><span class="p">):</span>
                             <span class="n">error_dict</span> <span class="o">=</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
@@ -362,6 +375,21 @@
             <span class="n">profile_message</span><span class="p">[</span><span class="s2">&quot;about&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_about</span>
 
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">profile_message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MessageSender.get_profile"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.get_profile">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Profile</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Signal profile of message sender.</span>
+
+<span class="sd">        :param message: The Signal message you received.</span>
+
+<span class="sd">        :returns: Signal profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;get_profile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">uuid</span><span class="p">}</span>
+        <span class="p">})</span></div>
 
 <div class="viewcode-block" id="MessageSender.set_expiration"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.set_expiration">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

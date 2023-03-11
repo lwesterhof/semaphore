@@ -58,6 +58,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.MessageSender</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#semaphore.MessageSender"><code class="docutils literal notranslate"><span class="pre">MessageSender</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.accept_invitation"><code class="docutils literal notranslate"><span class="pre">MessageSender.accept_invitation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.get_profile"><code class="docutils literal notranslate"><span class="pre">MessageSender.get_profile()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.mark_read"><code class="docutils literal notranslate"><span class="pre">MessageSender.mark_read()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.reply_message"><code class="docutils literal notranslate"><span class="pre">MessageSender.reply_message()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.send_message"><code class="docutils literal notranslate"><span class="pre">MessageSender.send_message()</span></code></a></li>
@@ -117,6 +118,20 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>group_id</strong> – Group id to accept invitation from.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.MessageSender.get_profile">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="semaphore.message.html#semaphore.Message" title="semaphore.message.Message"><span class="pre">Message</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Profile</span></span></span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.get_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.get_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Get Signal profile of message sender.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – The Signal message you received.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Signal profile</p>
 </dd>
 </dl>
 </dd></dl>

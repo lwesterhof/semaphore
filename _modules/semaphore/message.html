@@ -100,9 +100,10 @@
     <span class="kn">from</span> <span class="nn">.attachment</span> <span class="kn">import</span> <span class="n">Attachment</span>
     <span class="kn">from</span> <span class="nn">.message_sender</span> <span class="kn">import</span> <span class="n">MessageSender</span>
     <span class="kn">from</span> <span class="nn">.link_preview</span> <span class="kn">import</span> <span class="n">LinkPreview</span>
+    <span class="kn">from</span> <span class="nn">.profile</span> <span class="kn">import</span> <span class="n">Profile</span>
 
 
-<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">auto_attribs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">auto_attribs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Message</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This object represents a Signal message.&quot;&quot;&quot;</span>
 
@@ -182,7 +183,11 @@
 
 <div class="viewcode-block" id="Message.mark_read"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message.mark_read">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">mark_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark the message as read.&quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">mark_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">mark_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Message.get_profile"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message.get_profile">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Profile</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get profile of message sender.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">get_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
