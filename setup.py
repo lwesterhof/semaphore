@@ -24,7 +24,7 @@ with open("README.md", "r") as fh:
 requirements = [
     'anyio<=3.5.0',
     'attrs>=18.2.0,<=21.2.0',
-    'python_dateutil==2.8.1',
+    'python_dateutil==2.8.2',
 ]
 
 setup(
