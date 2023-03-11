@@ -238,7 +238,7 @@
                                      <span class="bp">self</span><span class="o">.</span><span class="n">_raise_errors</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">excinfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">excinfo</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Disconnect from the bot&#39;s internal socket.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_receive_socket</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_receive_socket</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="o">*</span><span class="n">excinfo</span><span class="p">)</span>
@@ -274,10 +274,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a message.</span>
 
-<span class="sd">        :param receiver:    The receiver of the message (uuid or number).</span>
-<span class="sd">        :param body:        The body of the message.</span>
-<span class="sd">        :param attachments: Optional attachments to the message.</span>
+<span class="sd">        :param receiver:      The receiver of the message (uuid or number).</span>
+<span class="sd">        :param body:          The body of the message.</span>
+<span class="sd">        :param attachments:   Optional attachments to the message.</span>
 <span class="sd">        :param link_previews: Optional link previews for the message.</span>
+
 <span class="sd">        :return: Returns whether sending is successful</span>
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -70,7 +70,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#</span>
 <span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
-<span class="c1"># Copyright (C) 2020-2021 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1"># Copyright (C) 2020-2023 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># This program is free software: you can redistribute it and/or modify</span>
 <span class="c1"># it under the terms of the GNU Affero General Public License as</span>
@@ -85,7 +85,9 @@
 <span class="c1"># You should have received a copy of the GNU Affero General Public License</span>
 <span class="c1"># along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">&quot;&quot;&quot;This module contains an object that represents a Signal message.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">import</span> <span class="nn">attr</span>
 
@@ -93,9 +95,11 @@
 <span class="kn">from</span> <span class="nn">.data_message</span> <span class="kn">import</span> <span class="n">DataMessage</span>
 <span class="kn">from</span> <span class="nn">.reply</span> <span class="kn">import</span> <span class="n">Reply</span>
 <span class="kn">from</span> <span class="nn">.sticker</span> <span class="kn">import</span> <span class="n">Sticker</span>
+
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="c1"># resolve circular imports</span>
+    <span class="kn">from</span> <span class="nn">.attachment</span> <span class="kn">import</span> <span class="n">Attachment</span>
     <span class="kn">from</span> <span class="nn">.message_sender</span> <span class="kn">import</span> <span class="n">MessageSender</span>
+    <span class="kn">from</span> <span class="nn">.link_preview</span> <span class="kn">import</span> <span class="n">LinkPreview</span>
 
 
 <div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">auto_attribs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -107,7 +111,7 @@
     <span class="n">envelope_type</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">server_timestamp</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">_sender</span><span class="p">:</span> <span class="s1">&#39;MessageSender&#39;</span>
+    <span class="n">_sender</span><span class="p">:</span> <span class="n">MessageSender</span>
     <span class="n">source_device</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">relay</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">has_legacy_message</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -145,16 +149,28 @@
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_message</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">group_id</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Message.reply"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message.reply">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">reply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="Message.reply"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message.reply">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">reply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">body</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">attachments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Attachment</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+                    <span class="n">quote</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="n">reaction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="n">mark_read</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="n">link_previews</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LinkPreview</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a reply to the message.</span>
 
-<span class="sd">        :param *args:    The body of the reply</span>
-<span class="sd">        :param **kwargs: Keyword arguments of the Reply constructor</span>
+<span class="sd">        :param body:          The body of the reply</span>
+<span class="sd">        :param attachments:   Optional attachments to the message.</span>
+<span class="sd">        :param quote:         Indicates if reply is quoting a message.</span>
+<span class="sd">        :param reaction:      Indicates if reply is a reaction to message.</span>
+<span class="sd">        :param mark_read:     Indicates if message replying to should be marked read.</span>
+<span class="sd">        :param link_previews: Optional link previews for the message.</span>
 
 <span class="sd">        :return: Returns whether reply was sent successfully</span>
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">reply_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Reply</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">reply_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Reply</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="p">,</span>
+                                                            <span class="n">quote</span><span class="p">,</span> <span class="n">reaction</span><span class="p">,</span>
+                                                            <span class="n">mark_read</span><span class="p">,</span> <span class="n">link_previews</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Message.typing_started"><a class="viewcode-back" href="../../semaphore.message.html#semaphore.Message.typing_started">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">typing_started</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a typing started message.&quot;&quot;&quot;</span>
