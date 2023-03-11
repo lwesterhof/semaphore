@@ -1,161 +1,76 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>semaphore.bot &mdash; Semaphore  documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../index.html" class="icon icon-home"> Semaphore
           
-
-          
+          <a href="../../index.html" class="icon icon-home">
+            Semaphore
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../semaphore.html">semaphore package</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">Semaphore</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-        
-      <li>semaphore.bot</li>
-    
-    
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">semaphore.bot</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for semaphore.bot</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#</span>
 <span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
-<span class="c1"># Copyright (C) 2020-2022 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1"># Copyright (C) 2020-2023 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># This program is free software: you can redistribute it and/or modify</span>
 <span class="c1"># it under the terms of the GNU Affero General Public License as</span>
@@ -175,14 +90,16 @@
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Any</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
+    <span class="n">Any</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Match</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
 <span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">anyio</span>
 
+<span class="kn">from</span> <span class="nn">.attachment</span> <span class="kn">import</span> <span class="n">Attachment</span>
 <span class="kn">from</span> <span class="nn">.chat_context</span> <span class="kn">import</span> <span class="n">ChatContext</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">StopPropagation</span>
 <span class="kn">from</span> <span class="nn">.job_queue</span> <span class="kn">import</span> <span class="n">JobQueue</span>
+<span class="kn">from</span> <span class="nn">.link_preview</span> <span class="kn">import</span> <span class="n">LinkPreview</span>
 <span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Message</span>
 <span class="kn">from</span> <span class="nn">.message_receiver</span> <span class="kn">import</span> <span class="n">MessageReceiver</span>
 <span class="kn">from</span> <span class="nn">.message_sender</span> <span class="kn">import</span> <span class="n">MessageSender</span>
@@ -194,22 +111,22 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">profile_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">profile_picture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">profile_emoji</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">profile_about</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">group_auto_accept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">logging_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-                 <span class="n">socket_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">raise_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="n">profile_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">profile_picture</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">profile_emoji</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">profile_about</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">group_auto_accept</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">logging_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                 <span class="n">socket_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">raise_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize bot.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">username</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_picture</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_picture</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_emoji</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_about</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">profile_about</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_picture</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_picture</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_emoji</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_emoji</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_profile_about</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_about</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_auto_accept</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">group_auto_accept</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_socket_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">socket_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_socket_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">socket_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_receiver</span><span class="p">:</span> <span class="n">MessageReceiver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="p">:</span> <span class="n">MessageSender</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_receive_socket</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Socket</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -236,19 +153,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">regex</span><span class="p">,</span> <span class="n">func</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Handler &lt;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&gt; registered (&#39;</span><span class="si">{</span><span class="n">regex</span><span class="o">.</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&#39;)&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">set_exception_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_exception_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exception_handler</span> <span class="o">=</span> <span class="n">func</span>
 
-<div class="viewcode-block" id="Bot.handler"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.handler">[docs]</a>    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">):</span>
+<div class="viewcode-block" id="Bot.handler"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.handler">[docs]</a>    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decorator to register handlers.&quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">register_handler</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">func</span>
 
         <span class="k">return</span> <span class="n">decorator</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span>
+                              <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">match</span><span class="p">:</span> <span class="n">Match</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a matched message.&quot;&quot;&quot;</span>
         <span class="n">message_id</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
@@ -319,7 +238,7 @@
                                      <span class="bp">self</span><span class="o">.</span><span class="n">_raise_errors</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">excinfo</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">excinfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Disconnect from the bot&#39;s internal socket.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_receive_socket</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_receive_socket</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="o">*</span><span class="n">excinfo</span><span class="p">)</span>
@@ -349,8 +268,9 @@
                 <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">data_message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">await</span> <span class="n">tg</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match_message</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.send_message"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.send_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                           <span class="n">link_previews</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="Bot.send_message"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.send_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Attachment</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                           <span class="n">link_previews</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">LinkPreview</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a message.</span>
 
@@ -400,46 +320,30 @@
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020-2022, Lazlo Westerhof.
-
-    </p>
+    <p>&#169; Copyright 2020-2022, Lazlo Westerhof.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
