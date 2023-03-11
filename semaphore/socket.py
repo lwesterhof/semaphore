@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,7 +18,7 @@
 """This module contains an object that represents a signald socket."""
 import json
 import logging
-from typing import AsyncIterable, List
+from typing import AsyncIterable, List, Optional
 
 import anyio
 import anyio.abc
@@ -29,11 +29,11 @@ class Socket:
 
     def __init__(self,
                  username: str,
-                 socket_path: str,
+                 socket_path: Optional[str] = None,
                  subscribe: bool = False):
         """Initialize socket."""
         self._username: str = username
-        self._socket_path: str = socket_path
+        self._socket_path: Optional[str] = socket_path
         self._socket: anyio.abc.SocketStream
         self._subscribe: bool = subscribe
 

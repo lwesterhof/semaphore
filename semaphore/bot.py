@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -21,14 +21,16 @@ import re
 import threading
 from datetime import datetime
 from typing import (
-    Any, Awaitable, Callable, Dict, List, Optional, Pattern, TYPE_CHECKING, Union
+    Any, Awaitable, Callable, Dict, List, Match, Optional, Pattern, TYPE_CHECKING, Union
 )
 
 import anyio
 
+from .attachment import Attachment
 from .chat_context import ChatContext
 from .exceptions import StopPropagation
 from .job_queue import JobQueue
+from .link_preview import LinkPreview
 from .message import Message
 from .message_receiver import MessageReceiver
 from .message_sender import MessageSender
@@ -40,22 +42,22 @@ class Bot:
 
     def __init__(self,
                  username: str,
-                 profile_name=None,
-                 profile_picture=None,
-                 profile_emoji=None,
-                 profile_about=None,
-                 group_auto_accept=True,
-                 logging_level=logging.INFO,
-                 socket_path=None,
-                 raise_errors=False):
+                 profile_name: Optional[str] = None,
+                 profile_picture: Optional[str] = None,
+                 profile_emoji: Optional[str] = None,
+                 profile_about: Optional[str] = None,
+                 group_auto_accept: bool = True,
+                 logging_level: int = logging.INFO,
+                 socket_path: Optional[str] = None,
+                 raise_errors: bool = False) -> None:
         """Initialize bot."""
         self._username: str = username
-        self._profile_name: str = profile_name
-        self._profile_picture: str = profile_picture
-        self._profile_emoji: str = profile_emoji
-        self._profile_about: str = profile_about
+        self._profile_name: Optional[str] = profile_name
+        self._profile_picture: Optional[str] = profile_picture
+        self._profile_emoji: Optional[str] = profile_emoji
+        self._profile_about: Optional[str] = profile_about
         self._group_auto_accept: bool = group_auto_accept
-        self._socket_path: str = socket_path
+        self._socket_path: Optional[str] = socket_path
         self._receiver: MessageReceiver
         self._sender: MessageSender
         self._receive_socket: Optional[Socket] = None
@@ -82,19 +84,21 @@ class Bot:
         self._handlers.append((regex, func))
         self.log.info(f"Handler <{func.__name__}> registered ('{regex.pattern}')")
 
-    def set_exception_handler(self, func: Callable):
+    def set_exception_handler(self, func: Callable) -> None:
         self._exception_handler = func
 
-    def handler(self, regex: Pattern):
+    def handler(self, regex: Pattern) -> Callable:
         """Decorator to register handlers."""
 
-        def decorator(func: Callable):
+        def decorator(func: Callable) -> Callable:
             self.register_handler(regex, func)
             return func
 
         return decorator
 
-    async def _handle_message(self, message: Message, func: Callable, match) -> None:
+    async def _handle_message(self,
+                              message: Message,
+                              func: Callable, match: Match) -> None:
         """Handle a matched message."""
         message_id = id(message)
 
@@ -165,7 +169,7 @@ class Bot:
                                      self._raise_errors)
         return self
 
-    async def __aexit__(self, *excinfo):
+    async def __aexit__(self, *excinfo) -> None:
         """Disconnect from the bot's internal socket."""
         if self._receive_socket:
             await self._receive_socket.__aexit__(*excinfo)
@@ -195,8 +199,9 @@ class Bot:
                 if message.data_message is not None:
                     await tg.spawn(self._match_message, message)
 
-    async def send_message(self, receiver, body, attachments=None,
-                           link_previews=None) -> bool:
+    async def send_message(self, receiver: str, body: str,
+                           attachments: Optional[List[Attachment]] = None,
+                           link_previews: Optional[List[LinkPreview]] = None) -> bool:
         """
         Send a message.
 

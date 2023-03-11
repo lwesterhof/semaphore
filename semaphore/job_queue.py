@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -24,16 +24,17 @@ from anyio import sleep, WouldBlock
 
 from .exceptions import StopPropagation
 from .job import Job
+from .message_sender import MessageSender
 from .queue import PriorityQueue
 
 
 class JobQueue:
     """This object represents a bot job queue."""
 
-    def __init__(self, sender) -> None:
+    def __init__(self, sender: MessageSender) -> None:
         """Initialize job queue."""
-        self._queue = PriorityQueue()
-        self._sender = sender
+        self._queue: PriorityQueue = PriorityQueue()
+        self._sender: MessageSender = sender
 
         self.log = logging.getLogger(__name__)
 

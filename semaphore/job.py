@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -18,7 +18,7 @@
 """This module contains an object that represents a bot job."""
 
 from datetime import datetime
-from typing import Optional
+from typing import Callable, Optional
 
 from dateutil.relativedelta import relativedelta
 
@@ -30,16 +30,16 @@ class Job(object):
     """This object represents a bot job."""
 
     def __init__(self,
-                 handler,
+                 handler: Callable,
                  context,
-                 repeat=False,
-                 monthly=False,
-                 interval=None) -> None:
+                 repeat: bool = False,
+                 monthly: bool = False,
+                 interval: Optional[int] = None) -> None:
         """Initialize job."""
         self._handler = handler
         self._context = context
         self._repeat: bool = repeat
-        self._interval: int = interval
+        self._interval: Optional[int] = interval
         self._monthly: bool = monthly
         self._remove: bool = False
 
@@ -47,18 +47,18 @@ class Job(object):
         """Get the message of this job."""
         return self._context.message
 
-    def get_interval(self) -> float:
+    def get_interval(self) -> int:
         """Get the interval of the (repeating) job."""
         if self._repeat:
             if self._monthly:
                 now = datetime.now()
                 next_month = now + relativedelta(months=+1)
                 interval = next_month.timestamp() - now.timestamp()
-                return interval
-            else:
+                return int(interval)
+            elif self._interval:
                 return self._interval
-        else:
-            return 0.0
+
+        return 0
 
     def is_repeating(self) -> bool:
         """Check if the job is repeating."""
