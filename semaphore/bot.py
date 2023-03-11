@@ -66,7 +66,7 @@ class Bot:
         self._handlers: List = []
         self._chat_context: Dict[str, ChatContext] = {}
         self._exception_handler: Optional[Callable[[Exception, ChatContext],
-                                                   Awaitable[None]]]
+                                                   Awaitable[None]]] = None
         self._raise_errors = raise_errors
 
         threading.current_thread().name = 'bot'

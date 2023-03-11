@@ -26,6 +26,7 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
 
 from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
 from .message import Message
+from .profile import Profile
 from .reply import Reply
 from .socket import Socket
 
@@ -46,30 +47,42 @@ class MessageSender:
         self._socket_lock = asyncio.Lock()
         self.log = logging.getLogger(__name__)
 
-    async def _send(self, message: Dict) -> bool:
+    async def _send(self, message: Dict) -> Any:
         if message['type'] == 'send':
             self.signald_message_id += 1
             message['id'] = str(self.signald_message_id)
 
         async with self._socket_lock:
             await self._socket.send(message)
-            if not message.get('id'):
+
+            # Wait on response for our message.
+            if message.get('id'):
+                self.log.debug(f"Waiting for success of {message['id']}")
+            # Wait on response for get_profile.
+            elif message.get('type') == 'get_profile':
+                self.log.debug("Waiting for get_profile response")
+            # Skip everything else.
+            else:
                 return True
 
-            self.log.debug(f"Waiting for success of {message['id']}")
-
-            # Wait for success response
+            # Wait for response.
             async for line in self._socket.read():
                 self.log.debug(f"Socket of sender received: {line.decode()}")
 
-                # Load Signal message wrapper
+                # Load Signal message wrapper.
                 try:
                     response_wrapper = json.loads(line)
                 except json.JSONDecodeError as e:
                     self.log.error("Could not decode signald response", exc_info=e)
                     continue
 
-                # Skip everything but response for our message
+                # Return get_profile response.
+                if response_wrapper.get('type') == 'get_profile':
+                    return Profile.create_from_receive_dict(
+                        response_wrapper.get('data', {})
+                    )
+
+                # Skip everything but response for our message.
                 if 'id' not in response_wrapper:
                     continue
 
@@ -84,7 +97,7 @@ class MessageSender:
                     if not self._raise_signald_errors:
                         return False
 
-                    # Match error
+                    # Match error.
                     for error_class in IDENTIFIABLE_SIGNALD_ERRORS:
                         if error_class.IDENTIFIER == response_wrapper.get("error_type"):
                             error_dict = response_wrapper.get("error")
@@ -293,6 +306,21 @@ class MessageSender:
             profile_message["about"] = profile_about
 
         await self._send(profile_message)
+
+    async def get_profile(self, message: Message) -> Profile:
+        """
+        Get Signal profile of message sender.
+
+        :param message: The Signal message you received.
+
+        :returns: Signal profile
+        """
+        return await self._send({
+            "type": "get_profile",
+            "version": "v1",
+            "account": self._username,
+            "address": {"uuid": message.source.uuid}
+        })
 
     async def set_expiration(self, receiver: str, time: int) -> None:
         """

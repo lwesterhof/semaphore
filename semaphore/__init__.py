@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2021 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -32,6 +32,7 @@ from .message import Message
 from .message_receiver import MessageReceiver
 from .message_sender import MessageSender
 from .meta import *
+from .profile import Profile
 from .reply import Reply
 from .socket import Socket
 from .sticker import Sticker

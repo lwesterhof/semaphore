@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2022 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -15,20 +15,29 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""This module contains an object that represents a Signal address."""
-import attr
+"""
+Signal Bot example, retrieves profile for personal touch.
+"""
+import os
+
+from semaphore import Bot, ChatContext
 
 
-@attr.s(auto_attribs=True, frozen=True)
-class Address:
-    """This object represents a Signal address.
+async def profile(ctx: ChatContext) -> None:
+    profile = await ctx.message.get_profile()
+    await ctx.message.reply(body=f"Hi {profile.profile_name}!")
 
-    The attributes have a 1 to 1 correspondance to the signald JsonAddress class
-    https://signald.org/protocol/structures/v1/JsonAddress/
-    """
-    uuid: str
-    number: str = attr.ib(default=None)
 
-    @staticmethod
-    def create_from_receive_dict(data: dict) -> 'Address':
-        return Address(**data)
+async def main() -> None:
+    """Start the bot."""
+    # Connect the bot to number.
+    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
+        bot.register_handler("", profile)
+
+        # Run the bot until you press Ctrl-C.
+        await bot.start()
+
+
+if __name__ == '__main__':
+    import anyio
+    anyio.run(main)

@@ -31,9 +31,10 @@ if TYPE_CHECKING:
     from .attachment import Attachment
     from .message_sender import MessageSender
     from .link_preview import LinkPreview
+    from .profile import Profile
 
 
-@attr.s(auto_attribs=True, frozen=True)
+@attr.s(auto_attribs=True)
 class Message:
     """This object represents a Signal message."""
 
@@ -114,3 +115,7 @@ class Message:
     async def mark_read(self) -> None:
         """Mark the message as read."""
         await self._sender.mark_read(self)
+
+    async def get_profile(self) -> Profile:
+        """Get profile of message sender."""
+        return await self._sender.get_profile(self)
