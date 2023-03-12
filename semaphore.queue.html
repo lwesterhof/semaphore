@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>semaphore.ChatContext &mdash; Semaphore  documentation</title>
+  <title>semaphore.PriorityQueue &mdash; Semaphore  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,8 +18,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="semaphore.DataMessage" href="semaphore.data_message.html" />
-    <link rel="prev" title="semaphore.Bot" href="semaphore.bot.html" /> 
+    <link rel="next" title="semaphore.Reply" href="semaphore.reply.html" />
+    <link rel="prev" title="semaphore.Profile" href="semaphore.profile.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,10 +46,7 @@
 <li class="toctree-l2"><a class="reference internal" href="semaphore.address.html">semaphore.Address</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.attachment.html">semaphore.Attachment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.bot.html">semaphore.Bot</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.ChatContext</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#semaphore.ChatContext"><code class="docutils literal notranslate"><span class="pre">ChatContext</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="semaphore.chat_context.html">semaphore.ChatContext</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.data_message.html">semaphore.DataMessage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.exceptions.html">semaphore.Exceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.group.html">semaphore.Group</a></li>
@@ -61,7 +58,7 @@
 <li class="toctree-l2"><a class="reference internal" href="semaphore.message_sender.html">semaphore.MessageSender</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.message.html">semaphore.Message</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.profile.html">semaphore.Profile</a></li>
-<li class="toctree-l2"><a class="reference internal" href="semaphore.queue.html">semaphore.PriorityQueue</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.PriorityQueue</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.reply.html">semaphore.Reply</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.socket.html">semaphore.Socket</a></li>
 <li class="toctree-l2"><a class="reference internal" href="semaphore.sticker_pack.html">semaphore.StickerPack</a></li>
@@ -85,9 +82,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="semaphore.html">semaphore package</a></li>
-      <li class="breadcrumb-item active">semaphore.ChatContext</li>
+      <li class="breadcrumb-item active">semaphore.PriorityQueue</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/semaphore.chat_context.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/semaphore.queue.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -95,23 +92,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="semaphore-chatcontext">
-<h1>semaphore.ChatContext<a class="headerlink" href="#semaphore-chatcontext" title="Permalink to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="semaphore.ChatContext">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">semaphore.</span></span><span class="sig-name descname"><span class="pre">ChatContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="semaphore.message.html#semaphore.Message" title="semaphore.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Match</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_queue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="semaphore.job_queue.html#semaphore.JobQueue" title="semaphore.JobQueue"><span class="pre">JobQueue</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="semaphore.bot.html#semaphore.Bot" title="semaphore.Bot"><span class="pre">Bot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/semaphore/chat_context.html#ChatContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.ChatContext" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This object represents the context of a chat.</p>
-</dd></dl>
-
+  <section id="semaphore-priorityqueue">
+<h1>semaphore.PriorityQueue<a class="headerlink" href="#semaphore-priorityqueue" title="Permalink to this heading"></a></h1>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="semaphore.bot.html" class="btn btn-neutral float-left" title="semaphore.Bot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="semaphore.data_message.html" class="btn btn-neutral float-right" title="semaphore.DataMessage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="semaphore.profile.html" class="btn btn-neutral float-left" title="semaphore.Profile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="semaphore.reply.html" class="btn btn-neutral float-right" title="semaphore.Reply" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

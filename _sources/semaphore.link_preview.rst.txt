@@ -1,5 +1,5 @@
 semaphore.LinkPreview
-=============
+=====================
 
 .. autoclass:: semaphore.LinkPreview
     :members:
