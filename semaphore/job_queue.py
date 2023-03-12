@@ -26,11 +26,11 @@ from anyio import sleep, WouldBlock
 
 from .exceptions import StopPropagation
 from .job import Job
-from .message_sender import MessageSender
 from .queue import PriorityQueue
 
 if TYPE_CHECKING:
     from .chat_context import ChatContext
+    from .message_sender import MessageSender
 
 
 class JobQueue:

@@ -20,11 +20,10 @@ from __future__ import annotations
 
 from typing import Any, Dict, Match, TYPE_CHECKING
 
-from .job_queue import JobQueue
-from .message import Message
-
 if TYPE_CHECKING:
     from .bot import Bot
+    from .job_queue import JobQueue
+    from .message import Message
 
 
 class ChatContext(object):

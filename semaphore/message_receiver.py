@@ -16,9 +16,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """This module contains an object that represents a Signal message queue."""
+from __future__ import annotations
+
 import json
 import logging
-from typing import AsyncIterable, Dict, Optional
+from typing import AsyncIterable, Dict, Optional, TYPE_CHECKING
 
 from .address import Address
 from .attachment import Attachment
@@ -27,10 +29,13 @@ from .group import Group
 from .groupV2 import GroupV2
 from .link_preview import LinkPreview
 from .message import Message
-from .message_sender import MessageSender
-from .socket import Socket
 from .sticker import Sticker
 from .sticker_pack import StickerPack
+
+
+if TYPE_CHECKING:
+    from .message_sender import MessageSender
+    from .socket import Socket
 
 
 class MessageReceiver:

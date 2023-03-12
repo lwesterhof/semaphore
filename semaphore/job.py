@@ -23,11 +23,10 @@ from typing import Callable, Optional, TYPE_CHECKING
 
 from dateutil.relativedelta import relativedelta
 
-from .message import Message
-from .reply import Reply
-
 if TYPE_CHECKING:
     from .chat_context import ChatContext
+    from .message import Message
+    from .reply import Reply
 
 
 class Job(object):
