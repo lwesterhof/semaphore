@@ -22,8 +22,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 requirements = [
-    'anyio<=3.5.0',
-    'attrs>=18.2.0,<=21.2.0',
+    'anyio>=3.5.0,<=3.6.2',
+    'attrs>=21.2.0,<=22.2.0',
     'python_dateutil==2.8.2',
 ]
 
