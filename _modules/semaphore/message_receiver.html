@@ -70,7 +70,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#</span>
 <span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
-<span class="c1"># Copyright (C) 2020 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1"># Copyright (C) 2020-2023 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># This program is free software: you can redistribute it and/or modify</span>
 <span class="c1"># it under the terms of the GNU Affero General Public License as</span>
@@ -154,9 +154,7 @@
                             <span class="n">group_type</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">),</span>
                         <span class="p">)</span>
                     <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;groupV2&quot;</span><span class="p">):</span>
-                        <span class="n">groupV2</span> <span class="o">=</span> <span class="n">GroupV2</span><span class="p">(</span>
-                            <span class="n">group_id</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;groupV2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
-                        <span class="p">)</span>
+                        <span class="n">groupV2</span> <span class="o">=</span> <span class="n">GroupV2</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;groupV2&quot;</span><span class="p">])</span>
 
                     <span class="n">sticker_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sticker&quot;</span><span class="p">)</span>
                     <span class="n">sticker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sticker</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -189,10 +187,7 @@
 
                 <span class="k">yield</span> <span class="n">Message</span><span class="p">(</span>
                     <span class="n">username</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;account&quot;</span><span class="p">],</span>
-                    <span class="n">source</span><span class="o">=</span><span class="n">Address</span><span class="p">(</span>
-                        <span class="n">uuid</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uuid&quot;</span><span class="p">),</span>
-                        <span class="n">number</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">),</span>
-                    <span class="p">),</span>
+                    <span class="n">source</span><span class="o">=</span><span class="n">Address</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]),</span>
                     <span class="n">envelope_type</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
                     <span class="n">timestamp</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">],</span>
                     <span class="n">server_timestamp</span><span class="o">=</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;server_receiver_timestamp&quot;</span><span class="p">],</span>
