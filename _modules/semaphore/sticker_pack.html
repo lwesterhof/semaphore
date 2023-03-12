@@ -70,7 +70,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#</span>
 <span class="c1"># Semaphore: A simple (rule-based) bot library for Signal Private Messenger.</span>
-<span class="c1"># Copyright (C) 2020 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
+<span class="c1"># Copyright (C) 2020-2023 Lazlo Westerhof &lt;semaphore@lazlo.me&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># This program is free software: you can redistribute it and/or modify</span>
 <span class="c1"># it under the terms of the GNU Affero General Public License as</span>
@@ -85,6 +85,8 @@
 <span class="c1"># You should have received a copy of the GNU Affero General Public License</span>
 <span class="c1"># along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">&quot;&quot;&quot;This module contains an object that represents a Signal data message.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">import</span> <span class="nn">attr</span>
@@ -99,7 +101,7 @@
 
     <span class="n">pack_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">pack_key</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">stickers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;Sticker&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">stickers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Sticker</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
     <span class="c1"># inbound partial sticker packs do not have title and author set</span>
     <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
