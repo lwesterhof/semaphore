@@ -7,7 +7,7 @@ WORKDIR /semaphore
 RUN pip install --upgrade pip
 
 # Install Semaphore.
-RUN pip install --no-cache-dir semaphore-bot==v0.15.0
+RUN pip install --no-cache-dir semaphore-bot==v0.16.0
 
 # Copy bot script.
 COPY bot.py bot.py
