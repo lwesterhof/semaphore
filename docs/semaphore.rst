@@ -22,6 +22,8 @@ semaphore package
     semaphore.message_receiver
     semaphore.message_sender
     semaphore.message
+    semaphore.profile
+    semaphore.queue
     semaphore.reply
     semaphore.socket
     semaphore.sticker_pack

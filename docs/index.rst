@@ -10,7 +10,7 @@ Please note that this library is unofficial, unapproved and not nearly as secure
 
 Reference
 =========
-Below you can find a reference of all the classes and methods in semaphore.
+Below you can find a reference of all the classes and methods in Semaphore.
 
 .. toctree::
    semaphore
