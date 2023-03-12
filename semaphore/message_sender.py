@@ -57,10 +57,10 @@ class MessageSender:
 
             # Wait on response for our message.
             if message.get('id'):
-                self.log.debug(f"Waiting for success of {message['id']}")
+                self.log.debug(f"Waiting for success of message id {message['id']}")
             # Wait on response for get_profile.
             elif message.get('type') == 'get_profile':
-                self.log.debug("Waiting for get_profile response")
+                self.log.debug("Waiting for response of get_profile")
             # Skip everything else.
             else:
                 return True

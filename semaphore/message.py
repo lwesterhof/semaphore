@@ -76,7 +76,7 @@ class Message:
         """Get group id if message is a group message."""
         if self.data_message:
             if self.data_message.groupV2:
-                return self.data_message.groupV2.group_id
+                return self.data_message.groupV2.id
             if self.data_message.group:
                 return self.data_message.group.group_id
         return None
@@ -117,5 +117,5 @@ class Message:
         await self._sender.mark_read(self)
 
     async def get_profile(self) -> Profile:
-        """Get profile of message sender."""
+        """Get Signal profile of message sender."""
         return await self._sender.get_profile(self)

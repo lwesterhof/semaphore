@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: CC0-1.0
-
 """PriorityQueue implementation for anyio."""
+from __future__ import annotations
+
 from heapq import heappop, heappush
-from typing import List, Tuple
+from typing import List, Tuple, TYPE_CHECKING
 
 import anyio
 from anyio import WouldBlock
 
-from .job import Job
+if TYPE_CHECKING:
+    from .job import Job
 
 
 class PriorityQueue:

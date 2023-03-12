@@ -106,8 +106,6 @@ class Bot:
         group_id: Optional[str] = message.get_group_id()
         if group_id is not None:
             context_id = f"{group_id}+{message.source.uuid}"
-            if self._group_auto_accept:
-                await self.accept_invitation(group_id)
         else:
             context_id = message.source.uuid
 
@@ -120,6 +118,10 @@ class Bot:
         else:
             context = ChatContext(message, match, self._job_queue, self)
             self.log.info(f"Chat context created for {context_id}")
+
+            # Accept group invitation.
+            if group_id is not None and self._group_auto_accept:
+                await self.accept_invitation(group_id)
 
         # Process received message and send reply.
         try:

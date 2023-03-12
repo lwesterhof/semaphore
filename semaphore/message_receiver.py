@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Semaphore: A simple (rule-based) bot library for Signal Private Messenger.
-# Copyright (C) 2020 Lazlo Westerhof <semaphore@lazlo.me>
+# Copyright (C) 2020-2023 Lazlo Westerhof <semaphore@lazlo.me>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -85,9 +85,7 @@ class MessageReceiver:
                             group_type=data["group"].get("type"),
                         )
                     if data.get("groupV2"):
-                        groupV2 = GroupV2(
-                            group_id=data["groupV2"].get("id")
-                        )
+                        groupV2 = GroupV2.create_from_receive_dict(data["groupV2"])
 
                     sticker_data = data.get("sticker")
                     sticker: Optional[Sticker] = None
@@ -120,10 +118,7 @@ class MessageReceiver:
 
                 yield Message(
                     username=message["account"],
-                    source=Address(
-                        uuid=message["source"].get("uuid"),
-                        number=message["source"].get("number"),
-                    ),
+                    source=Address.create_from_receive_dict(message["source"]),
                     envelope_type=message["type"],
                     timestamp=message["timestamp"],
                     server_timestamp=message["server_receiver_timestamp"],
