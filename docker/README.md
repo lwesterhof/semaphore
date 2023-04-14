@@ -60,3 +60,20 @@ The example will deploy a [demo bot](bot.py), you can change this bot or copy an
     ```bash
     docker-compose up
     ```
+
+## Update the bot
+1. Make changes to [bot.py](bot.py).
+
+2. Update the bot in the semaphore-bot container:
+    ```bash
+    docker cp bot.py semaphore-bot:/semaphore/bot.py
+    ```
+    Or rebuild the container:
+    ```bash
+    docker-compose build semaphore-bot
+    ```
+
+3. Restart the bot.
+    ```bash
+    docker-compose up
+    ```
