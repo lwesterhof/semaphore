@@ -27,6 +27,7 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
 from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
 from .message import Message
 from .profile import Profile
+from .groupV2 import GroupV2
 from .reply import Reply
 from .socket import Socket
 
@@ -61,6 +62,19 @@ class MessageSender:
             # Wait on response for get_profile.
             elif message.get('type') == 'get_profile':
                 self.log.debug("Waiting for response of get_profile")
+            elif message.get('type') == 'get_group':
+                self.log.debug("Waiting for response of get_group")
+            # Wait on response for list_groups.
+            elif message.get('type') == 'list_groups':
+                self.log.debug("Waiting for response of list_groups")
+            elif message.get('type') == 'update_group':
+                self.log.debug("Waiting for response of update_group")
+            elif message.get('type') == 'create_group':
+                self.log.debug("Waiting for response of create_group")
+            elif message.get('type') == 'leave_group':
+                self.log.debug("Waiting for response of leave_group")
+            elif message.get('type') == 'group_link_info':
+                self.log.debug("Waiting for response of preview_group")
             # Skip everything else.
             else:
                 return True
@@ -79,6 +93,38 @@ class MessageSender:
                 # Return get_profile response.
                 if response_wrapper.get('type') == 'get_profile':
                     return Profile.create_from_receive_dict(
+                        response_wrapper.get('data', {})
+                    )
+
+                if response_wrapper.get('type') == 'list_groups':
+                    return [
+                        GroupV2.create_from_receive_dict(
+                            group
+                        ) for group in response_wrapper.get('data', {})['groups']
+                    ]
+
+                if response_wrapper.get('type') == 'get_group':
+                    return GroupV2.create_from_receive_dict(
+                        response_wrapper.get('data', {})
+                    )
+
+                if response_wrapper.get('type') == 'update_group':
+                    return GroupV2.create_from_receive_dict(
+                        response_wrapper.get('data', {})['v2']
+                    )
+
+                if response_wrapper.get('type') == 'create_group':
+                    return GroupV2.create_from_receive_dict(
+                        response_wrapper.get('data', {})
+                    )
+
+                if response_wrapper.get('type') == 'leave_group':
+                    return GroupV2.create_from_receive_dict(
+                        response_wrapper.get('data', {})
+                    )
+
+                if response_wrapper.get('type') == 'group_link_info':
+                    return GroupV2.create_from_receive_dict(
                         response_wrapper.get('data', {})
                     )
 
@@ -354,4 +400,165 @@ class MessageSender:
             "version": "v1",
             "account": self._username,
             "groupID": group_id,
+        })
+
+    async def list_groups(self) -> List[GroupV2]:
+        """
+        List of v2 groups for a account.
+
+        :return: Returns a list of v2 group objects
+        """
+        return await self._send({
+            "type": "list_groups",
+            "version": "v1",
+            "account": self._username,
+        })
+
+    async def get_group(self, group_id: str) -> GroupV2:
+        """
+        Get details of a v2 group
+
+        :param group_id: Group id to get details for.
+
+        :return: Returns a v2 group object
+        """
+        return await self._send({
+            "type": "get_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+        })
+
+    async def add_members(self, group_id: str, members: list) -> GroupV2:
+        """
+        Add members to a group
+
+        :param group_id: Group id to add the members to.
+        :param members: List of members uuids to be added
+
+        :return: Returns the updated group object
+        """
+        return await self._send({
+            "type": "update_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+            "addMembers": members,
+        })
+
+    async def remove_members(self, group_id: str, members: list) -> GroupV2:
+        """
+        Remove members from a group
+
+        :param group_id: Group id to remove the members from.
+        :param members: List of members uuids to be removed
+
+        :return: Returns the updated group object
+        """
+        return await self._send({
+            "type": "update_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+            "removeMembers": members,
+        })
+
+    async def create_group(self, title: str, members: list) -> GroupV2:
+        """
+        Create a signal group
+
+        :param title: title for the new group.
+        :param members: List of members uuids to be added to the new group
+
+        :return: Returns the newly created group object
+        """
+        return await self._send({
+            "type": "create_group",
+            "version": "v1",
+            "account": self._username,
+            "title": title,
+            "members": members
+        })
+
+    async def leave_group(self, group_id: str) -> GroupV2:
+        """
+        Leave a signal group
+
+        :param group_id: id of the group to leave.
+        """
+        await self._send({
+            "type": "leave_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+        })
+
+    async def preview_group(self, url: str) -> GroupV2:
+        """
+        Preview information about a group without joining
+
+        :param url: group invite link to preview information for.
+
+        :return: Returns a v2 group object
+        """
+        return await self._send({
+            "type": "group_link_info",
+            "version": "v1",
+            "account": self._username,
+            "uri": url,
+        })
+
+    async def update_group_title(self, group_id: str, title: str) -> GroupV2:
+        """
+        change a group’s title
+
+        :param group_id: id of the group to update the title for.
+        :param title: new title
+
+        :return: Returns the updated group object
+        """
+        return await self._send({
+            "type": "update_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+            "title": title,
+        })
+
+    async def update_group_timer(self, group_id: str, timer: str) -> GroupV2:
+        """
+        change a group’s timer
+
+        :param group_id: id of the group to update the title for.
+        :param timer: new timer for the group in seconds
+
+        :return: Returns the updated group object
+        """
+        return await self._send({
+            "type": "update_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+            "updateTimer": timer,
+        })
+
+    async def update_group_role(self, group_id: str, memberid: str, role: str) -> GroupV2:
+        """
+        Update role of a member in the group
+
+        :param group_id: id of the group to update member role for.
+        :param memberid: id of the member
+        :param role: updated role of the member
+
+        :return: Returns the updated group object
+        """
+        return await self._send({
+            "type": "update_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+            "updateRole": {
+                'role': role,
+                'uuid': memberid
+            }
         })
