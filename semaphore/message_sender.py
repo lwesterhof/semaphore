@@ -416,7 +416,7 @@ class MessageSender:
 
     async def get_group(self, group_id: str) -> GroupV2:
         """
-        Get details of a v2 group
+        Get details of a v2 group.
 
         :param group_id: Group id to get details for.
 
@@ -485,8 +485,10 @@ class MessageSender:
         Leave a signal group
 
         :param group_id: id of the group to leave.
+
+        :return: Returns a v2 group object
         """
-        await self._send({
+        return await self._send({
             "type": "leave_group",
             "version": "v1",
             "account": self._username,

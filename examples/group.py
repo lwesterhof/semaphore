@@ -165,7 +165,7 @@ async def group_show(ctx: ChatContext) -> None:
     await ctx.message.reply(menu.getvalue())
 
 
-async def main():
+async def main() -> None:
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
