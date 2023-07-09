@@ -25,9 +25,9 @@ import re
 from typing import Any, Dict, List, Optional, TYPE_CHECKING, Union
 
 from .exceptions import IDENTIFIABLE_SIGNALD_ERRORS, UnknownError
+from .groupV2 import GroupV2
 from .message import Message
 from .profile import Profile
-from .groupV2 import GroupV2
 from .reply import Reply
 from .socket import Socket
 

@@ -338,6 +338,7 @@ class Bot:
         Update a group’s timer.
 
         :param group_id: Identifier of the group to change timer of
+        :param timer:    Expiration must be specified in seconds, 0 to disable timer
 
         :return: Returns the updated GroupV2 object
         """

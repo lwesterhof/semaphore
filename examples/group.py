@@ -20,8 +20,8 @@
 Signal Bot examples, manage signal group actions
 """
 import io
-import re
 import os
+import re
 
 from semaphore import Bot, ChatContext
 
