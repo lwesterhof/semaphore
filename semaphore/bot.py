@@ -255,7 +255,7 @@ class Bot:
 
     async def list_groups(self) -> List[GroupV2]:
         """
-        List of v2 groups for an account
+        List of v2 groups for an account.
 
         :return: Returns a list of v2 group objects
         """
@@ -263,94 +263,97 @@ class Bot:
 
     async def get_group(self, group_id: str) -> GroupV2:
         """
-        Get details of a v2 group
+        Get details of a group.
 
-        :param group_id: Group id to get details for.
+        :param group_id: Group id to get details for
 
-        :return: Returns a v2 group object
+        :return: Returns a GroupV2 object
         """
         return await self._sender.get_group(group_id)
 
     async def add_members(self, group_id: str, members: list) -> GroupV2:
         """
-        Add members to a group
+        Add members to a group.
 
-        :param group_id: Group id to add the members to.
-        :param members: List of members uuids to be added
+        :param group_id: Group id to add the members to
+        :param members:  List of members uuids to be added
 
-        :return: Returns the updated v2 group object
+        :return: Returns the updated GroupV2 object
         """
         return await self._sender.add_members(group_id, members)
 
     async def remove_members(self, group_id: str, members: list) -> GroupV2:
         """
-        Remove members from a group
+        Remove members from a group.
 
-        :param group_id: Group id to remove the members from.
-        :param members: List of members uuids to be removed
+        :param group_id: Group id to remove the members from
+        :param members:  List of members uuids to be removed
 
-        :return: Returns the updated v2 group object
+        :return: Returns the updated GroupV2 object
         """
         return await self._sender.remove_members(group_id, members)
 
     async def create_group(self, title: str, members: list) -> GroupV2:
         """
-        Create a signal group
+        Create a Signal group.
 
-        :param title: title for the new group.
+        :param title: title for the new group
         :param members: List of members uuids to be added to the new group
 
-        :return: Returns the newly created group object
+        :return: Returns the created GroupV2 object
         """
         return await self._sender.create_group(title, members)
 
     async def leave_group(self, group_id: str) -> None:
         """
-        Leave a signal group
+        Leave a Signal group.
 
-        :param group_id: id of the group to leave.
+        :param group_id: Identifier of the group to leave
         """
         await self._sender.leave_group(group_id)
 
     async def preview_group(self, url: str) -> GroupV2:
         """
-        Preview information about a group without joining
+        Preview information about a group without joining.
 
-        :param url: group invite link to preview information for.
+        :param url: Group invite link to preview information for
 
-        :return: Returns a v2 group object
+        :return: Returns a GroupV2 object
         """
         return await self._sender.preview_group(url)
 
     async def update_group_title(self, group_id: str, title: str) -> GroupV2:
         """
-        change a group’s title
+        Update a group’s title.
 
-        :param group_id: id of the group to update the title for.
-        :param title: new title
+        :param group_id: Identifier of the group to update the title for
+        :param title:    New title
 
-        :return: Returns the updated group object
+        :return: Returns the updated GroupV2 object
         """
         return await self._sender.update_group_title(group_id, title)
 
     async def update_group_timer(self, group_id: str, timer: str) -> GroupV2:
         """
-        Leave a signal group
+        Update a group’s timer.
 
-        :param group_id: id of the group to leave.
+        :param group_id: Identifier of the group to change timer of
 
-        :return: Returns the updated group object
+        :return: Returns the updated GroupV2 object
         """
         return await self._sender.update_group_timer(group_id, timer)
 
-    async def update_group_role(self, group_id: str, memberid: str, role: str) -> GroupV2:
+    async def update_group_role(self,
+                                group_id: str,
+                                member_id: str,
+                                role: str) -> GroupV2:
         """
-        Update role of a member in the group
+        Update role of a member in the group.
 
-        :param group_id: id of the group to update member role for.
-        :param memberid: id of the member
-        :param role: updated role of the member
+        :param group_id:  Identifier of the group to update member role for
+        :param member_id: Identifier of the member
+        :param role:      Updated role of the member
 
-        :return: Returns the updated group object
+        :return: Returns the updated GroupV2 object
         """
-        return await self._sender.update_group_role(group_id,  memberid, role)
+        return await self._sender.update_group_role(group_id, member_id, role)
