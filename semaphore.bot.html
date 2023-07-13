@@ -49,12 +49,22 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">semaphore.Bot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#semaphore.Bot"><code class="docutils literal notranslate"><span class="pre">Bot</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.accept_invitation"><code class="docutils literal notranslate"><span class="pre">Bot.accept_invitation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.add_members"><code class="docutils literal notranslate"><span class="pre">Bot.add_members()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.create_group"><code class="docutils literal notranslate"><span class="pre">Bot.create_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.get_group"><code class="docutils literal notranslate"><span class="pre">Bot.get_group()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.handler"><code class="docutils literal notranslate"><span class="pre">Bot.handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.leave_group"><code class="docutils literal notranslate"><span class="pre">Bot.leave_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.list_groups"><code class="docutils literal notranslate"><span class="pre">Bot.list_groups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.preview_group"><code class="docutils literal notranslate"><span class="pre">Bot.preview_group()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.register_handler"><code class="docutils literal notranslate"><span class="pre">Bot.register_handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.remove_members"><code class="docutils literal notranslate"><span class="pre">Bot.remove_members()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.send_message"><code class="docutils literal notranslate"><span class="pre">Bot.send_message()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.set_expiration"><code class="docutils literal notranslate"><span class="pre">Bot.set_expiration()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.set_profile"><code class="docutils literal notranslate"><span class="pre">Bot.set_profile()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.start"><code class="docutils literal notranslate"><span class="pre">Bot.start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_role"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_role()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_timer"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_timer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_title"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_title()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -124,15 +134,116 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.add_members">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_members</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.add_members"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.add_members" title="Permalink to this definition"></a></dt>
+<dd><p>Add members to a group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Group id to add the members to</p></li>
+<li><p><strong>members</strong> – List of members uuids to be added</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.create_group">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.create_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.create_group" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Signal group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – title for the new group</p></li>
+<li><p><strong>members</strong> – List of members uuids to be added to the new group</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the created GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.get_group">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.get_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.get_group" title="Permalink to this definition"></a></dt>
+<dd><p>Get details of a group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>group_id</strong> – Group id to get details for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Bot.handler">
 <span class="sig-name descname"><span class="pre">handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Pattern</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.handler" title="Permalink to this definition"></a></dt>
 <dd><p>Decorator to register handlers.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.leave_group">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">leave_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.leave_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.leave_group" title="Permalink to this definition"></a></dt>
+<dd><p>Leave a Signal group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>group_id</strong> – Identifier of the group to leave</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.list_groups">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_groups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.list_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.list_groups" title="Permalink to this definition"></a></dt>
+<dd><p>List of v2 groups for an account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a list of v2 group objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.preview_group">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preview_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.preview_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.preview_group" title="Permalink to this definition"></a></dt>
+<dd><p>Preview information about a group without joining.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>url</strong> – Group invite link to preview information for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="semaphore.Bot.register_handler">
 <span class="sig-name descname"><span class="pre">register_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.register_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.register_handler" title="Permalink to this definition"></a></dt>
 <dd><p>Register a chat handler with a regex.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.remove_members">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_members</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.remove_members"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.remove_members" title="Permalink to this definition"></a></dt>
+<dd><p>Remove members from a group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Group id to remove the members from</p></li>
+<li><p><strong>members</strong> – List of members uuids to be removed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -191,6 +302,58 @@
 <dt class="sig sig-object py" id="semaphore.Bot.start">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.start" title="Permalink to this definition"></a></dt>
 <dd><p>Start the bot event loop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.update_group_role">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_group_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">member_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.update_group_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.update_group_role" title="Permalink to this definition"></a></dt>
+<dd><p>Update role of a member in the group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Identifier of the group to update member role for</p></li>
+<li><p><strong>member_id</strong> – Identifier of the member</p></li>
+<li><p><strong>role</strong> – Updated role of the member</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.update_group_timer">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_group_timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.update_group_timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.update_group_timer" title="Permalink to this definition"></a></dt>
+<dd><p>Update a group’s timer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Identifier of the group to change timer of</p></li>
+<li><p><strong>timer</strong> – Expiration must be specified in seconds, 0 to disable timer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.update_group_title">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_group_title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.update_group_title"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.update_group_title" title="Permalink to this definition"></a></dt>
+<dd><p>Update a group’s title.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Identifier of the group to update the title for</p></li>
+<li><p><strong>title</strong> – New title</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

@@ -95,6 +95,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">IDENTIFIABLE_SIGNALD_ERRORS</span><span class="p">,</span> <span class="n">UnknownError</span>
+<span class="kn">from</span> <span class="nn">.groupV2</span> <span class="kn">import</span> <span class="n">GroupV2</span>
 <span class="kn">from</span> <span class="nn">.message</span> <span class="kn">import</span> <span class="n">Message</span>
 <span class="kn">from</span> <span class="nn">.profile</span> <span class="kn">import</span> <span class="n">Profile</span>
 <span class="kn">from</span> <span class="nn">.reply</span> <span class="kn">import</span> <span class="n">Reply</span>
@@ -128,9 +129,21 @@
             <span class="c1"># Wait on response for our message.</span>
             <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting for success of message id </span><span class="si">{</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="c1"># Wait on response for get_profile.</span>
+            <span class="c1"># Wait on responses for several types of messages.</span>
             <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;get_profile&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for response of get_profile&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;get_group&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for response of get_group&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;list_groups&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for response of list_groups&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;update_group&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for response of update_group&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;create_group&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for response of create_group&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;leave_group&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for response of leave_group&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;group_link_info&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Waiting for response of preview_group&quot;</span><span class="p">)</span>
             <span class="c1"># Skip everything else.</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span>
@@ -149,6 +162,38 @@
                 <span class="c1"># Return get_profile response.</span>
                 <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;get_profile&#39;</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">Profile</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
+                        <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;list_groups&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span>
+                        <span class="n">GroupV2</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
+                            <span class="n">group</span>
+                        <span class="p">)</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})[</span><span class="s1">&#39;groups&#39;</span><span class="p">]</span>
+                    <span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;get_group&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">GroupV2</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
+                        <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;update_group&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">GroupV2</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
+                        <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})[</span><span class="s1">&#39;v2&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;create_group&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">GroupV2</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
+                        <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;leave_group&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">GroupV2</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
+                        <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;group_link_info&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">GroupV2</span><span class="o">.</span><span class="n">create_from_receive_dict</span><span class="p">(</span>
                         <span class="n">response_wrapper</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span>
                     <span class="p">)</span>
 
@@ -415,15 +460,181 @@
 
 <div class="viewcode-block" id="MessageSender.accept_invitation"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.accept_invitation">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accept_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Accept a v2 group invitation.</span>
+<span class="sd">        Accept a group invitation.</span>
 
-<span class="sd">        :param group_id: Group id to accept invitation from.</span>
+<span class="sd">        :param group_id: Group id to accept invitation from</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
             <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;accept_invitation&quot;</span><span class="p">,</span>
             <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
             <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
             <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.list_groups"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.list_groups">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GroupV2</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List groups for an account.</span>
+
+<span class="sd">        :return: Returns a list of v2 group objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list_groups&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.get_group"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.get_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get details of a group.</span>
+
+<span class="sd">        :param group_id: Group id to get details for</span>
+
+<span class="sd">        :return: Returns a GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;get_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.add_members"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.add_members">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add members to a group.</span>
+
+<span class="sd">        :param group_id: Group id to add the members to</span>
+<span class="sd">        :param members:  List of members uuids to be added</span>
+
+<span class="sd">        :return: Returns the updated GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;update_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+            <span class="s2">&quot;addMembers&quot;</span><span class="p">:</span> <span class="n">members</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.remove_members"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.remove_members">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove members from a group.</span>
+
+<span class="sd">        :param group_id: Group id to remove the members from</span>
+<span class="sd">        :param members:  List of members uuids to be removed</span>
+
+<span class="sd">        :return: Returns the updated GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;update_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+            <span class="s2">&quot;removeMembers&quot;</span><span class="p">:</span> <span class="n">members</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.create_group"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.create_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a Signal group.</span>
+
+<span class="sd">        :param title:   Title for the new group.</span>
+<span class="sd">        :param members: List of members uuids to be added to the new group</span>
+
+<span class="sd">        :return: Returns the created GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;create_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="n">members</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.leave_group"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.leave_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">leave_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Leave a Signal group.</span>
+
+<span class="sd">        :param group_id: Identifier of the group to leave</span>
+
+<span class="sd">        :return: Returns a GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;leave_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.preview_group"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.preview_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">preview_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Preview information about a group without joining.</span>
+
+<span class="sd">        :param url: Group invite link to preview information for</span>
+
+<span class="sd">        :return: Returns a GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;group_link_info&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.update_group_title"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.update_group_title">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update a group’s title.</span>
+
+<span class="sd">        :param group_id: Identifier of the group to update the title for</span>
+<span class="sd">        :param title:    New title</span>
+
+<span class="sd">        :return: Returns the updated GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;update_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.update_group_timer"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.update_group_timer">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timer</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update a group’s timer.</span>
+
+<span class="sd">        :param group_id: Identifier of the group to change timer of</span>
+<span class="sd">        :param timer:    Expiration must be specified in seconds, 0 to disable timer</span>
+
+<span class="sd">        :return: Returns the updated GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;update_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+            <span class="s2">&quot;updateTimer&quot;</span><span class="p">:</span> <span class="n">timer</span><span class="p">,</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="MessageSender.update_group_role"><a class="viewcode-back" href="../../semaphore.message_sender.html#semaphore.MessageSender.update_group_role">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                <span class="n">member_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                <span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the role of a member in the group.</span>
+
+<span class="sd">        :param group_id:  Identifier of the group to update member role for</span>
+<span class="sd">        :param member_id: Identifier of the member</span>
+<span class="sd">        :param role:      Updated role of the member</span>
+
+<span class="sd">        :return: Returns the updated GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">({</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;update_group&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
+            <span class="s2">&quot;groupID&quot;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span>
+            <span class="s2">&quot;updateRole&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">,</span>
+                <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="n">member_id</span>
+            <span class="p">}</span>
         <span class="p">})</span></div></div>
 </pre></div>
 
