@@ -124,6 +124,7 @@ The following example bots can be found in [examples](examples):
 - [echobot](examples/echobot.py), repeats received messages
 - [exceptionbot](examples/exceptionbot.py), with custom exception handler
 - [expirationbot](examples/expirationbot.py), sets the message expiration timer for a chat to random value
+- [groups](examples/groups.py), manage groups
 - [lovebot](examples/lovebot.py), loves everything you say!
 - [profilebot](examples/profilebot.py), retrieves profile for personal touch
 - [quotebot](examples/quotebot.py), quotes and repeats received messages
