@@ -27,7 +27,7 @@ from semaphore import Bot, ChatContext
 
 
 async def groups_list(ctx: ChatContext) -> None:
-    '''Get a list of groups.'''
+    """Get a list of groups."""
     groups = await ctx.bot.list_groups()
     group_list = []
     for group in groups:
@@ -36,7 +36,7 @@ async def groups_list(ctx: ChatContext) -> None:
 
 
 async def group_add_members(ctx: ChatContext) -> None:
-    '''Add members to a group.'''
+    """Add members to a group."""
     try:
         group_id = ctx.match.group(1)
         members = ctx.match.group(2).split(",")
@@ -50,7 +50,7 @@ async def group_add_members(ctx: ChatContext) -> None:
 
 
 async def group_remove_members(ctx: ChatContext) -> None:
-    '''Remove members from a group.'''
+    """Remove members from a group."""
     try:
         group_id = ctx.match.group(1)
         members = ctx.match.group(2).split(",")
@@ -64,7 +64,7 @@ async def group_remove_members(ctx: ChatContext) -> None:
 
 
 async def create_group(ctx: ChatContext) -> None:
-    '''Create a signal group.'''
+    """Create a signal group."""
     try:
         group_title = ctx.match.group(1)
         members = ctx.match.group(2).split(",")
@@ -78,7 +78,7 @@ async def create_group(ctx: ChatContext) -> None:
 
 
 async def update_group_title(ctx: ChatContext) -> None:
-    '''Update title of a group.'''
+    """Update title of a group."""
     try:
         group_id = ctx.match.group(1)
         group_title = ctx.match.group(2)
@@ -92,7 +92,7 @@ async def update_group_title(ctx: ChatContext) -> None:
 
 
 async def update_group_timer(ctx: ChatContext) -> None:
-    '''Update expiration timer of a group.'''
+    """Update expiration timer of a group."""
     try:
         group_id = ctx.match.group(1)
         group_timer = ctx.match.group(2)
@@ -106,7 +106,7 @@ async def update_group_timer(ctx: ChatContext) -> None:
 
 
 async def update_group_role(ctx: ChatContext) -> None:
-    '''Update member role for a group.'''
+    """Update member role for a group."""
     try:
         group_id = ctx.match.group(1)
         member_id = ctx.match.group(2)
@@ -122,7 +122,7 @@ async def update_group_role(ctx: ChatContext) -> None:
 
 
 async def leave_group(ctx: ChatContext) -> None:
-    '''Leava a group.'''
+    """Leava a group."""
     try:
         group_id = ctx.match.group(1)
     except ValueError:
@@ -132,7 +132,7 @@ async def leave_group(ctx: ChatContext) -> None:
 
 
 async def preview_group(ctx: ChatContext) -> None:
-    '''Preview a group without joining.'''
+    """Preview a group without joining."""
     try:
         url = ctx.match.group(1)
     except ValueError:
@@ -143,7 +143,7 @@ async def preview_group(ctx: ChatContext) -> None:
 
 
 async def group_show(ctx: ChatContext) -> None:
-    '''Get information for a group.'''
+    """Get information for a group."""
     try:
         group_id = ctx.match.group(1)
     except ValueError:
