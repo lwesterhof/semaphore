@@ -22,6 +22,8 @@ from typing import Dict, List
 
 import attr
 
+from .address import Address
+
 
 @attr.s(auto_attribs=True)
 class GroupV2:
@@ -40,7 +42,9 @@ class GroupV2:
     timer: int = attr.ib(default=None)
     title: str = attr.ib(default=None)
     member_detail: List[dict] = attr.ib(default=[])
-    requesting_members: List[dict] = attr.ib(default=[])
+    members: List[Address] = attr.ib(default=[])
+    pending_members: List[Address] = attr.ib(default=[])
+    requesting_members: List[Address] = attr.ib(default=[])
 
     @staticmethod
     def _snake_to_camel(attr_name: str) -> str:
