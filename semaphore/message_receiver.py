@@ -28,6 +28,7 @@ from .data_message import DataMessage
 from .group import Group
 from .groupV2 import GroupV2
 from .link_preview import LinkPreview
+from .mention import Mention
 from .message import Message
 from .sticker import Sticker
 from .sticker_pack import StickerPack
@@ -111,6 +112,10 @@ class MessageReceiver:
                         attachments=[
                             Attachment.create_from_receive_dict(attachment)
                             for attachment in data.get("attachments", [])
+                        ],
+                        mentions=[
+                            Mention.create_from_receive_dict(mention)
+                            for mention in data.get("mentions", [])
                         ],
                         previews=[
                             LinkPreview.create_from_receive_dict(link_preview)

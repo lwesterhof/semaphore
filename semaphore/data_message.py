@@ -27,6 +27,7 @@ if TYPE_CHECKING:
     from .group import Group
     from .groupV2 import GroupV2
     from .link_preview import LinkPreview
+    from .mention import Mention
     from .sticker import Sticker
 
 
@@ -40,5 +41,6 @@ class DataMessage:
     attachments: List[Attachment] = attr.ib(factory=list)
     group: Optional[Group] = attr.ib(default=None)
     groupV2: Optional[GroupV2] = attr.ib(default=None)
+    mentions: List[Mention] = attr.ib(factory=list)
     sticker: Optional[Sticker] = attr.ib(default=None)
     previews: List[LinkPreview] = attr.ib(factory=list)
