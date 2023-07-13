@@ -59,12 +59,11 @@ class MessageSender:
             # Wait on response for our message.
             if message.get('id'):
                 self.log.debug(f"Waiting for success of message id {message['id']}")
-            # Wait on response for get_profile.
+            # Wait on responses for several types of messages.
             elif message.get('type') == 'get_profile':
                 self.log.debug("Waiting for response of get_profile")
             elif message.get('type') == 'get_group':
                 self.log.debug("Waiting for response of get_group")
-            # Wait on response for list_groups.
             elif message.get('type') == 'list_groups':
                 self.log.debug("Waiting for response of list_groups")
             elif message.get('type') == 'update_group':
@@ -544,7 +543,10 @@ class MessageSender:
             "updateTimer": timer,
         })
 
-    async def update_group_role(self, group_id: str, memberid: str, role: str) -> GroupV2:
+    async def update_group_role(self,
+                                group_id: str,
+                                member_id: str,
+                                role: str) -> GroupV2:
         """
         Update the role of a member in the group.
 
@@ -561,6 +563,6 @@ class MessageSender:
             "groupID": group_id,
             "updateRole": {
                 'role': role,
-                'uuid': memberid
+                'uuid': member_id
             }
         })

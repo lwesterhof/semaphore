@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-Signal Bot examples, manage signal group actions
+Signal Bot examples, manage groups.
 """
 import io
 import os
@@ -31,8 +31,10 @@ async def groups_list(ctx: ChatContext) -> None:
     groups = await ctx.bot.list_groups()
     group_list = []
     for group in groups:
-        group_list.append(group.title)
-    await ctx.message.reply(body=f"groups: {group_list}!")
+        group_list.append(f"{group.title}: {group.id}")
+
+    groups_list = "\n".join(group_list)
+    await ctx.message.reply(body=f"groups: \n{groups_list}")
 
 
 async def group_add_members(ctx: ChatContext) -> None:
