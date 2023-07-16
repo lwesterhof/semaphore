@@ -566,3 +566,20 @@ class MessageSender:
                 'uuid': member_id
             }
         })
+
+    async def update_group_avatar(self, group_id: str, avatar: str) -> GroupV2:
+        """
+        Change a group’s avatar
+
+        :param group_id: id of the group to update avatar for.
+        :param avatar: avatar path
+
+        :return: Returns the updated group object
+        """
+        return await self._send({
+            "type": "update_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+			"avatar": avatar,
+        })

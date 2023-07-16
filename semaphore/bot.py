@@ -358,3 +358,14 @@ class Bot:
         :return: Returns the updated GroupV2 object
         """
         return await self._sender.update_group_role(group_id, member_id, role)
+
+    async def update_group_avatar(self, group_id: str, avatar: str) -> GroupV2:
+        """
+        Change a group’s avatar
+
+        :param group_id: id of the group to update avatar for.
+        :param avatar: avatar path
+
+        :return: Returns the updated group object
+        """
+        return await self._sender.update_group_avatar(group_id,  avatar)
