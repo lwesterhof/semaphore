@@ -583,3 +583,26 @@ class MessageSender:
             "groupID": group_id,
 			"avatar": avatar,
         })
+
+    async def update_group_access_control(self, group_id: str, access_control: str, role: str) -> GroupV2:
+        """
+        Change a group’s access control
+
+        :param group_id: id of the group to change access control for.
+        :param access_control: name of the access control, options are: attributes|members|link
+        :param role: set the role of an access control:
+                     for attributes otions are: UNSATISFIABLE|ADMINISTRATOR|ANY
+                     for members otions are: MEMBER|ADMINISTRATOR
+                     for link options are: MEMBER|ADMINISTRATOR
+
+        :return: Returns the updated group object
+        """
+        return await self._send({
+            "type": "update_group",
+            "version": "v1",
+            "account": self._username,
+            "groupID": group_id,
+			"updateAccessControl": {
+                access_control: role
+            },
+        })
