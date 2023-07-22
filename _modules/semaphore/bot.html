@@ -427,7 +427,39 @@
 
 <span class="sd">        :return: Returns the updated GroupV2 object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">member_id</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">member_id</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bot.update_group_avatar"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_avatar">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">avatar</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change a group’s avatar.</span>
+
+<span class="sd">        :param group_id: Identifier of the group to update avatar for</span>
+<span class="sd">        :param avatar:   Path to group avatar file</span>
+
+<span class="sd">        :return: Returns the updated GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_avatar</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">avatar</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bot.update_group_access_control"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_access_control">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_access_control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                          <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                          <span class="n">access_control</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                          <span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change a group’s access control.</span>
+
+<span class="sd">        :param group_id:       Identifier of the group to update avatar for</span>
+<span class="sd">        :param access_control: Name of the access control,</span>
+<span class="sd">                               options are: attributes|members|link</span>
+<span class="sd">        :param role:           Set the role of an access control:</span>
+<span class="sd">                               for attributes otions are: UNSATISFIABLE|ADMINISTRATOR|ANY</span>
+<span class="sd">                               for members otions are: MEMBER|ADMINISTRATOR</span>
+<span class="sd">                               for link options are: MEMBER|ADMINISTRATOR</span>
+
+<span class="sd">        :return: Returns the updated GroupV2 object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_access_control</span><span class="p">(</span>
+            <span class="n">group_id</span><span class="p">,</span> <span class="n">access_control</span><span class="p">,</span> <span class="n">role</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
            </div>

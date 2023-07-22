@@ -74,6 +74,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.set_profile"><code class="docutils literal notranslate"><span class="pre">MessageSender.set_profile()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.typing_started"><code class="docutils literal notranslate"><span class="pre">MessageSender.typing_started()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.typing_stopped"><code class="docutils literal notranslate"><span class="pre">MessageSender.typing_stopped()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.update_group_access_control"><code class="docutils literal notranslate"><span class="pre">MessageSender.update_group_access_control()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.update_group_avatar"><code class="docutils literal notranslate"><span class="pre">MessageSender.update_group_avatar()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.update_group_role"><code class="docutils literal notranslate"><span class="pre">MessageSender.update_group_role()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.update_group_timer"><code class="docutils literal notranslate"><span class="pre">MessageSender.update_group_timer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.MessageSender.update_group_title"><code class="docutils literal notranslate"><span class="pre">MessageSender.update_group_title()</span></code></a></li>
@@ -354,6 +356,45 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>message</strong> – The Signal message you received.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.MessageSender.update_group_access_control">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_group_access_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_control</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.update_group_access_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.update_group_access_control" title="Permalink to this definition"></a></dt>
+<dd><p>Change a group’s access control.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Identifier of the group to update avatar for</p></li>
+<li><p><strong>access_control</strong> – Name of the access control,
+options are: attributes|members|link</p></li>
+<li><p><strong>role</strong> – Set the role of an access control:
+for attributes otions are: UNSATISFIABLE|ADMINISTRATOR|ANY
+for members otions are: MEMBER|ADMINISTRATOR
+for link options are: MEMBER|ADMINISTRATOR</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.MessageSender.update_group_avatar">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_group_avatar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_avatar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/message_sender.html#MessageSender.update_group_avatar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.MessageSender.update_group_avatar" title="Permalink to this definition"></a></dt>
+<dd><p>Change a group’s avatar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Identifier of the group to update avatar for</p></li>
+<li><p><strong>group_avatar</strong> – Path to group avatar file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
 </dd>
 </dl>
 </dd></dl>

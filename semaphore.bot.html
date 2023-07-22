@@ -62,6 +62,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.set_expiration"><code class="docutils literal notranslate"><span class="pre">Bot.set_expiration()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.set_profile"><code class="docutils literal notranslate"><span class="pre">Bot.set_profile()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.start"><code class="docutils literal notranslate"><span class="pre">Bot.start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_access_control"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_access_control()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_avatar"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_avatar()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_role"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_role()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_timer"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_timer()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#semaphore.Bot.update_group_title"><code class="docutils literal notranslate"><span class="pre">Bot.update_group_title()</span></code></a></li>
@@ -302,6 +304,45 @@
 <dt class="sig sig-object py" id="semaphore.Bot.start">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.start" title="Permalink to this definition"></a></dt>
 <dd><p>Start the bot event loop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.update_group_access_control">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_group_access_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_control</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.update_group_access_control"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.update_group_access_control" title="Permalink to this definition"></a></dt>
+<dd><p>Change a group’s access control.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Identifier of the group to update avatar for</p></li>
+<li><p><strong>access_control</strong> – Name of the access control,
+options are: attributes|members|link</p></li>
+<li><p><strong>role</strong> – Set the role of an access control:
+for attributes otions are: UNSATISFIABLE|ADMINISTRATOR|ANY
+for members otions are: MEMBER|ADMINISTRATOR
+for link options are: MEMBER|ADMINISTRATOR</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="semaphore.Bot.update_group_avatar">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_group_avatar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avatar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="semaphore.groupV2.html#semaphore.GroupV2" title="semaphore.groupV2.GroupV2"><span class="pre">GroupV2</span></a></span></span><a class="reference internal" href="_modules/semaphore/bot.html#Bot.update_group_avatar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#semaphore.Bot.update_group_avatar" title="Permalink to this definition"></a></dt>
+<dd><p>Change a group’s avatar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_id</strong> – Identifier of the group to update avatar for</p></li>
+<li><p><strong>avatar</strong> – Path to group avatar file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the updated GroupV2 object</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
