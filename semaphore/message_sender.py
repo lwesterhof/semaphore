@@ -567,38 +567,39 @@ class MessageSender:
             }
         })
 
-    async def update_group_avatar(self, group_id: str, avatar: str) -> GroupV2:
+    async def update_group_avatar(self, group_id: str, group_avatar: str) -> GroupV2:
         """
-        Change a group’s avatar
+        Change a group’s avatar.
 
-        :param group_id: id of the group to update avatar for.
-        :param avatar: avatar path
+        :param group_id:     Identifier of the group to update avatar for
+        :param group_avatar: Path to group avatar file
 
-        :return: Returns the updated group object
+        :return: Returns the updated GroupV2 object
         """
         return await self._send({
             "type": "update_group",
             "version": "v1",
             "account": self._username,
             "groupID": group_id,
-            "avatar": avatar,
+            "avatar": group_avatar,
         })
 
-    async def update_group_access_control(
-            self, group_id: str, access_control: str, role: str
-    ) -> GroupV2:
+    async def update_group_access_control(self,
+                                          group_id: str,
+                                          access_control: str,
+                                          role: str) -> GroupV2:
         """
-        Change a group’s access control
+        Change a group’s access control.
 
-        :param group_id: id of the group to change access control for.
-        :param access_control: name of the access control, options are:
-                               attributes|members|link
-        :param role: set the role of an access control:
-                     for attributes otions are: UNSATISFIABLE|ADMINISTRATOR|ANY
-                     for members otions are: MEMBER|ADMINISTRATOR
-                     for link options are: MEMBER|ADMINISTRATOR
+        :param group_id:       Identifier of the group to update avatar for
+        :param access_control: Name of the access control,
+                               options are: attributes|members|link
+        :param role:           Set the role of an access control:
+                               for attributes otions are: UNSATISFIABLE|ADMINISTRATOR|ANY
+                               for members otions are: MEMBER|ADMINISTRATOR
+                               for link options are: MEMBER|ADMINISTRATOR
 
-        :return: Returns the updated group object
+        :return: Returns the updated GroupV2 object
         """
         return await self._send({
             "type": "update_group",
