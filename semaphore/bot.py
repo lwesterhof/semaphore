@@ -358,3 +358,35 @@ class Bot:
         :return: Returns the updated GroupV2 object
         """
         return await self._sender.update_group_role(group_id, member_id, role)
+
+    async def update_group_avatar(self, group_id: str, avatar: str) -> GroupV2:
+        """
+        Change a group’s avatar.
+
+        :param group_id: Identifier of the group to update avatar for
+        :param avatar:   Path to group avatar file
+
+        :return: Returns the updated GroupV2 object
+        """
+        return await self._sender.update_group_avatar(group_id, avatar)
+
+    async def update_group_access_control(self,
+                                          group_id: str,
+                                          access_control: str,
+                                          role: str) -> GroupV2:
+        """
+        Change a group’s access control.
+
+        :param group_id:       Identifier of the group to update avatar for
+        :param access_control: Name of the access control,
+                               options are: attributes|members|link
+        :param role:           Set the role of an access control:
+                               for attributes otions are: UNSATISFIABLE|ADMINISTRATOR|ANY
+                               for members otions are: MEMBER|ADMINISTRATOR
+                               for link options are: MEMBER|ADMINISTRATOR
+
+        :return: Returns the updated GroupV2 object
+        """
+        return await self._sender.update_group_access_control(
+            group_id, access_control, role
+        )
