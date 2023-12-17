@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>semaphore.bot &mdash; Semaphore  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -108,7 +110,9 @@
 <span class="kn">from</span> <span class="nn">.socket</span> <span class="kn">import</span> <span class="n">Socket</span>
 
 
-<div class="viewcode-block" id="Bot"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot">[docs]</a><span class="k">class</span> <span class="nc">Bot</span><span class="p">:</span>
+<div class="viewcode-block" id="Bot">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot">[docs]</a>
+<span class="k">class</span> <span class="nc">Bot</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This object represents a simple (rule-based) Signal Private Messenger bot.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -147,7 +151,9 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Bot.register_handler"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.register_handler">[docs]</a>    <span class="k">def</span> <span class="nf">register_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">],</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Bot.register_handler">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.register_handler">[docs]</a>
+    <span class="k">def</span> <span class="nf">register_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">],</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a chat handler with a regex.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))):</span>
             <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
@@ -155,10 +161,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">regex</span><span class="p">,</span> <span class="n">func</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Handler &lt;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&gt; registered (&#39;</span><span class="si">{</span><span class="n">regex</span><span class="o">.</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&#39;)&quot;</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">set_exception_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exception_handler</span> <span class="o">=</span> <span class="n">func</span>
 
-<div class="viewcode-block" id="Bot.handler"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.handler">[docs]</a>    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<div class="viewcode-block" id="Bot.handler">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.handler">[docs]</a>
+    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="p">:</span> <span class="n">Pattern</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decorator to register handlers.&quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
@@ -166,6 +175,7 @@
             <span class="k">return</span> <span class="n">func</span>
 
         <span class="k">return</span> <span class="n">decorator</span></div>
+
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_handle_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                               <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span>
@@ -249,7 +259,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_socket</span><span class="p">:</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_socket</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="o">*</span><span class="n">excinfo</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Bot.start"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.start">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Bot.start">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.start">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Start the bot event loop.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Bot started&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_receive_socket</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Socket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">,</span>
@@ -272,7 +284,10 @@
                 <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">data_message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">await</span> <span class="n">tg</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match_message</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.send_message"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.send_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Bot.send_message">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.send_message">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                            <span class="n">attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Attachment</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                            <span class="n">link_previews</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">LinkPreview</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -288,7 +303,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">attachments</span><span class="p">,</span> <span class="n">link_previews</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.set_profile"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.set_profile">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Bot.set_profile">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.set_profile">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                           <span class="n">profile_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                           <span class="n">profile_avatar</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                           <span class="n">profile_emoji</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -306,7 +324,10 @@
                                        <span class="n">profile_emoji</span><span class="p">,</span>
                                        <span class="n">profile_about</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.set_expiration"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.set_expiration">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.set_expiration">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.set_expiration">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the message expiration timer for a chat.</span>
 
@@ -315,7 +336,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">set_expiration</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.accept_invitation"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.accept_invitation">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accept_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.accept_invitation">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.accept_invitation">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">accept_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Accept a v2 group invitation.</span>
 
@@ -323,7 +347,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">accept_invitation</span><span class="p">(</span><span class="n">group_id</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.list_groups"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.list_groups">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GroupV2</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="Bot.list_groups">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.list_groups">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GroupV2</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        List of v2 groups for an account.</span>
 
@@ -331,7 +358,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">list_groups</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Bot.get_group"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.get_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.get_group">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.get_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get details of a group.</span>
 
@@ -341,7 +371,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">group_id</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.add_members"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.add_members">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.add_members">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.add_members">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add members to a group.</span>
 
@@ -352,7 +385,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">add_members</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.remove_members"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.remove_members">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.remove_members">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.remove_members">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove members from a group.</span>
 
@@ -363,7 +399,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">remove_members</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.create_group"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.create_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.create_group">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.create_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a Signal group.</span>
 
@@ -374,7 +413,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.leave_group"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.leave_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">leave_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.leave_group">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.leave_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">leave_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Leave a Signal group.</span>
 
@@ -382,7 +424,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">leave_group</span><span class="p">(</span><span class="n">group_id</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.preview_group"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.preview_group">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">preview_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.preview_group">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.preview_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">preview_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Preview information about a group without joining.</span>
 
@@ -392,7 +437,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">preview_group</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.update_group_title"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_title">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.update_group_title">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_title">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update a group’s title.</span>
 
@@ -403,7 +451,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_title</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.update_group_timer"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_timer">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timer</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.update_group_timer">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_timer">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timer</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update a group’s timer.</span>
 
@@ -414,7 +465,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_timer</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">timer</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.update_group_role"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_role">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Bot.update_group_role">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_role">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                 <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                                 <span class="n">member_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                                 <span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
@@ -429,7 +483,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_role</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">member_id</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.update_group_avatar"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_avatar">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">avatar</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Bot.update_group_avatar">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_avatar">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">avatar</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Change a group’s avatar.</span>
 
@@ -440,7 +497,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_avatar</span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span> <span class="n">avatar</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bot.update_group_access_control"><a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_access_control">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_access_control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Bot.update_group_access_control">
+<a class="viewcode-back" href="../../semaphore.bot.html#semaphore.Bot.update_group_access_control">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_group_access_control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                           <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                                           <span class="n">access_control</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                                           <span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupV2</span><span class="p">:</span>
@@ -459,7 +519,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sender</span><span class="o">.</span><span class="n">update_group_access_control</span><span class="p">(</span>
             <span class="n">group_id</span><span class="p">,</span> <span class="n">access_control</span><span class="p">,</span> <span class="n">role</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>
