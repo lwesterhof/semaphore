@@ -134,6 +134,10 @@ The following example bots can be found in [examples](examples):
 - [xkcdbot](examples/xkcdbot.py), replies with latest XKCD comic
 
 ## Changelog
+**v0.17.0**
+* Add support for group actions (thanks @sks444)
+* Add support for receiving mentions
+
 **v0.16.0**
 * Compatibility with signald 0.23.0+
 * Add method to retrieve profile of message sender
