@@ -22,12 +22,14 @@ from typing import List, Optional, TYPE_CHECKING
 
 import attr
 
+
 if TYPE_CHECKING:
     from .attachment import Attachment
     from .group import Group
     from .groupV2 import GroupV2
     from .link_preview import LinkPreview
     from .mention import Mention
+    from .quoted_message import QuotedMessage
     from .sticker import Sticker
 
 
@@ -44,3 +46,4 @@ class DataMessage:
     mentions: List[Mention] = attr.ib(factory=list)
     sticker: Optional[Sticker] = attr.ib(default=None)
     previews: List[LinkPreview] = attr.ib(factory=list)
+    quoted_message: Optional[QuotedMessage] = attr.ib(default=None)
