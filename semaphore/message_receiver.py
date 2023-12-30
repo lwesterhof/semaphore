@@ -30,6 +30,7 @@ from .groupV2 import GroupV2
 from .link_preview import LinkPreview
 from .mention import Mention
 from .message import Message
+from .quoted_message import QuotedMessage
 from .sticker import Sticker
 from .sticker_pack import StickerPack
 
@@ -126,6 +127,10 @@ class MessageReceiver:
                         sticker=sticker,
                     )
 
+                quoted_message: Optional[Message] = None
+                quote = message.get("quote")
+                if quote:
+                    quoted_message = QuotedMessage.create_from_receive_dict(quote)
                 yield Message(
                     username=message["account"],
                     source=Address.create_from_receive_dict(message["source"]),
@@ -138,6 +143,7 @@ class MessageReceiver:
                     is_unidentified_sender=message.get("unidentified_sender"),
                     data_message=data_message,
                     sender=self._sender,
+                    quoted_message=quoted_message,
                 )
             except Exception as exc:
                 self.log.error(

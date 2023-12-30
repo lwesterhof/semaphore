@@ -24,6 +24,7 @@ import attr
 
 from .address import Address
 from .data_message import DataMessage
+from .quoted_message import QuotedMessage
 from .reply import Reply
 from .sticker import Sticker
 
@@ -49,6 +50,7 @@ class Message:
     has_legacy_message: bool = attr.ib(default=False)
     has_content: bool = attr.ib(default=False)
     data_message: Optional[DataMessage] = attr.ib(default=None)
+    quoted_message: Optional[QuotedMessage] = attr.ib(default=None)
     is_unidentified_sender: bool = attr.ib(default=False)
 
     def empty(self) -> bool:
