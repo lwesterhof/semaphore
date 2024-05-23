@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v3
 
@@ -37,7 +37,7 @@ jobs:
 
       - name: Install package
         run: |
-          python -m pip install dist/semaphore-*.tar.gz
+          python -m pip install dist/semaphore_bot-*.tar.gz
 
       - name: Build documentation
         run: |
