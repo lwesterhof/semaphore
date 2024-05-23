@@ -27,7 +27,7 @@ build:
 	$(PYTHON) setup.py sdist bdist_wheel
 
 install:
-	$(PYTHON) -m $(PIP) install dist/semaphore-*.tar.gz
+	$(PYTHON) -m $(PIP) install dist/semaphore_bot-*.tar.gz
 
 help:
 	@echo "Available targets:"
